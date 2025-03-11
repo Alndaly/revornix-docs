@@ -8,20 +8,21 @@ export const metadata = {
 	// For more information on metadata API, see: https://nextjs.org/docs/app/building-your-application/optimizing/metadata
 };
 
-const banner = <Banner storageKey='some-key'>Nextra 4.0 is released 🎉</Banner>;
-const navbar = (
-	<Navbar
-		logo={<b>Nextra</b>}
-		// ... Your additional navbar options
-	/>
+const banner = (
+	<Banner storageKey='some-key'>这个项目还在开发中，即将正式上线Beta。</Banner>
 );
-const footer = <Footer>MIT {new Date().getFullYear()} © Nextra.</Footer>;
+const navbar = (
+	<Navbar projectLink='https://link.qingyon.com' logo={<b>Link</b>} />
+);
+const footer = (
+	<Footer>{new Date().getFullYear()} © 清韵科技（绍兴）有限公司</Footer>
+);
 
 export default async function RootLayout({ children }) {
 	return (
 		<html
 			// Not required, but good for SEO
-			lang='en'
+			lang='zh-CN'
 			// Required to be set
 			dir='ltr'
 			// Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
@@ -36,7 +37,8 @@ export default async function RootLayout({ children }) {
 					banner={banner}
 					navbar={navbar}
 					pageMap={await getPageMap()}
-					docsRepositoryBase='https://github.com/shuding/nextra/tree/main/docs'
+					feedback={{ content: null }}
+					editLink={null}
 					footer={footer}
 					// ... Your additional layout options
 				>
