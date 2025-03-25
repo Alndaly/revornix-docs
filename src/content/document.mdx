@@ -1,0 +1,78 @@
+# 文档
+
+## 文档收录
+
+有多种收录文档、资讯的方式，其中最简单的方式也是最直白的方式就是通过网站端的增加文档。
+
+### 网站端收录
+
+![](https://oss.link.qingyon.com/images/202503251656983.png)
+
+#### 配置说明
+
+- 链接 你想要收录的网站链接
+- 标签 你的文档标签，可以添加多个，方便后续筛选查看
+- AI 自动总结 开启后，系统会自动调用 AI 接口，将文档内容进行总结，并替换掉默认的网站标题、描述等内容。
+- 推送专栏 可以选择你希望推送的专栏，系统会自动将文档推送到你选择的专栏中，并更新该专栏的总结。
+
+### API 收录
+
+当前版本已开放 API 收录文档，你可通过点击应用页面内左下角用户信息->账户进入账户配置页，选择其中的开发 APIKey 配置前往配置。
+
+| 参数         | 类型           | 是否必填 | 说明                              |
+| ------------ | -------------- | -------- | --------------------------------- |
+| url          | String         | 否       | 需要收录的文档链接                |
+| category     | String         | 否       | 文档类型，此处暂时仅支持`website` |
+| from_plat    | String         | 否       | 文档收录来源，请填写`api`         |
+| auto_summary | Boolean        | 否       | 是否开启 AI 自动总结              |
+| sections     | Array[Integer] | 否       | 要推送的专栏列表                  |
+| labels       | Array[Integer] | 否       | 文档标签列表                      |
+
+请求示例：
+
+```python
+import httpx
+
+client = httpx.Client()
+
+headers = {
+    "API-KEY": "<your-api-key>"
+}
+
+response = client.post(
+    url="https://api.link.qingyon.com/tp/document/create",
+    headers=headers,
+    json={
+        "url": "https://www.baidu.com",
+        "category": "website",
+        "from_plat": "api",
+        "auto_summary": True,
+        "sections": ["1", "2"],
+        "labels": ["baidu"],
+    },
+)
+```
+
+响应示例：
+
+```json
+{
+	"code": 200,
+	"message": "success",
+	"success": true
+}
+```
+
+### Python库收录
+
+开发中，敬请期待。
+
+### APP收录
+
+IOS端开发中，敬请期待。
+
+安卓端暂不计划开发，若使用安卓，可通过网站的手机端进行收录。
+
+### 小程序收录
+
+开发中，敬请期待。

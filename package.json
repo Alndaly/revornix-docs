@@ -5,11 +5,14 @@
 		"start": "next start"
 	},
 	"dependencies": {
+		"@tailwindcss/postcss": "^4.0.15",
 		"next": "^15.2.1",
 		"nextra": "^4.2.14",
 		"nextra-theme-docs": "^4.2.14",
+		"postcss": "^8.5.3",
 		"react": "^19.0.0",
-		"react-dom": "^19.0.0"
+		"react-dom": "^19.0.0",
+		"tailwindcss": "^4.0.15"
 	},
 	"devDependencies": {
 		"@types/node": "22.13.9",

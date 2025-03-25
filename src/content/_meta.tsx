@@ -4,7 +4,9 @@ export default {
 		href: 'https://link.qingyon.com',
 		title: '前往使用',
 	},
-	abilities: {
-		title: '能力',
+	blog: {
+		type: 'page',
+		href: 'https://link.qingyon.com/blogs',
+		title: '博客',
 	},
 };
