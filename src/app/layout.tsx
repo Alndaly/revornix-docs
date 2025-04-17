@@ -15,7 +15,7 @@ const banner = (
 );
 const navbar = (
 	<Navbar
-		projectLink='https://link.qingyon.com'
+		projectLink='https://revornix.com'
 		logo={
 			<div className='flex flex-row items-center gap-2'>
 				<Image
@@ -32,7 +32,7 @@ const navbar = (
 					width={20}
 					height={20}
 				/>
-				<p>Link</p>
+				<p>Revornix</p>
 			</div>
 		}
 	/>
