@@ -56,7 +56,12 @@ const BaseTech = () => {
 			name: 'MinerU',
 			href: 'https://mineru.net',
 			description: '文件解析',
-		}
+		},
+		{
+			name: 'DailyHot',
+			href: 'https://github.com/imsyy/DailyHotApi',
+			description: '热搜接口',
+		},
 	];
 	return (
 		<div>

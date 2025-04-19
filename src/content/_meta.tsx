@@ -7,7 +7,7 @@ const meta: MetaRecord = {
 		theme: {
 			timestamp: false,
 			layout: 'full',
-			toc: false
+			toc: false,
 		},
 	},
 	docs: {
@@ -18,13 +18,8 @@ const meta: MetaRecord = {
 		type: 'page',
 		title: '博客',
 		theme: {
-			layout: 'full'
+			layout: 'full',
 		},
-	},
-	revornix: {
-		type: 'page',
-		href: 'https://revornix.com',
-		title: '前往使用',
 	},
 };
 

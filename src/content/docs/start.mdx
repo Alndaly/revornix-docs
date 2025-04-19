@@ -1,10 +1,11 @@
-import { Steps } from 'nextra/components'
+import { Steps } from 'nextra/components';
+import WeComCode from '@/components/wecom-code';
 
 # 快速开始
 
-客观来讲当前的部署和安装对于大部分人来说确实是非常复杂，我正在花精力将所有的部署打包成统一化的Docker容器，敬请期待。
+客观来讲当前的部署和安装对于大部分人来说确实是非常复杂，我正在花精力将所有的部署打包成统一化的 Docker 容器，敬请期待。
 
-如果你觉得当前的部署和安装对你来说过于复杂，你可以选择稍等一阵子，可以先加入我的discord或者微信群，当整合完成后，我会第一时间发送docker包并且通知。
+如果你觉得当前的部署和安装对你来说过于复杂，你可以选择稍等一阵子，可以先加入我们的[Discord](https://discord.gg/3XZfz84aPN)或者<WeComCode />，当整合完成后，我会第一时间发送 docker 包并且通知。
 
 <Steps>
 
@@ -14,7 +15,7 @@ import { Steps } from 'nextra/components'
 git clone git@github.com:Qingyon-AI/Revornix.git
 ```
 
-### docker拉取必要仓库并启动
+### docker 拉取必要仓库并启动
 
 ```shell
 docker compose up -d
@@ -36,7 +37,7 @@ pip install -r ./requirements.txt
 fastapi dev --port 8002
 ```
 
-### 启动celery任务序列
+### 启动 celery 任务序列
 
 ```shell
 cd celery-worker
@@ -54,4 +55,4 @@ pnpm dev
 
 </Steps>
 
-当你将所有服务均启动之后，访问http://localhost:3000即可看到前端页面
+当你将所有服务均启动之后，访问 http://localhost:3000 即可看到前端页面

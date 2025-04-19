@@ -29,12 +29,12 @@ const Hero = () => {
 				</p>
 			</div>
 			<div className='flex flex-row items-center justify-center gap-5'>
-				<Link href={'/docs'}>
+				<Link href={'/docs/start'}>
 					<Button variant='outline' className='shadow-none'>
 						使用文档
 					</Button>
 				</Link>
-				<Link href={'/blogs'}>
+				<Link href={'/blogs/background'}>
 					<Button className='shadow-none'>产品日志</Button>
 				</Link>
 			</div>
