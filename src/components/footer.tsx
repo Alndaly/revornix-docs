@@ -8,7 +8,7 @@ const CustomFooter = () => {
 			<Link href='https://github.com/Qingyon-AI/Revornix/blob/develop/LICENSE'>
 				开源协议
 			</Link>
-			<Link href='/blogs'>
+			<Link href='/blogs/background'>
 				博客动态
 			</Link>
 			<p>

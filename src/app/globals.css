@@ -74,7 +74,7 @@
 
 	--color-sidebar-ring: var(--sidebar-ring);
 
-  --animate-scroll: scroll-left 10s linear infinite;
+	--animate-scroll: scroll-left 25s linear infinite;
 
 	@keyframes scroll-left {
 		0% {

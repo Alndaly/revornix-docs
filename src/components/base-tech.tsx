@@ -67,15 +67,15 @@ const BaseTech = () => {
 		<div>
 			<h2 className='font-bold text-3xl text-center mb-10'>基础技术栈</h2>
 			<div className='overflow-hidden w-full relative'>
-				<div className='absolute top-0 left-0 h-full w-20 z-10 bg-linear-to-r from-white to-white/0'></div>
-				<div className='absolute top-0 right-0 h-full w-20 z-10 bg-linear-to-l from-white to-white/0'></div>
+				<div className='absolute top-0 left-0 h-full w-5 md:w-20 z-10 bg-linear-to-r from-background to-none/0'></div>
+				<div className='absolute top-0 right-0 h-full w-5 md:w-20 z-10 bg-linear-to-l from-background to-none/0'></div>
 				<div className='flex animate-scroll flex-row gap-5'>
 					{techs.map((tech, index) => {
 						return (
 							<Link
 								href={tech.href}
 								key={index}
-								className='rounded p-5 bg-black/5 dark:bg/white/5 min-w-80'>
+								className='rounded p-5 bg-black/5 dark:bg-white/5 min-w-80'>
 								<h3 className='font-bold text-lg capitalize mb-2'>
 									{tech.name}
 								</h3>

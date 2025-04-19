@@ -7,14 +7,14 @@ const Hero = () => {
 		<div className='mb-10'>
 			<div className='flex flex-col items-center justify-center my-10'>
 				<Image
-					src={'/logo-1.png'}
+					src={'/logo.png'}
 					alt='logo'
 					width={250}
 					height={250}
 					className='dark:hidden'
 				/>
 				<Image
-					src={'/logo-1-dark.png'}
+					src={'/logo.dark.png'}
 					alt='logo'
 					width={250}
 					height={250}

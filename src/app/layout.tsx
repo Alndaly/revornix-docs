@@ -40,7 +40,22 @@ const navbar = (
 	<Navbar
 		projectLink='https://github.com/Qingyon-AI/Revornix'
 		chatIcon={
-			<Image src={'/discord.svg'} alt='discord' width={30} height={30} />
+			<>
+				<Image
+					src={'/discord.svg'}
+					alt='discord'
+					width={30}
+					height={30}
+					className='dark:hidden'
+				/>
+				<Image
+					src={'/discord.dark.svg'}
+					alt='discord'
+					width={30}
+					height={30}
+					className='hidden dark:block'
+				/>
+			</>
 		}
 		chatLink='https://discord.gg/3XZfz84aPN'
 		logo={
@@ -54,7 +69,7 @@ const navbar = (
 				/>
 				<Image
 					className='hidden dark:block'
-					src={'/logo-dark.png'}
+					src={'/logo.dark.png'}
 					alt='logo'
 					width={20}
 					height={20}
