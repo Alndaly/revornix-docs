@@ -9,6 +9,31 @@ import CustomFooter from '@/components/footer';
 export const metadata = {
 	// Define your metadata here
 	// For more information on metadata API, see: https://nextjs.org/docs/app/building-your-application/optimizing/metadata
+	description: 'AI时代的资讯管理工具',
+	metadataBase: new URL('https://revornix.com'),
+	keywords: ['Revornix', 'AI', 'Notes', 'Markdown'],
+	applicationName: 'Revornix',
+	appleWebApp: {
+		title: 'Revornix',
+	},
+	title: {
+		default: 'Revornix – AI时代的资讯管理工具',
+		template: '%s | Revornix',
+	},
+	openGraph: {
+		// https://github.com/vercel/next.js/discussions/50189#discussioncomment-10826632
+		url: './',
+		siteName: 'Revornix',
+		locale: 'zh_CN',
+		type: 'website',
+	},
+	twitter: {
+		site: 'https://revornix.com',
+	},
+	alternates: {
+		// https://github.com/vercel/next.js/discussions/50189#discussioncomment-10826632
+		canonical: './',
+	},
 };
 
 const navbar = (
