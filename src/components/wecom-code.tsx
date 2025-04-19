@@ -29,6 +29,7 @@ const WeComCode = () => {
 				<div className='flex justify-center items-center'>
 					<Image
 						src={'/contact_me_qr.png'}
+						className='rounded'
 						width={200}
 						height={200}
 						alt='企业微信二维码'

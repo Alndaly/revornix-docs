@@ -88,8 +88,18 @@ export default async function RootLayout({ children }) {
 			// Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
 			suppressHydrationWarning>
 			<Head
-			// ... Your additional head options
-			>
+				color={{
+					hue: {
+						dark: 204,
+						light: 212,
+					},
+					saturation: 100,
+					lightness: {
+						light: 45,
+						dark: 55,
+					},
+				}}>
+				<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
 			<body>
@@ -99,9 +109,7 @@ export default async function RootLayout({ children }) {
 					feedback={{ content: null }}
 					editLink={null}
 					footer={<CustomFooter />}
-					docsRepositoryBase='https://github.com/Qingyon-AI/Revornix'
-					// ... Your additional layout options
-				>
+					docsRepositoryBase='https://github.com/Qingyon-AI/Revornix'>
 					{children}
 				</Layout>
 			</body>
