@@ -1,0 +1,57 @@
+import { Steps } from 'nextra/components'
+
+# 快速开始
+
+客观来讲当前的部署和安装对于大部分人来说确实是非常复杂，我正在花精力将所有的部署打包成统一化的Docker容器，敬请期待。
+
+如果你觉得当前的部署和安装对你来说过于复杂，你可以选择稍等一阵子，可以先加入我的discord或者微信群，当整合完成后，我会第一时间发送docker包并且通知。
+
+<Steps>
+
+### 克隆仓库到本地
+
+```shell
+git clone git@github.com:Qingyon-AI/Revornix.git
+```
+
+### docker拉取必要仓库并启动
+
+```shell
+docker compose up -d
+```
+
+### 启动核心后端服务
+
+```shell
+cd api
+pip install -r ./requirements.txt
+fastapi dev --port 8001
+```
+
+### 启动文件后端服务
+
+```shell
+cd file-backend
+pip install -r ./requirements.txt
+fastapi dev --port 8002
+```
+
+### 启动celery任务序列
+
+```shell
+cd celery-worker
+pip install -r ./requirements.txt
+celery -A common.celery.app.celery_app worker --loglevel=info --pool threads
+```
+
+### 启动前端服务
+
+```shell
+cd web
+pnpm i
+pnpm dev
+```
+
+</Steps>
+
+当你将所有服务均启动之后，访问http://localhost:3000即可看到前端页面
