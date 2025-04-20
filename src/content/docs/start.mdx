@@ -10,7 +10,8 @@ import WeComCode from '@/components/wecom-code';
 
 <Callout>
 	强烈建议使用 conda 针对每个服务创建不同的 python 虚拟环境，因为不同服务之间的
-	python 依赖可能存在冲突。
+	python
+	依赖可能存在冲突。当然如果你有别的python虚拟环境管理工具，也可以使用别的。
 </Callout>
 
 <Steps>
@@ -23,6 +24,8 @@ git clone git@github.com:Qingyon-AI/Revornix.git
 
 ### docker 拉取必要仓库并启动
 
+这里将会启动本地milvus作为向量存储查找服务
+
 ```shell
 docker compose up -d
 ```
@@ -31,6 +34,9 @@ docker compose up -d
 
 ```shell
 cd api
+cp .env.example .env.development
+# 配置环境变量 详情见环境变量文档
+conda create -n api python=3.11 -y
 pip install -r ./requirements.txt
 fastapi dev --port 8001
 ```
@@ -39,6 +45,9 @@ fastapi dev --port 8001
 
 ```shell
 cd file-backend
+cp .env.example .env.development
+# 配置环境变量 详情见环境变量文档
+conda create -n file-backend python=3.11 -y
 pip install -r ./requirements.txt
 fastapi dev --port 8002
 ```
@@ -47,6 +56,9 @@ fastapi dev --port 8002
 
 ```shell
 cd celery-worker
+cp .env.example .env.development
+# 配置环境变量 详情见环境变量文档
+conda create -n celery-worker python=3.11 -y
 pip install -r ./requirements.txt
 celery -A common.celery.app.celery_app worker --loglevel=info --pool threads
 ```
