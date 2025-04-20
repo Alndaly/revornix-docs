@@ -1,2 +1,22 @@
+import { Callout } from 'nextra/components';
+
 # 整体架构
 
+## 服务
+
+项目当前整体具有四个核心服务。
+
+<Callout type='warning'>
+	由于还在初步开发期间，服务架构随时可能产生较大的变化。
+</Callout>
+
+- `web`：前端。
+- `api`：负责处理所有核心以及基础请求，包括文档创建、删除，专栏创建、删除等等。
+- `celery-worker`：负责处理所有后台任务，包括通知发送、向量化、转码、数据同步、数据清理等。
+- `file-backend`：文件服务器，存储所有文档信息和专栏信息。
+
+## 打包
+
+项目使用 `docker-compose` 进行打包，打包文件位于 `docker-compose.yaml` 中。
+
+但请注意，由于还在架构中，当前docker打包的仅仅是milvus的三方服务，并未打包我自己的服务。
