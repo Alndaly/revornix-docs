@@ -6,4 +6,69 @@ import { Callout } from 'nextra/components';
 	本系统大部分变量采用环境变量来便于不同环境下的部署，所以这一部分的正确配置极其重要！
 </Callout>
 
+## web 服务
 
+| 名称                                     | 说明                                            |
+| ---------------------------------------- | ----------------------------------------------- |
+| `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务                                    |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 核心后端服务中的实时通知服务部分 websocket 接口 |
+| `NEXT_PUBLIC_FILE_API_PREFIX`            | 文件服务                                        |
+
+## api 服务
+
+| 名称                           | 说明                        |
+| ------------------------------ | --------------------------- |
+| `SECRET_KEY`                   | 用户认证体系 JWT 机制的密钥 |
+| `ALGORITHM`                    | JWT 加密算法                |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
+| `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
+| `REDIS_URL`                    | redis 连接地址              |
+| `REDIS_PASSWORD`               | redis 连接密码              |
+| `REDIS_PORT`                   | redis 连接端口              |
+| `USER_NAME`                    | mysql 用户名                |
+| `PASSWORD`                     | mysql 密码                  |
+| `DATABASE_URL`                 | mysql 主机                  |
+| `DATABASE_NAME`                | mysql 数据库名称            |
+| `MOONSHOT_API_KEY`             | kimi api key                |
+| `DEEPSEEK_API_KEY`             | deepseek api key            |
+| `JINA_API_TOKEN`               | jina api key                |
+| `ARK_API_KEY`                  | ark api key                 |
+| `MILVUS_CLUSTER_ENDPOINT`      | milvus 连接地址             |
+| `MILVUS_TOKEN`                 | milvus 连接 token           |
+| `FILE_SERVER_URL`              | 文件服务地址                |
+
+## file-backend
+
+| 名称                           | 说明                        |
+| ------------------------------ | --------------------------- |
+| `SECRET_KEY`                   | 用户认证体系 JWT 机制的密钥 |
+| `ALGORITHM`                    | JWT 加密算法                |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
+| `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
+| `USER_NAME`                    | mysql 用户名                |
+| `PASSWORD`                     | mysql 密码                  |
+| `DATABASE_URL`                 | mysql 主机                  |
+| `DATABASE_NAME`                | mysql 数据库名称            |
+
+## celery-wroker
+
+| 名称                           | 说明                        |
+| ------------------------------ | --------------------------- |
+| `SECRET_KEY`                   | 用户认证体系 JWT 机制的密钥 |
+| `ALGORITHM`                    | JWT 加密算法                |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
+| `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
+| `REDIS_URL`                    | redis 连接地址              |
+| `REDIS_PASSWORD`               | redis 连接密码              |
+| `REDIS_PORT`                   | redis 连接端口              |
+| `USER_NAME`                    | mysql 用户名                |
+| `PASSWORD`                     | mysql 密码                  |
+| `DATABASE_URL`                 | mysql 主机                  |
+| `DATABASE_NAME`                | mysql 数据库名称            |
+| `MOONSHOT_API_KEY`             | kimi api key                |
+| `DEEPSEEK_API_KEY`             | deepseek api key            |
+| `JINA_API_TOKEN`               | jina api key                |
+| `ARK_API_KEY`                  | ark api key                 |
+| `MILVUS_CLUSTER_ENDPOINT`      | milvus 连接地址             |
+| `MILVUS_TOKEN`                 | milvus 连接 token           |
+| `FILE_SERVER_URL`              | 文件服务地址                |

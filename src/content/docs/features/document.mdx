@@ -22,11 +22,11 @@
 | 参数         | 类型           | 是否必填 | 说明                              |
 | ------------ | -------------- | -------- | --------------------------------- |
 | url          | String         | 否       | 需要收录的文档链接                |
-| category     | String         | 否       | 文档类型，此处暂时仅支持`website` |
-| from_plat    | String         | 否       | 文档收录来源，请填写`api`         |
+| category     | String         | 是       | 文档类型，此处暂时仅支持`website` |
+| from_plat    | String         | 是       | 文档收录来源，请填写`api`         |
 | auto_summary | Boolean        | 否       | 是否开启 AI 自动总结              |
-| sections     | Array[Integer] | 否       | 要推送的专栏列表                  |
-| labels       | Array[Integer] | 否       | 文档标签列表                      |
+| sections     | Array[Integer] | 是       | 要推送的专栏列表                  |
+| labels       | Array[Integer] | 是       | 文档标签列表                      |
 
 请求示例：
 
@@ -63,13 +63,13 @@ response = client.post(
 }
 ```
 
-### Python库收录
+### Python 库收录
 
 开发中，敬请期待。
 
-### APP收录
+### APP 收录
 
-IOS端开发中，敬请期待。
+IOS 端开发中，敬请期待。
 
 安卓端暂不计划开发，若使用安卓，可通过网站的手机端进行收录。
 
