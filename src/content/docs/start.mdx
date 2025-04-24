@@ -23,6 +23,7 @@ cd Revornix
 cp ./envs/.api.env.example ./envs/.api.env
 cp ./envs/.file.env.example ./envs/.file.env
 cp ./envs/.celery.env.example ./envs/.celery.env
+cp ./envs/.hot.env.example ./envs/.hot.env
 ```
 
 前往对应的环境变量文件配置，详情见[环境变量配置篇章](environment)
@@ -74,6 +75,7 @@ cd Revornix
 cp ./envs/.api.env.example ./api/.env
 cp ./envs/.file.env.example ./file-backend/.env
 cp ./envs/.celery.env.example ./celery-worker/.env
+cp ./envs/.hot.env.example ./daily-hot/.env
 ```
 
 在 web 子目录下添加如下文件，用于配置前端环境变量
@@ -116,6 +118,14 @@ cd api
 conda create -n api python=3.11 -y
 pip install -r ./requirements.txt
 fastapi run --port 8001
+```
+
+### 启动热搜聚集服务
+
+```shell
+cd daily-hot
+pnpm i 
+pnpm dev
 ```
 
 ### 启动文件后端服务
