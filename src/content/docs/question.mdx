@@ -4,6 +4,10 @@
 
 本来我确实是没做nginx服务的，但是由于浏览器端直接访问docker方式部署的api的host的时候会无法访问通（毕竟本身这个host在你的机器是不存在的，即使存在，由于docker的特性，你服务在重启之后其内部ip也不一定稳定不变）。所以再三考虑之后，增加了nginx服务作为中转以确保能直接访问。
 
+### 为何web服务的环境变量需要特殊设置？
+
+由于nextjs的一些特性，我们目前无法让web服务在编译时获取到docker compose中传递的env_file。
+
 ### 产品是免费的吗？
 
 开源版本将会永远免费，但不包含商业支持，使用时请严格遵守我们的[开源协议](https://github.com/Qingyon-AI/Revornix/blob/develop/LICENSE)。而云版本是订阅收费的！

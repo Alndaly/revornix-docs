@@ -16,7 +16,7 @@ const Features = () => {
 	const features: Feature[] = [
 		{
 			title: '跨平台可用',
-			description: '当前支持网页端、IOS，后续将会支持小程序。',
+			description: '当前支持网页端，后续将会支持iOS端APP和微信小程序。',
 		},
 		{
 			title: '一站资讯收集',
