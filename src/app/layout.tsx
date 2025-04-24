@@ -5,6 +5,8 @@ import 'nextra-theme-docs/style.css';
 import './globals.css';
 import Image from 'next/image';
 import CustomFooter from '@/components/footer';
+import MineGoogleAnalytics from '@/components/mine-google-analystic';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata = {
 	// Define your metadata here
@@ -103,6 +105,7 @@ export default async function RootLayout({ children }) {
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
 			<body>
+				<GoogleAnalytics gaId='G-MMTX35WR5M' />
 				<Layout
 					navbar={navbar}
 					pageMap={await getPageMap()}
