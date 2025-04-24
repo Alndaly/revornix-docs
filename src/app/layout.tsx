@@ -19,7 +19,7 @@ export const metadata = {
 		title: 'Revornix',
 	},
 	title: {
-		default: 'Revornix – AI时代的资讯管理工具',
+		default: 'AI时代的资讯管理工具',
 		template: '%s | Revornix',
 	},
 	openGraph: {
