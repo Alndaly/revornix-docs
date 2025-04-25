@@ -91,6 +91,12 @@ cp ./envs/.celery.env.example ./celery-worker/.env
 cp ./envs/.hot.env.example ./daily-hot/.env
 ```
 
+请在`./api/.env`和`./file-backend/.env`文件中补充如下内容：
+
+```
+ENV=dev
+```
+
 在 web 子目录下添加如下文件，用于配置前端环境变量
 
 ```shell filename=".env"
