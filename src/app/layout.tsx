@@ -5,7 +5,6 @@ import 'nextra-theme-docs/style.css';
 import './globals.css';
 import Image from 'next/image';
 import CustomFooter from '@/components/footer';
-import MineGoogleAnalytics from '@/components/mine-google-analystic';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata = {
