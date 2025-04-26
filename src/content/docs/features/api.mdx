@@ -1,0 +1,161 @@
+import { Callout } from 'nextra/components';
+
+# 三方 API
+
+这篇文档讲解的是所有可公开的 API 接口。所有请求以`/tp`开头。
+
+<Callout>默认情况下，python包引用的就是这种方式。</Callout>
+
+**该页面所有接口请求时必须携带如下请求头**
+
+| 请求头  | 值           |
+| ------- | ------------ |
+| API-KEY | your api key |
+
+---
+
+### `/tp/section/label/create`
+
+创建专栏标签
+
+#### 参数
+
+| 参数名 | 类型   | 必填 | 描述   |
+| ------ | ------ | ---- | ------ |
+| name   | string | 是   | 标签名 |
+
+#### 示例代码
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/section/label/create",
+    headers=headers,
+    json={
+        "name": "test"
+    }
+)
+```
+
+---
+
+### `/tp/section/mine/all`
+
+获取我的所有专栏
+
+---
+
+### `/tp/document/label/list`
+
+获取所有文档标签
+
+---
+
+### `/tp/document/label/create`
+
+创建文档标签
+
+#### 参数
+
+| 参数名 | 类型   | 必填 | 描述   |
+| ------ | ------ | ---- | ------ |
+| name   | string | 是   | 标签名 |
+
+#### 示例代码
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/document/label/create",
+    headers=headers,
+    json={
+        "name": "test"
+    }
+)
+```
+
+---
+
+### `/tp/document/create`
+
+创建文档
+
+#### 参数
+
+| 参数名       | 类型    | 必填 | 描述                                                                                                            |
+| ------------ | ------- | ---- | --------------------------------------------------------------------------------------------------------------- |
+| category     | int     | 是   | 文档类型，0：文件文档，1：链接文档，2：速记文档                                                                 |
+| from_plat    | string  | 是   | 来源平台，此处必需填写 `api`                                                                                    |
+| sections     | int[]   | 是   | 推送专栏组                                                                                                      |
+| auto_summary | boolean | 否   | 是否自动生成摘要                                                                                                |
+| labels       | int[]   | 是   | 标签组                                                                                                          |
+| url          | string  | 否   | 链接，如果是链接文档则必填，且仅在链接文档下有效                                                                |
+| content      | string  | 否   | 内容，如果是速记文档则必填，且仅在速记文档下有效                                                                |
+| file_name    | string  | 否   | 文件路径（其实本质上是文件子路径，必须以`file/{filename}`格式填写），如果是文件文档则必填，且仅在文件文档下有效 |
+
+#### 示例代码
+
+本代码仅作链接文档示例，其他类型文档请自行修改。
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/document/create",
+    headers=headers,
+    json={
+        "category": 1,
+        "from_plat": "api",
+        "sections": [],
+        "auto_summary": True,
+        "labels": [],
+        "url": "https://baidu.com"
+    }
+)
+```
+
+---
+
+### `/tp/notification/create`
+
+创建通知
+
+#### 参数
+
+| 参数名            | 类型   | 必填 | 描述                   |
+| ----------------- | ------ | ---- | ---------------------- |
+| title             | string | 是   | 通知标题               |
+| content           | string | 是   | 通知内容               |
+| link              | string | 是   | 通知链接               |
+| notification_type | int    | 是   | 通知类型，0 为系统通知 |
+
+#### 示例代码
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/section/label/create",
+    headers=headers,
+    json={
+        "title": "test",
+        "content": "test",
+        "link": "/dashboard",
+        "notification_type": 0
+    }
+)
+```
