@@ -9,8 +9,8 @@ const Hero = () => {
 				<Image
 					src={'/logo.png'}
 					alt='logo'
-					width={250}
-					height={250}
+					width={200}
+					height={200}
 					className='dark:hidden'
 				/>
 				<Image

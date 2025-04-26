@@ -5,8 +5,8 @@ interface Feature {
 
 const FeatureCard = ({ feature }: { feature: Feature }) => {
 	return (
-		<div className="rounded p-5 dark:bg-white/5 bg-black/5">
-			<h2 className="text-lg font-bold mb-2">{feature.title}</h2>
+		<div className='rounded p-5 dark:bg-white/5 bg-black/5'>
+			<h2 className='text-lg font-bold mb-2'>{feature.title}</h2>
 			<p>{feature.description}</p>
 		</div>
 	);
@@ -41,10 +41,13 @@ const Features = () => {
 		},
 	];
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-			{features.map((feature, index) => {
-				return <FeatureCard feature={feature} key={index} />;
-			})}
+		<div>
+			<h2 className='font-bold text-3xl text-center mb-10'>产品特性</h2>
+			<div className='grid grid-cols-1 md:grid-cols-3 gap-5 mb-10'>
+				{features.map((feature, index) => {
+					return <FeatureCard feature={feature} key={index} />;
+				})}
+			</div>
 		</div>
 	);
 };
