@@ -1,4 +1,8 @@
+import { Tabs } from 'nextra/components';
+
 # 文档
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202504260004883.png)
 
 当前支持速记、网页链接以及文件方式收录文档。
 
@@ -19,48 +23,45 @@
 
 当前版本已开放 API 收录文档，你可通过点击应用页面内左下角用户信息->账户进入账户配置页，选择其中的开发 APIKey 配置前往配置。
 
-| 参数         | 类型           | 是否必填 | 说明                              |
-| ------------ | -------------- | -------- | --------------------------------- |
-| url          | String         | 否       | 需要收录的文档链接                |
-| category     | String         | 是       | 文档类型，此处暂时仅支持`website` |
-| from_plat    | String         | 是       | 文档收录来源，请填写`api`         |
-| auto_summary | Boolean        | 否       | 是否开启 AI 自动总结              |
-| sections     | Array[Integer] | 是       | 要推送的专栏列表                  |
-| labels       | Array[Integer] | 是       | 文档标签列表                      |
+#### 参数说明
 
-请求示例：
+| 参数         | 类型           | 是否必填 | 说明                      |
+| ------------ | -------------- | -------- | ------------------------- |
+| url          | String         | 否       | 需要收录的文档链接        |
+| category     | Integer        | 是       | 0:文件，1:网页，2:速记    |
+| from_plat    | String         | 是       | 文档收录来源，请填写`api` |
+| auto_summary | Boolean        | 否       | 是否开启 AI 自动总结      |
+| sections     | Array[Integer] | 是       | 要推送的专栏列表          |
+| labels       | Array[Integer] | 是       | 文档标签列表              |
+
+#### 请求示例
+
+**网站文档**
 
 ```python
 import httpx
-
 client = httpx.Client()
-
 headers = {
-    "API-KEY": "<your-api-key>"
+    "API-KEY": "271ed3762ab24444ac2e587add4840f5"
 }
-
 response = client.post(
-    url="https://api.revornix.com/tp/document/create",
+    url="http://localhost:8001/tp/document/create",
     headers=headers,
     json={
         "url": "https://www.baidu.com",
-        "category": "website",
+        "category": 1,
         "from_plat": "api",
         "auto_summary": True,
-        "sections": ["1", "2"],
-        "labels": ["baidu"],
+        "sections": [],
+        "labels": [],
     },
 )
 ```
 
-响应示例：
+#### 响应示例：
 
 ```json
-{
-	"code": 200,
-	"message": "success",
-	"success": true
-}
+{ "document_id": 26 }
 ```
 
 ### Python 库收录
