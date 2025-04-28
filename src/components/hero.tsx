@@ -1,13 +1,15 @@
 import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import logo from '@/static/logo.png';
 
 const Hero = () => {
+	console.log(logo)
 	return (
 		<div className='mb-10'>
 			<div className='flex flex-col items-center justify-center my-10'>
 				<Image
-					src={'/logo.png'}
+					src={logo}
 					alt='logo'
 					width={200}
 					height={200}

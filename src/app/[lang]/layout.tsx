@@ -6,6 +6,11 @@ import './globals.css';
 import Image from 'next/image';
 import CustomFooter from '@/components/footer';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import { ReactNode } from 'react';
+import { I18nLangKeys } from '@/i18n';
+import logo from '@/static/logo.png';
+import discordLogo from '@/static/discord.svg';
+import discordLogoDarkMode from '@/static/discord.dark.svg';
 
 export const metadata = {
 	// Define your metadata here
@@ -43,14 +48,14 @@ const navbar = (
 		chatIcon={
 			<>
 				<Image
-					src={'/discord.svg'}
+					src={discordLogo}
 					alt='discord'
 					width={30}
 					height={30}
 					className='dark:hidden'
 				/>
 				<Image
-					src={'/discord.dark.svg'}
+					src={discordLogoDarkMode}
 					alt='discord'
 					width={30}
 					height={30}
@@ -63,7 +68,7 @@ const navbar = (
 			<div className='flex flex-row items-center gap-2'>
 				<Image
 					className='dark:hidden block'
-					src={'/logo.png'}
+					src={logo}
 					alt='logo'
 					width={20}
 					height={20}
@@ -81,11 +86,19 @@ const navbar = (
 	/>
 );
 
-export default async function RootLayout({ children }) {
+interface Props {
+	children: ReactNode;
+	params: Promise<{ lang: I18nLangKeys }>;
+}
+
+export default async function RootLayout({ children, params }: Props) {
+	const { lang } = await params;
+	const pageMap = await getPageMap(lang);
 	return (
 		<html
 			// Required to be set
 			dir='ltr'
+			lang={lang}
 			// Suggested by `next-themes` package https://github.com/pacocoursey/next-themes#with-app
 			suppressHydrationWarning>
 			<Head
@@ -107,7 +120,7 @@ export default async function RootLayout({ children }) {
 				<GoogleAnalytics gaId='G-MMTX35WR5M' />
 				<Layout
 					navbar={navbar}
-					pageMap={await getPageMap()}
+					pageMap={pageMap}
 					feedback={{ content: null }}
 					editLink={null}
 					footer={<CustomFooter />}

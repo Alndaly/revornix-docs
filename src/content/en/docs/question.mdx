@@ -1,0 +1,20 @@
+# Frequently Asked Questions
+
+### Why is Nginx service required for Docker deployment?
+
+Initially, I didn't implement the Nginx service. However, when browsers try to directly access the API host deployed via Docker, it becomes inaccessible (since the host doesn't exist on your machine, and even if it does, the internal IP may change after service restart due to Docker's nature). After careful consideration, I added the Nginx service as a proxy to ensure direct access.
+
+### Why do web service environment variables need special configuration?
+
+Due to certain NextJS characteristics, we currently cannot make the web service obtain the env_file passed through docker compose during compilation.
+
+### Is the product free?
+
+The open-source version will always be free but doesn't include commercial support. Please strictly follow our [open-source license](https://github.com/Qingyon-AI/Revornix/blob/develop/LICENSE). The cloud version requires a paid subscription!
+
+### What's the difference between open-source and cloud versions?
+
+They are essentially identical, with key differences being:
+
+- Cloud version provides commercial support
+- Cloud version includes monetization mechanisms

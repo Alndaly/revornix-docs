@@ -1,0 +1,78 @@
+import { Callout } from 'nextra/components';
+
+# Environment Variable Settings
+
+<Callout type='info'>
+	Most variables in this system use environment variables to facilitate deployment in different environments, so correct configuration of this part is extremely important!
+</Callout>
+
+## Web Service
+
+| Name                                     | Description                                                |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service                                       |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | WebSocket interface for real-time notification service     |
+| `NEXT_PUBLIC_FILE_API_PREFIX`            | File service                                               |
+
+## API Service
+
+| Name                           | Description                                |
+| ------------------------------ | ------------------------------------------ |
+| `SECRET_KEY`                   | JWT mechanism key for user authentication  |
+| `ALGORITHM`                    | JWT encryption algorithm                   |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`  | User access_token expiration time          |
+| `REFRESH_TOKEN_EXPIRE_MINUTES` | User refresh_token expiration time         |
+| `MAIL_SENDER`                  | Email account                              |
+| `MAIL_PASSWORD`                | Email password                             |
+| `REDIS_URL`                    | Redis connection address                   |
+| `REDIS_PASSWORD`               | Redis connection password                  |
+| `REDIS_PORT`                   | Redis connection port                      |
+| `USER_NAME`                    | MySQL username                             |
+| `PASSWORD`                     | MySQL password                             |
+| `DATABASE_URL`                 | MySQL host                                 |
+| `DATABASE_NAME`                | MySQL database name                        |
+| `MOONSHOT_API_KEY`             | Kimi API key                               |
+| `DEEPSEEK_API_KEY`             | Deepseek API key                           |
+| `JINA_API_TOKEN`               | Jina API key                               |
+| `ARK_API_KEY`                  | Ark API key                                |
+| `MILVUS_CLUSTER_ENDPOINT`      | Milvus connection address                  |
+| `MILVUS_TOKEN`                 | Milvus connection token                    |
+| `FILE_SERVER_URL`              | File service address                       |
+
+## File Backend
+
+| Name                           | Description                                |
+| ------------------------------ | ------------------------------------------ |
+| `SECRET_KEY`                   | JWT mechanism key for user authentication  |
+| `ALGORITHM`                    | JWT encryption algorithm                   |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`  | User access_token expiration time          |
+| `REFRESH_TOKEN_EXPIRE_MINUTES` | User refresh_token expiration time         |
+| `USER_NAME`                    | MySQL username                             |
+| `PASSWORD`                     | MySQL password                             |
+| `DATABASE_URL`                 | MySQL host                                 |
+| `DATABASE_NAME`                | MySQL database name                        |
+
+## Celery Worker
+
+| Name                           | Description                                |
+| ------------------------------ | ------------------------------------------ |
+| `SECRET_KEY`                   | JWT mechanism key for user authentication  |
+| `ALGORITHM`                    | JWT encryption algorithm                   |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`  | User access_token expiration time          |
+| `REFRESH_TOKEN_EXPIRE_MINUTES` | User refresh_token expiration time         |
+| `MAIL_SENDER`                  | Email account                              |
+| `MAIL_PASSWORD`                | Email password                             |
+| `REDIS_URL`                    | Redis connection address                   |
+| `REDIS_PASSWORD`               | Redis connection password                  |
+| `REDIS_PORT`                   | Redis connection port                      |
+| `USER_NAME`                    | MySQL username                             |
+| `PASSWORD`                     | MySQL password                             |
+| `DATABASE_URL`                 | MySQL host                                 |
+| `DATABASE_NAME`                | MySQL database name                        |
+| `MOONSHOT_API_KEY`             | Kimi API key                               |
+| `DEEPSEEK_API_KEY`             | Deepseek API key                           |
+| `JINA_API_TOKEN`               | Jina API key                               |
+| `ARK_API_KEY`                  | Ark API key                                |
+| `MILVUS_CLUSTER_ENDPOINT`      | Milvus connection address                  |
+| `MILVUS_TOKEN`                 | Milvus connection token                    |
+| `FILE_SERVER_URL`              | File service address                       |

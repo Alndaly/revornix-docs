@@ -8,6 +8,7 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
+import weComCode from '@/static/contact_me_qr.png';
 
 const WeComCode = () => {
 	return (
@@ -28,7 +29,7 @@ const WeComCode = () => {
 				</DialogHeader>
 				<div className='flex justify-center items-center'>
 					<Image
-						src={'/contact_me_qr.png'}
+						src={weComCode}
 						className='rounded'
 						width={200}
 						height={200}

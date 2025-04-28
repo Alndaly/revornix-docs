@@ -1,0 +1,79 @@
+import { Tabs } from 'nextra/components';
+
+# Documents
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202504260004883.png)
+
+Currently supports quick notes, web links, and file uploads for document collection.
+
+## Document Collection
+
+There are multiple ways to collect documents and information, with the simplest and most straightforward method being through the website interface.
+
+### Website Collection
+
+#### Configuration Instructions
+
+- URL: The website link you want to collect
+- Tags: Your document tags, you can add multiple for easier filtering and viewing later
+- AI Auto-Summary: When enabled, the system will automatically call the AI interface to summarize the document content and replace the default website title, description, etc.
+- Push to Column: You can select the columns you want to push to, the system will automatically push the document to your selected columns and update the column summary.
+
+### API Collection
+
+The current version has opened API for document collection. You can click on the user info in the bottom left corner of the application page -> Account to enter the account configuration page, then select the Development APIKey configuration to proceed.
+
+#### Parameter Description
+
+| Parameter     | Type           | Required | Description                      |
+| ------------ | -------------- | -------- | ------------------------- |
+| url          | String         | No       | Document link to collect        |
+| category     | Integer        | Yes      | 0:File, 1:Webpage, 2:Quick note    |
+| from_plat    | String         | Yes      | Document collection source, please fill in `api` |
+| auto_summary | Boolean        | No       | Whether to enable AI auto-summary      |
+| sections     | Array[Integer] | Yes      | List of columns to push to          |
+| labels       | Array[Integer] | Yes      | Document tag list              |
+
+#### Request Example
+
+**Web Document**
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "271ed3762ab24444ac2e587add4840f5"
+}
+response = client.post(
+    url="http://localhost:8001/tp/document/create",
+    headers=headers,
+    json={
+        "url": "https://www.baidu.com",
+        "category": 1,
+        "from_plat": "api",
+        "auto_summary": True,
+        "sections": [],
+        "labels": [],
+    },
+)
+```
+
+#### Response Example:
+
+```json
+{ "document_id": 26 }
+```
+
+### Python Library Collection
+
+Under development, stay tuned.
+
+### APP Collection
+
+IOS version under development, stay tuned.
+
+Android version not currently planned. Android users can use the mobile website for collection.
+
+### Mini Program Collection
+
+Under development, stay tuned.

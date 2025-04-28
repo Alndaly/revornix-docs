@@ -1,0 +1,194 @@
+import { Callout } from 'nextra/components';
+import { Steps } from 'nextra/components';
+import WeComCode from '@/components/wecom-code';
+
+# Quick Start
+
+You can join our WeChat group <WeComCode /> for communication.
+
+## Docker Method (Recommended)
+
+<Steps>
+
+### Clone the Repository Locally
+
+```shell
+git clone git@github.com:Qingyon-AI/Revornix.git
+cd Revornix
+```
+
+### Environment Variable Configuration
+
+```shell
+cp ./envs/.api.env.example ./envs/.api.env
+cp ./envs/.file.env.example ./envs/.file.env
+cp ./envs/.celery.env.example ./envs/.celery.env
+cp ./envs/.hot.env.example ./envs/.hot.env
+```
+
+Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
+
+Add the following file in the web subdirectory to configure frontend environment variables:
+
+```shell filename=".env"
+NEXT_PUBLIC_API_PREFIX='http://localhost/api/main-service'
+NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='ws://localhost/api/main-service/notification/'
+NEXT_PUBLIC_FILE_API_PREFIX='http://localhost/api/file-service'
+```
+
+### Modify AI Response Model
+
+Please go to the `router/ai.py` file in the API service, find the `ask_ai` function, and modify this code segment according to your actual situation to select an appropriate model.
+
+<Callout>Currently only models from Volcano Engine are supported. Please visit the [Volcano Engine official website](https://www.volcengine.com) to create one.</Callout>
+
+```python
+if chat_messages.search_web and chat_messages.deep_search:
+	model = 'bot-20250326172427-g588d'
+if chat_messages.search_web and not chat_messages.deep_search:
+	model = 'bot-20250327101204-s6sh7'
+if not chat_messages.search_web and chat_messages.deep_search:
+	model = 'bot-20250327100020-g6899'
+if not chat_messages.search_web and not chat_messages.deep_search:
+	model = 'bot-20250327100732-qwcp4'
+```
+
+### Pull Necessary Repositories with Docker and Start
+
+```shell
+docker compose up -d
+```
+
+After all services have started, visit http://localhost to see the frontend page. Note that because the backend services take longer to start, the frontend may need to wait for a period of time (normally about 3-5 minutes) before it can make normal API requests. You can check the core backend service startup status with `docker compose logs api`.
+
+</Steps>
+
+## Manual Deployment Method
+
+Unless you need to modify some source code to adapt to custom functionality, this method is not recommended. The process is indeed quite complex.
+
+<Callout>
+	It is strongly recommended to use conda to create different Python virtual environments for each service, as Python dependencies between different services may conflict. Of course, if you have other Python virtual environment management tools, you can use those as well.
+</Callout>
+
+<Steps>
+
+### Clone the Repository Locally
+
+```shell
+git clone git@github.com:Qingyon-AI/Revornix.git
+cd Revornix
+```
+
+### Environment Variable Configuration
+
+```shell
+cp ./envs/.api.env.example ./api/.env
+cp ./envs/.file.env.example ./file-backend/.env
+cp ./envs/.celery.env.example ./celery-worker/.env
+cp ./envs/.hot.env.example ./daily-hot/.env
+```
+
+Please add the following content to the `./api/.env` and `./file-backend/.env` files:
+
+```
+ENV=dev
+```
+
+Add the following file in the web subdirectory to configure frontend environment variables:
+
+```shell filename=".env"
+NEXT_PUBLIC_API_PREFIX='http://localhost/api/main-service'
+NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='ws://localhost/api/main-service/notification/'
+NEXT_PUBLIC_FILE_API_PREFIX='http://localhost/api/file-service'
+```
+
+Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
+
+### Initialize Some Necessary Data
+
+```shell
+cd api
+python -m script.init_vector_base_data
+python -m script.init_sql_base_data
+```
+
+### Install and Start Basic Services
+
+<Callout>
+	If you don't have MySQL, Redis, and Milvus installed, you'll need to manually install these services locally and modify the corresponding parameter configurations in the environment variable files.
+	Considering that these are relatively troublesome and unimportant tasks, I've specifically created a `docker-compose-local.yaml` file that you can use directly to download and start these services.
+</Callout>
+
+<Callout type="warning">
+	Note: If you have already installed some of these services locally, please disable the corresponding service configurations in the `docker-compose-local.yaml` file according to your actual situation, otherwise it may cause some unexpected situations.
+</Callout>
+
+```shell
+docker compose -f ./docker-compose-local.yaml up -d 
+```
+
+
+### Modify AI Response Model
+
+Please go to the `router/ai.py` file in the API service, find the `ask_ai` function, and modify this code segment according to your actual situation to select an appropriate model.
+
+<Callout>Currently only models from Volcano Engine are supported. Please visit the [Volcano Engine official website](https://www.volcengine.com) to create one.</Callout>
+
+```python
+if chat_messages.search_web and chat_messages.deep_search:
+	model = 'bot-20250326172427-g588d'
+if chat_messages.search_web and not chat_messages.deep_search:
+	model = 'bot-20250327101204-s6sh7'
+if not chat_messages.search_web and chat_messages.deep_search:
+	model = 'bot-20250327100020-g6899'
+if not chat_messages.search_web and not chat_messages.deep_search:
+	model = 'bot-20250327100732-qwcp4'
+```
+
+### Start Core Backend Service
+
+```shell
+cd api
+conda create -n api python=3.11 -y
+pip install -r ./requirements.txt
+fastapi run --port 8001
+```
+
+### Start Hot Search Aggregation Service
+
+```shell
+cd daily-hot
+pnpm i 
+pnpm dev
+```
+
+### Start File Backend Service
+
+```shell
+cd file-backend
+conda create -n file-backend python=3.11 -y
+pip install -r ./requirements.txt
+fastapi run --port 8002
+```
+
+### Start Celery Task Sequence
+
+```shell
+cd celery-worker
+conda create -n celery-worker python=3.11 -y
+pip install -r ./requirements.txt
+celery -A common.celery.app.celery_app worker --loglevel=info --pool threads
+```
+
+### Start Frontend Service
+
+```shell
+cd web
+pnpm i
+pnpm dev
+```
+
+</Steps>
+
+After you have started all services, visit http://localhost:3000 to see the frontend page.

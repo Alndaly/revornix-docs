@@ -1,0 +1,160 @@
+import { Callout } from 'nextra/components';
+
+# Third-party API
+
+This document explains all publicly available API interfaces. All requests start with `/tp`.
+
+<Callout>By default, this is the method referenced by Python packages.</Callout>
+
+**All interfaces on this page must include the following request headers**
+
+| Header  | Value           |
+| ------- | ------------ |
+| API-KEY | your api key |
+
+---
+
+### `/tp/section/label/create`
+
+Create a column label
+
+#### Parameters
+
+| Parameter | Type   | Required | Description   |
+| ------ | ------ | ---- | ------ |
+| name   | string | Yes   | Label name |
+
+#### Example Code
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/section/label/create",
+    headers=headers,
+    json={
+        "name": "test"
+    }
+)
+```
+
+---
+
+### `/tp/section/mine/all`
+
+Get all my columns
+
+---
+
+### `/tp/document/label/list`
+
+Get all document labels
+
+---
+
+### `/tp/document/label/create`
+
+Create a document label
+
+#### Parameters
+
+| Parameter | Type   | Required | Description   |
+| ------ | ------ | ---- | ------ |
+| name   | string | Yes   | Label name |
+
+#### Example Code
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/document/label/create",
+    headers=headers,
+    json={
+        "name": "test"
+    }
+)
+```
+
+---
+
+### `/tp/document/create`
+
+Create a document
+
+#### Parameters
+
+| Parameter       | Type    | Required | Description                                                                                                            |
+| ------------ | ------- | ---- | --------------------------------------------------------------------------------------------------------------- |
+| category     | int     | Yes   | Document type: 0: File document, 1: Link document, 2: Quick note document                                                                 |
+| from_plat    | string  | Yes   | Source platform, must be `api`                                                                                    |
+| sections     | int[]   | Yes   | Column groups                                                                                                      |
+| auto_summary | boolean | No   | Whether to auto-generate summary                                                                                                |
+| labels       | int[]   | Yes   | Label groups                                                                                                          |
+| url          | string  | No   | URL, required for link documents and only valid for link documents                                                                |
+| content      | string  | No   | Content, required for quick note documents and only valid for quick note documents                                                                |
+| file_name    | string  | No   | File path (essentially a subpath, must be in `file/{filename}` format), required for file documents and only valid for file documents |
+
+#### Example Code
+
+This code is only for link document examples. Please modify for other document types.
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/document/create",
+    headers=headers,
+    json={
+        "category": 1,
+        "from_plat": "api",
+        "sections": [],
+        "auto_summary": True,
+        "labels": [],
+        "url": "https://baidu.com"
+    }
+)
+```
+
+---
+
+### `/tp/notification/create`
+
+Create a notification
+
+#### Parameters
+
+| Parameter            | Type   | Required | Description                   |
+| ----------------- | ------ | ---- | ---------------------- |
+| title             | string | Yes   | Notification title               |
+| content           | string | Yes   | Notification content               |
+| link              | string | Yes   | Notification link               |
+| notification_type | int    | Yes   | Notification type, 0 for system notification |
+
+#### Example Code
+
+```python
+import httpx
+client = httpx.Client()
+headers = {
+    "API-KEY": "your api key"
+}
+response = client.post(
+    url="http://localhost:8001/tp/notification",
+    headers=headers,
+    json={
+        "title": "test",
+        "content": "test",
+        "link": "/dashboard",
+        "notification_type": 0
+    }
+)
