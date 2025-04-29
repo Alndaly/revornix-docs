@@ -24,10 +24,10 @@ const Hero = () => {
 					className='hidden dark:block'
 				/>
 				<h1 className='font-bold text-7xl mb-5'>Revornix</h1>
-				<p className='text-sm mb-5 text-muted-foreground italic border-l-5 pl-2'>
+				<p className='text-sm mb-5 text-muted-foreground italic border-l-5 pl-2 max-w-prose'>
 					{t('title_reason')}
 				</p>
-				<p className='font-bold'>{t('slogan')}</p>
+				<p className='font-bold max-w-prose'>{t('slogan')}</p>
 			</div>
 			<div className='flex flex-row items-center justify-center gap-5'>
 				<Link href={'/docs/start'}>

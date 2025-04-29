@@ -68,7 +68,7 @@ const BaseTech = () => {
 								href={tech.href}
 								key={index}
 								className='rounded p-5 bg-black/5 dark:bg-white/5 min-w-40'>
-								<h3 className='font-bold text-lg capitalize mb-2'>
+								<h3 className='font-bold text-lg capitalize'>
 									{tech.name}
 								</h3>
 							</Link>
