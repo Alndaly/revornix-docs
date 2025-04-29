@@ -1,9 +1,8 @@
 import type { MetaRecord } from 'nextra';
 
 const meta: MetaRecord = {
-	background: {
-		title: '项目背景',
-	},
+	background: '项目背景',
+	'v0.0.1': 'Revornix v0.0.1',
 };
 
 export default meta;
