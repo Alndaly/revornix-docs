@@ -8,6 +8,7 @@ import CustomFooter from '@/components/footer';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { ReactNode } from 'react';
 import logo from '@/static/logo.png';
+import logoDark from '@/static/logo.dark.png';
 import discordLogo from '@/static/discord.svg';
 import discordLogoDarkMode from '@/static/discord.dark.svg';
 import { setRequestLocale } from 'next-intl/server';
@@ -77,7 +78,7 @@ const navbar = (
 				/>
 				<Image
 					className='hidden dark:block'
-					src={'/logo.dark.png'}
+					src={logoDark}
 					alt='logo'
 					width={20}
 					height={20}

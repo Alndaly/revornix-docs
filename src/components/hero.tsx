@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import logo from '@/static/logo.png';
+import logoDark from '@/static/logo.dark.png';
 import { useTranslations } from 'next-intl';
 
 const Hero = () => {
@@ -17,7 +18,7 @@ const Hero = () => {
 					className='dark:hidden'
 				/>
 				<Image
-					src={'/logo.dark.png'}
+					src={logoDark}
 					alt='logo'
 					width={250}
 					height={250}
