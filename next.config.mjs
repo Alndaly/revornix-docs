@@ -1,7 +1,9 @@
 import nextra from 'nextra'
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin();
 
 const withNextra = nextra({
-    unstable_shouldAddLocaleToLinks: true,
     defaultShowCopyCode: true,
     // ... other Nextra config options
     mdxOptions: {
@@ -15,10 +17,14 @@ const withNextra = nextra({
 })
 
 // You can include other Next.js configuration options here, in addition to Nextra settings:
-export default withNextra({
+const nextraConfig = withNextra({
     // ... Other Next.js config options
     i18n: {
-        locales: ['zh', 'en'],
-        defaultLocale: 'zh',
+        locales: ['en', 'zh'],
+        defaultLocale: 'en',
     },
 })
+
+const nextIntlConfig = withNextIntl({ ...nextraConfig });
+
+export default nextIntlConfig

@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 interface Feature {
 	title: string;
 	description: string;
@@ -13,36 +15,36 @@ const FeatureCard = ({ feature }: { feature: Feature }) => {
 };
 
 const Features = () => {
+	const t = useTranslations();
 	const features: Feature[] = [
 		{
-			title: '跨平台可用',
-			description: '当前支持网页端，后续将会支持iOS端APP和微信小程序。',
+			title: t('feature_1'),
+			description: t('feature_1_tips'),
 		},
 		{
-			title: '一站资讯收集',
-			description: '一站式资讯收集，包括新闻、博客、论坛等。',
+			title: t('feature_2'),
+			description: t('feature_2_tips'),
 		},
 		{
-			title: '自动化',
-			description: '基于多模态大模型，将文件转化为Markdown格式。',
+			title: t('feature_3'),
+			description: t('feature_3_tips'),
 		},
 		{
-			title: '向量化存储',
-			description:
-				'我们使用行业top级别领先的milvus来作为向量存储库，支持向量搜索。',
+			title: t('feature_4'),
+			description: t('feature_4_tips'),
 		},
 		{
-			title: '本地化',
-			description: '所有数据均存储在本地，无需担心数据泄露问题。',
+			title: t('feature_5'),
+			description: t('feature_5_tips'),
 		},
 		{
-			title: '开源可靠',
-			description: '核心代码均开源，欢迎大家贡献代码。',
+			title: t('feature_6'),
+			description: t('feature_6_tips'),
 		},
 	];
 	return (
 		<div>
-			<h2 className='font-bold text-3xl text-center mb-10'>产品特性</h2>
+			<h2 className='font-bold text-3xl text-center mb-10'>{t('features')}</h2>
 			<div className='grid grid-cols-1 md:grid-cols-3 gap-5 mb-10'>
 				{features.map((feature, index) => {
 					return <FeatureCard feature={feature} key={index} />;

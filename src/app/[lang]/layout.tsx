@@ -7,10 +7,12 @@ import Image from 'next/image';
 import CustomFooter from '@/components/footer';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { ReactNode } from 'react';
-import { I18nLangKeys } from '@/i18n';
 import logo from '@/static/logo.png';
 import discordLogo from '@/static/discord.svg';
 import discordLogoDarkMode from '@/static/discord.dark.svg';
+import { setRequestLocale } from 'next-intl/server';
+import LanguageChange from '@/components/language-change';
+import NextTopLoader from 'nextjs-toploader';
 
 export const metadata = {
 	// Define your metadata here
@@ -82,17 +84,19 @@ const navbar = (
 				/>
 				<p className='font-bold'>Revornix</p>
 			</div>
-		}
-	/>
+		}>
+		<LanguageChange />
+	</Navbar>
 );
 
 interface Props {
 	children: ReactNode;
-	params: Promise<{ lang: I18nLangKeys }>;
+	params: Promise<{ lang: string }>;
 }
 
 export default async function RootLayout({ children, params }: Props) {
 	const { lang } = await params;
+	setRequestLocale(lang);
 	const pageMap = await getPageMap(lang);
 	return (
 		<html
@@ -117,6 +121,7 @@ export default async function RootLayout({ children, params }: Props) {
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
 			<body>
+				<NextTopLoader />
 				<GoogleAnalytics gaId='G-MMTX35WR5M' />
 				<Layout
 					navbar={navbar}
