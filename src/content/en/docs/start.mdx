@@ -28,12 +28,13 @@ cp ./envs/.hot.env.example ./envs/.hot.env
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
 
-Add the following file in the web subdirectory to configure frontend environment variables:
+Add the following file in the web subdirectory to configure frontend environment variables. Remember to modify `<http/https>://<your host>` to your actual service address. For example, if you are using local, then it should be http://localhost.
 
 ```shell filename=".env"
-NEXT_PUBLIC_API_PREFIX='http://localhost/api/main-service'
-NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='ws://localhost/api/main-service/notification/'
-NEXT_PUBLIC_FILE_API_PREFIX='http://localhost/api/file-service'
+NEXT_PUBLIC_API_PREFIX='<http/https>://<your host>/api/main-service'
+NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='<ws/wss>://<your host>/api/main-service/notification/'
+NEXT_PUBLIC_FILE_API_PREFIX='<http/https>://<your host>/api/file-service'
+NEXT_PUBLIC_DAILY_HOT_API_PREFIX='<http/https>://<your host>/api/daily-hot-service'
 ```
 
 ### Modify AI Response Model
@@ -101,6 +102,7 @@ Add the following file in the web subdirectory to configure frontend environment
 NEXT_PUBLIC_API_PREFIX='http://localhost/api/main-service'
 NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='ws://localhost/api/main-service/notification/'
 NEXT_PUBLIC_FILE_API_PREFIX='http://localhost/api/file-service'
+NEXT_PUBLIC_DAILY_HOT_API_PREFIX='http://localhost/api/daily-hot-service'
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
