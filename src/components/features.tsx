@@ -41,11 +41,19 @@ const Features = () => {
 			title: t('feature_6'),
 			description: t('feature_6_tips'),
 		},
+		{
+			title: t('feature_7'),
+			description: t('feature_7_tips'),
+		},
+		{
+			title: t('feature_8'),
+			description: t('feature_8_tips'),
+		},
 	];
 	return (
 		<div>
 			<h2 className='font-bold text-3xl text-center mb-10'>{t('features')}</h2>
-			<div className='grid grid-cols-1 md:grid-cols-3 gap-5 mb-10'>
+			<div className='grid grid-cols-1 md:grid-cols-4 gap-5 mb-10'>
 				{features.map((feature, index) => {
 					return <FeatureCard feature={feature} key={index} />;
 				})}

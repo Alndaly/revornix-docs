@@ -22,5 +22,9 @@
     "feature_5_tips": "All data is stored locally, eliminating concerns about data leakage.",
     "feature_6": "Open Source and Reliable",
     "feature_6_tips": "Core code is fully open source—contributions are welcome.",
+    "feature_7": "Seamless Integration of Large Language Models",
+    "feature_7_tips": "Built-in model integration interface allows you to freely configure and select the large language models you wish to use. (Requires OpenAI protocol compatibility)",
+    "feature_8": "Document Tagging",
+    "feature_8_tips": "Tag documents to facilitate future retrieval.",
     "tech_stack": "Technology Stack"
 }
