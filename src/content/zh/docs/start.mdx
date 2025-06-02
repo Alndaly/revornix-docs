@@ -24,6 +24,7 @@ cp ./envs/.api.env.example ./envs/.api.env
 cp ./envs/.file.env.example ./envs/.file.env
 cp ./envs/.celery.env.example ./envs/.celery.env
 cp ./envs/.hot.env.example ./envs/.hot.env
+cp ./envs/.mcp.env.example ./envs/.mcp.env
 ```
 
 前往对应的环境变量文件配置，详情见[环境变量配置篇章](environment)
@@ -73,6 +74,7 @@ cp ./envs/.api.env.example ./api/.env
 cp ./envs/.file.env.example ./file-backend/.env
 cp ./envs/.celery.env.example ./celery-worker/.env
 cp ./envs/.hot.env.example ./daily-hot/.env
+cp ./envs/.mcp.env.example ./mcp-server/.env
 ```
 
 请在`./api/.env`和`./file-backend/.env`文件中补充如下内容：
@@ -122,6 +124,15 @@ cd api
 conda create -n api python=3.11 -y
 pip install -r ./requirements.txt
 fastapi run --port 8001
+```
+
+### 启动MCP服务端服务
+
+```shell
+cd mcp-server
+conda create -n mcp-server python=3.11 -y
+pip install -r ./requirements.txt
+fastapi run --port 8003
 ```
 
 ### 启动热搜聚集服务

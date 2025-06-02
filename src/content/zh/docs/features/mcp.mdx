@@ -1,0 +1,24 @@
+import { Callout } from 'nextra/components';
+
+# MCP
+
+> MCP 是一个开放协议，它标准化了应用程序如何向 LLM 提供上下文。可以将 MCP 视为 AI 应用程序的 USB-C 端口。就像 USB-C 为连接设备与各种外设和配件提供了标准化方式一样，MCP 为连接 AI 模型与不同数据源和工具提供了标准化方式。 
+> -- from [anthropic](https://docs.anthropic.com/zh-CN/docs/agents-and-tools/mcp)
+
+<Callout type="warning">
+为了更好的工具调用效果，请使用支持指令遵从的基座模型。
+</Callout>
+
+在`v0.1.0`及以后的版本，均已内部集成了MCP客户端，你可以通过设置中的MCP管理轻松配置MCP服务端。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202506022228803.png)
+
+当前仅支持Stream MCP类型和Std MCP类型。
+
+<Callout>
+在`v0.1.0`及以后的版本，整个项目组群中多了一个`mcp-server`项目组，该项目组内置了很多常用的MCP服务端（同时也包括一些基于你的文档库的操作），你可以直接使用这些服务端。
+</Callout>
+
+在成功配置MCP服务端后，Revornix AI便可以基于你的所有工具库来和你进行交流对话。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202506022228804.png)

@@ -1,0 +1,24 @@
+import { Callout } from 'nextra/components';
+
+# MCP
+
+> MCP is an open protocol that standardizes how applications provide context to LLMs. You can think of MCP as the USB-C port for AI applications. Just like USB-C provides a standardized way to connect devices to various peripherals and accessories, MCP offers a standardized way to connect AI models with different data sources and tools.  
+> -- from [anthropic](https://docs.anthropic.com/zh-CN/docs/agents-and-tools/mcp)
+
+<Callout type="warning">
+For better tool invocation results, please use a base model that supports instruction following.
+</Callout>
+
+Starting from `v0.1.0`, the MCP client has been integrated natively. You can easily configure MCP servers via the MCP Management section in Settings.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202506022228803.png)
+
+Currently, only Stream MCP and Std MCP types are supported.
+
+<Callout>
+From `v0.1.0` onwards, a new `mcp-server` project group has been added. This group includes many commonly used built-in MCP servers (including some that interact with your document libraries), which you can use directly.
+</Callout>
+
+Once the MCP server is successfully configured, Revornix AI can interact with you using your entire tool library.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202506022228804.png)
