@@ -9,6 +9,10 @@ const meta: MetaRecord = {
 	privacy: '隐私协议',
 	question: '常见问题',
 	contact: '联系方式',
+	roadmap: {
+		title: '迭代规划',
+		href: 'https://huaqinda.notion.site/RoadMap-224bbdbfa03380fabd7beda0b0337ea3',
+	},
 };
 
 export default meta;
