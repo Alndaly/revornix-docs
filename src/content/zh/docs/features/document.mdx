@@ -2,9 +2,13 @@ import { Tabs } from 'nextra/components';
 
 # 文档
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202504260004883.png)
+本系统支持多类型文档来源，当前支持如下：
 
-当前支持速记、网页链接以及文件方式收录文档。
+- 网站文档
+- 速记文档
+- 文件分析
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
 
 ## 文档收录
 
@@ -23,46 +27,7 @@ import { Tabs } from 'nextra/components';
 
 当前版本已开放 API 收录文档，你可通过点击应用页面内左下角用户信息->账户进入账户配置页，选择其中的开发 APIKey 配置前往配置。
 
-#### 参数说明
-
-| 参数         | 类型           | 是否必填 | 说明                      |
-| ------------ | -------------- | -------- | ------------------------- |
-| url          | String         | 否       | 需要收录的文档链接        |
-| category     | Integer        | 是       | 0:文件，1:网页，2:速记    |
-| from_plat    | String         | 是       | 文档收录来源，请填写`api` |
-| auto_summary | Boolean        | 否       | 是否开启 AI 自动总结      |
-| sections     | Array[Integer] | 是       | 要推送的专栏列表          |
-| labels       | Array[Integer] | 是       | 文档标签列表              |
-
-#### 请求示例
-
-**网站文档**
-
-```python
-import httpx
-client = httpx.Client()
-headers = {
-    "API-KEY": "271ed3762ab24444ac2e587add4840f5"
-}
-response = client.post(
-    url="http://localhost:8001/tp/document/create",
-    headers=headers,
-    json={
-        "url": "https://www.baidu.com",
-        "category": 1,
-        "from_plat": "api",
-        "auto_summary": True,
-        "sections": [],
-        "labels": [],
-    },
-)
-```
-
-#### 响应示例：
-
-```json
-{ "document_id": 26 }
-```
+详情请求参数和返回范例见[三方API](./api)
 
 ### Python 库收录
 
@@ -72,7 +37,9 @@ response = client.post(
 
 IOS 端开发中，敬请期待。
 
-安卓端暂不计划开发，若使用安卓，可通过网站的手机端进行收录。
+安卓端暂不计划开发，若使用安卓，可通过手机端登陆网站或者后续的小程序进行收录。
+
+当然，如果你愿意参与安卓端的开发，我非常欢迎的！可以加入我们的[Discord群组](https://discord.gg/3XZfz84aPN)，一起讨论开发问题。
 
 ### 小程序收录
 

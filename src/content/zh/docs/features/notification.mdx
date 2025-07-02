@@ -1,0 +1,21 @@
+import { Callout } from 'nextra/components';
+import { ImageZoom } from 'nextra/components'
+
+# 通知管理
+
+通知是一个比较重感觉的功能，和后台的跑模型/训练等用户低感知任务相反，它更多的是用户之间的互动。而每个用户对于这一点有着不同的频度需求。
+
+基于这一点，在`v0.2.5`及以后的版本中，我把通知功能从整体逻辑中抽离了出来，避免过度的通知对部分用户造成困扰。
+
+现在你可以在设置页面内通过简单的配置将通知功能集成到你的系统中。
+
+<div className="grid grid-col grid-cols-1 md:grid-cols-2 w-full mt-5">
+<ImageZoom src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507012144925.png" />
+<ImageZoom src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507012144122.png" />
+</div>
+
+注意你需要先配置通知源和通知目标。
+
+其中通知源是你的发送信息的源系统，比如邮件源、飞书、企业微信、Apple APNS、短信服务提供商等，通知目标则是你的接收信息的终端，比如飞书、企业微信、邮件、设备等。
+
+当前仅支持邮件源和邮件目标，我会在后续尽快补充。

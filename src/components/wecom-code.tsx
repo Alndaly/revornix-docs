@@ -10,18 +10,37 @@ import {
 import Image from 'next/image';
 import weComCode from '@/static/contact_me_qr.png';
 import { useTranslations } from 'next-intl';
+import { cn } from '@/lib/utils';
 
-const WeComCode = () => {
+const WeComCode = ({
+	buttonStyle = 'link',
+	className,
+}: {
+	buttonStyle?: string;
+	className?: string;
+}) => {
 	const t = useTranslations();
 	return (
 		<Dialog>
-			<DialogTrigger asChild>
-				<Button
-					variant='link'
-					className='p-0 m-0 font-normal underline text-md hover:no-underline cursor-pointer decoration-from-font text-blue-600'>
-					{t('wecom')}
-				</Button>
-			</DialogTrigger>
+			{buttonStyle === 'link' && (
+				<DialogTrigger asChild>
+					<Button
+						variant='link'
+						className={cn(
+							'p-0 m-0 font-normal underline text-md hover:no-underline cursor-pointer decoration-from-font',
+							className
+						)}>
+						{t('wecom')}
+					</Button>
+				</DialogTrigger>
+			)}
+			{buttonStyle === 'button' && (
+				<DialogTrigger asChild>
+					<Button variant={'secondary'} className={cn(className)}>
+						{t('wecom')}
+					</Button>
+				</DialogTrigger>
+			)}
 			<DialogContent className='sm:max-w-[425px]'>
 				<DialogHeader>
 					<DialogTitle>{t('wecom')}</DialogTitle>

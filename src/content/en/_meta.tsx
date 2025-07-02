@@ -18,7 +18,9 @@ const meta: MetaRecord = {
 		type: 'page',
 		title: 'Blog', // Translated to English
 		theme: {
+			timestamp: false,
 			layout: 'full',
+			toc: false,
 		},
 	},
 };

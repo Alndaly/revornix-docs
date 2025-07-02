@@ -4,6 +4,7 @@ import Link from 'next/link';
 import logo from '@/static/logo.png';
 import logoDark from '@/static/logo.dark.png';
 import { useTranslations } from 'next-intl';
+import WeComCode from './wecom-code';
 
 const Hero = () => {
 	const t = useTranslations();
@@ -28,6 +29,7 @@ const Hero = () => {
 				<p className='max-w-[75ch]'>{t('slogan')}</p>
 			</div>
 			<div className='flex flex-row items-center justify-center gap-5'>
+				<WeComCode buttonStyle='button' />
 				<Link href={'/docs/start'}>
 					<Button variant='outline' className='shadow-none'>
 						{t('documentation')}

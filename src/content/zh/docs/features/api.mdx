@@ -12,6 +12,8 @@ import { Callout } from 'nextra/components';
 | ------- | ------------ |
 | API-KEY | your api key |
 
+APIKEY可以通过点击 **左下角账户 UI**->**Account/账户**->**APIKEY 管理/API KEY Management** 增加。
+
 ---
 
 ### `/tp/section/label/create`
@@ -121,41 +123,6 @@ response = client.post(
         "auto_summary": True,
         "labels": [],
         "url": "https://baidu.com"
-    }
-)
-```
-
----
-
-### `/tp/notification/create`
-
-创建通知
-
-#### 参数
-
-| 参数名            | 类型   | 必填 | 描述                   |
-| ----------------- | ------ | ---- | ---------------------- |
-| title             | string | 是   | 通知标题               |
-| content           | string | 是   | 通知内容               |
-| link              | string | 是   | 通知链接               |
-| notification_type | int    | 是   | 通知类型，0 为系统通知 |
-
-#### 示例代码
-
-```python
-import httpx
-client = httpx.Client()
-headers = {
-    "API-KEY": "your api key"
-}
-response = client.post(
-    url="http://localhost:8001/tp/notification,
-    headers=headers,
-    json={
-        "title": "test",
-        "content": "test",
-        "link": "/dashboard",
-        "notification_type": 0
     }
 )
 ```

@@ -1,10 +1,7 @@
 import { Callout } from 'nextra/components';
 import { Steps } from 'nextra/components';
-import WeComCode from '@/components/wecom-code';
 
 # Quick Start
-
-You can join our WeChat group <WeComCode /> for communication.
 
 ## Docker Method (Recommended)
 
@@ -25,18 +22,10 @@ cp ./envs/.file.env.example ./envs/.file.env
 cp ./envs/.celery.env.example ./envs/.celery.env
 cp ./envs/.hot.env.example ./envs/.hot.env
 cp ./envs/.mcp.env.example ./envs/.mcp.env
+cp ./envs/.web.env.example ./web/.env
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
-
-Add the following file in the web subdirectory to configure frontend environment variables. Remember to modify `<http/https>://<your host>` to your actual service address. For example, if you are using local, then it should be http://localhost.
-
-```shell filename=".env"
-NEXT_PUBLIC_API_PREFIX='<http/https>://<your host>/api/main-service'
-NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='<ws/wss>://<your host>/api/main-service/notification/'
-NEXT_PUBLIC_FILE_API_PREFIX='<http/https>://<your host>/api/file-service'
-NEXT_PUBLIC_DAILY_HOT_API_PREFIX='<http/https>://<your host>/api/daily-hot-service'
-```
 
 ### Pull Necessary Repositories with Docker and Start
 
@@ -73,21 +62,13 @@ cp ./envs/.file.env.example ./file-backend/.env
 cp ./envs/.celery.env.example ./celery-worker/.env
 cp ./envs/.hot.env.example ./daily-hot/.env
 cp ./envs/.mcp.env.example ./mcp-server/.env
+cp ./envs/.web.env.example ./web/.env
 ```
 
 Please add the following content to the `./api/.env` and `./file-backend/.env` files:
 
 ```
 ENV=dev
-```
-
-Add the following file in the web subdirectory to configure frontend environment variables:
-
-```shell filename=".env"
-NEXT_PUBLIC_API_PREFIX='http://localhost/api/main-service'
-NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='ws://localhost/api/main-service/notification/'
-NEXT_PUBLIC_FILE_API_PREFIX='http://localhost/api/file-service'
-NEXT_PUBLIC_DAILY_HOT_API_PREFIX='http://localhost/api/daily-hot-service'
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.

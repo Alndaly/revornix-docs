@@ -3,17 +3,17 @@ import { Callout } from 'nextra/components';
 # 环境变量设置
 
 <Callout type='info'>
-	本系统大部分变量采用环境变量来便于不同环境下的部署，所以这一部分的正确配置极其重要！
+	本系统有部分变量采用环境变量来便于不同环境下的部署，所以这一部分的正确配置极其重要！
 </Callout>
 
 ## web 服务
 
-| 名称                                     | 说明                                            |
-| ---------------------------------------- | ----------------------------------------------- |
-| `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务                                    |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 核心后端服务中的实时通知服务部分 websocket 接口 |
-| `NEXT_PUBLIC_FILE_API_PREFIX`            | 文件服务                                        |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | 热搜服务                                        |
+| 名称                                     | 说明                                                |
+| ---------------------------------------- | --------------------------------------------------- |
+| `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务前缀                                    |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 核心后端服务中的实时通知服务部分 websocket 接口前缀 |
+| `NEXT_PUBLIC_FILE_API_PREFIX`            | 文件服务接口前缀                                    |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | 热搜服务接口前缀                                    |
 
 ## api 服务
 
@@ -23,8 +23,6 @@ import { Callout } from 'nextra/components';
 | `ALGORITHM`                    | JWT 加密算法                |
 | `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
 | `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
-| `MAIL_SENDER`                  | 邮件账号                    |
-| `MAIL_PASSWORD`                | 邮件密码                    |
 | `REDIS_URL`                    | redis 连接地址              |
 | `REDIS_PASSWORD`               | redis 连接密码              |
 | `REDIS_PORT`                   | redis 连接端口              |
@@ -32,7 +30,6 @@ import { Callout } from 'nextra/components';
 | `PASSWORD`                     | mysql 密码                  |
 | `DATABASE_URL`                 | mysql 主机                  |
 | `DATABASE_NAME`                | mysql 数据库名称            |
-| `JINA_API_TOKEN`               | jina api key                |
 | `MILVUS_CLUSTER_ENDPOINT`      | milvus 连接地址             |
 | `MILVUS_TOKEN`                 | milvus 连接 token           |
 | `FILE_SERVER_URL`              | 文件服务地址                |
@@ -58,8 +55,6 @@ import { Callout } from 'nextra/components';
 | `ALGORITHM`                    | JWT 加密算法                |
 | `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
 | `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
-| `MAIL_SENDER`                  | 邮件账号                    |
-| `MAIL_PASSWORD`                | 邮件密码                    |
 | `REDIS_URL`                    | redis 连接地址              |
 | `REDIS_PASSWORD`               | redis 连接密码              |
 | `REDIS_PORT`                   | redis 连接端口              |
@@ -67,7 +62,6 @@ import { Callout } from 'nextra/components';
 | `PASSWORD`                     | mysql 密码                  |
 | `DATABASE_URL`                 | mysql 主机                  |
 | `DATABASE_NAME`                | mysql 数据库名称            |
-| `JINA_API_TOKEN`               | jina api key                |
 | `MILVUS_CLUSTER_ENDPOINT`      | milvus 连接地址             |
 | `MILVUS_TOKEN`                 | milvus 连接 token           |
 | `FILE_SERVER_URL`              | 文件服务地址                |

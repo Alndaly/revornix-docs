@@ -1,10 +1,7 @@
 import { Callout } from 'nextra/components';
 import { Steps } from 'nextra/components';
-import WeComCode from '@/components/wecom-code';
 
 # 快速开始
-
-可加入我们的微信交流群<WeComCode />进行交流。
 
 ## Docker 方式（建议）
 
@@ -25,18 +22,10 @@ cp ./envs/.file.env.example ./envs/.file.env
 cp ./envs/.celery.env.example ./envs/.celery.env
 cp ./envs/.hot.env.example ./envs/.hot.env
 cp ./envs/.mcp.env.example ./envs/.mcp.env
+cp ./envs/.web.env.example ./web/.env
 ```
 
 前往对应的环境变量文件配置，详情见[环境变量配置篇章](environment)
-
-在 web 子目录下添加如下文件，用于配置前端环境变量，注意修改其中的`<http/https>://<your host>`为你的实际服务地址。如果仅在本地使用则其为http://localhost
-
-```shell filename=".env"
-NEXT_PUBLIC_API_PREFIX='<http/https>://<your host>/api/main-service'
-NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='<ws/wss>://<your host>/api/main-service/notification/'
-NEXT_PUBLIC_FILE_API_PREFIX='<http/https>://<your host>/api/file-service'
-NEXT_PUBLIC_DAILY_HOT_API_PREFIX='<http/https>://<your host>/api/daily-hot-service'
-```
 
 ### docker 拉取必要仓库并启动
 
@@ -75,21 +64,13 @@ cp ./envs/.file.env.example ./file-backend/.env
 cp ./envs/.celery.env.example ./celery-worker/.env
 cp ./envs/.hot.env.example ./daily-hot/.env
 cp ./envs/.mcp.env.example ./mcp-server/.env
+cp ./envs/.web.env.example ./web/.env
 ```
 
 请在`./api/.env`和`./file-backend/.env`文件中补充如下内容：
 
 ```
 ENV=dev
-```
-
-在 web 子目录下添加如下文件，用于配置前端环境变量
-
-```shell filename=".env"
-NEXT_PUBLIC_API_PREFIX='http://localhost/api/main-service'
-NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX='ws://localhost/api/main-service/notification/'
-NEXT_PUBLIC_FILE_API_PREFIX='http://localhost/api/file-service'
-NEXT_PUBLIC_DAILY_HOT_API_PREFIX='http://localhost/api/daily-hot-service'
 ```
 
 前往对应的环境变量文件配置，详情见[环境变量配置篇章](environment)

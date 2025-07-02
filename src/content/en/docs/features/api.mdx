@@ -12,6 +12,8 @@ This document explains all publicly available API interfaces. All requests start
 | ------- | ------------ |
 | API-KEY | your api key |
 
+You can create the APIKEY by clicking **Account/账户**->**APIKEY Management** on the bottom left corner of the UI.
+
 ---
 
 ### `/tp/section/label/create`
@@ -45,7 +47,7 @@ response = client.post(
 
 ### `/tp/section/mine/all`
 
-Get all my columns
+Get all my secitons
 
 ---
 
@@ -124,37 +126,3 @@ response = client.post(
     }
 )
 ```
-
----
-
-### `/tp/notification/create`
-
-Create a notification
-
-#### Parameters
-
-| Parameter            | Type   | Required | Description                   |
-| ----------------- | ------ | ---- | ---------------------- |
-| title             | string | Yes   | Notification title               |
-| content           | string | Yes   | Notification content               |
-| link              | string | Yes   | Notification link               |
-| notification_type | int    | Yes   | Notification type, 0 for system notification |
-
-#### Example Code
-
-```python
-import httpx
-client = httpx.Client()
-headers = {
-    "API-KEY": "your api key"
-}
-response = client.post(
-    url="http://localhost:8001/tp/notification",
-    headers=headers,
-    json={
-        "title": "test",
-        "content": "test",
-        "link": "/dashboard",
-        "notification_type": 0
-    }
-)

@@ -2,78 +2,48 @@ import { Tabs } from 'nextra/components';
 
 # Documents
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202504260004883.png)
+The system supports multiple types of document sources. Currently supported:
 
-Currently supports quick notes, web links, and file uploads for document collection.
+- Website documents
+- Quick notes
+- File analysis
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
 
 ## Document Collection
 
-There are multiple ways to collect documents and information, with the simplest and most straightforward method being through the website interface.
+There are various ways to collect documents and information. The simplest and most straightforward way is through the website interface to add documents.
 
 ### Website Collection
 
 #### Configuration Instructions
 
-- URL: The website link you want to collect
-- Tags: Your document tags, you can add multiple for easier filtering and viewing later
-- AI Auto-Summary: When enabled, the system will automatically call the AI interface to summarize the document content and replace the default website title, description, etc.
-- Push to Column: You can select the columns you want to push to, the system will automatically push the document to your selected columns and update the column summary.
+- Link: The URL of the website you want to collect
+- Tags: Tags for your document. You can add multiple tags to facilitate filtering and searching later
+- AI Auto Summary: When enabled, the system will automatically call the AI API to summarize the document content and replace the default website title and description
+- Push to Column: You can choose a column to push the document to. The system will automatically push the document into the selected column and update its summary
 
 ### API Collection
 
-The current version has opened API for document collection. You can click on the user info in the bottom left corner of the application page -> Account to enter the account configuration page, then select the Development APIKey configuration to proceed.
+The current version supports collecting documents via API.
 
-#### Parameter Description
+You can access this feature by clicking your user info at the bottom left of the app page -> Account to open your account settings, then choose Developer APIKey to configure it.
 
-| Parameter     | Type           | Required | Description                      |
-| ------------ | -------------- | -------- | ------------------------- |
-| url          | String         | No       | Document link to collect        |
-| category     | Integer        | Yes      | 0:File, 1:Webpage, 2:Quick note    |
-| from_plat    | String         | Yes      | Document collection source, please fill in `api` |
-| auto_summary | Boolean        | No       | Whether to enable AI auto-summary      |
-| sections     | Array[Integer] | Yes      | List of columns to push to          |
-| labels       | Array[Integer] | Yes      | Document tag list              |
-
-#### Request Example
-
-**Web Document**
-
-```python
-import httpx
-client = httpx.Client()
-headers = {
-    "API-KEY": "271ed3762ab24444ac2e587add4840f5"
-}
-response = client.post(
-    url="http://localhost:8001/tp/document/create",
-    headers=headers,
-    json={
-        "url": "https://www.baidu.com",
-        "category": 1,
-        "from_plat": "api",
-        "auto_summary": True,
-        "sections": [],
-        "labels": [],
-    },
-)
-```
-
-#### Response Example:
-
-```json
-{ "document_id": 26 }
-```
+For detailed request parameters and response examples, see [Third-Party API](./api)
 
 ### Python Library Collection
 
-Under development, stay tuned.
+In development. Stay tuned.
 
 ### APP Collection
 
-IOS version under development, stay tuned.
+iOS version is under development. Stay tuned.
 
-Android version not currently planned. Android users can use the mobile website for collection.
+Android version is not planned for now. If you’re using Android, you can log in to the website via your mobile browser or use the upcoming mini-program.
 
-### Mini Program Collection
+That said, if you’re interested in contributing to the Android version, you’re very welcome!
+Join our Discord Group to discuss development.
 
-Under development, stay tuned.
+### Mini-Program Collection
+
+In development. Stay tuned.
