@@ -18,9 +18,13 @@ const meta: MetaRecord = {
 		type: 'page',
 		title: '博客',
 		theme: {
+			breadcrumb: false,
+			sidebar: false,
 			timestamp: false,
 			layout: 'full',
 			toc: false,
+			pagination: false,
+			typesetting: 'article',
 		},
 	},
 };

@@ -35,7 +35,7 @@ const Hero = () => {
 						{t('documentation')}
 					</Button>
 				</Link>
-				<Link href={'/blogs/background'}>
+				<Link href={'/blogs'}>
 					<Button className='shadow-none'>{t('blogs')}</Button>
 				</Link>
 			</div>
