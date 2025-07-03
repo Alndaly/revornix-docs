@@ -1,27 +1,72 @@
-# Columns
+import { Callout } from 'nextra/components';
+
+# Column
+
+<Callout type='info'>
+	The column feature is currently in Beta and still unstable. Significant changes may occur in the future.
+</Callout>
+
+The column feature is designed to better integrate the knowledge base, helping users with **knowledge summarization, absorption, and sharing**.
+
+At the same time, the subscription feature enhances the distribution of knowledge bases.
+
+A **cloud version** will be launched later, which will support paid subscriptions. The goal is to help monetize knowledge content: users can pay to subscribe to columns, and authors can **earn revenue** through subscriptions. The platform will charge a **10%** service fee.
+
+---
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202504272033549.png)
 
-The column feature was designed to make it easier to integrate knowledge bases and facilitate knowledge management for users.
+---
 
-The subscription feature also better supports the dissemination of knowledge bases.
+## Today's Column
 
-A **cloud version** will be launched in the future, which will include paid subscriptions. This design aims to provide monetization opportunities for knowledge creators - users can pay to subscribe to columns, authors can earn income from subscriptions, and the platform will charge a 10% service fee.
+This is a special type of column that requires no user configuration and is automatically generated. Users only need to add documents to Revornix. Specifically, when a user creates their first document of the day, the system will automatically create a "Today’s Column", add the document to it, and then generate a summary and analysis.
+
+The core purpose is to organize knowledge chronologically for easier review.
+
+Columns are tightly integrated with the **notification feature**. A notification template for daily summaries has been prepared. You can configure this template directly on the Notification Tasks page, so users will receive the summary at a preset time.
+
+## Document Binding
+
+Columns are considered a **specific knowledge collection**. The idea behind columns is to make **summarizing, absorbing, and sharing** knowledge easier.
+
+Therefore, columns are tightly bound to documents. Once a document is linked to a column, it will automatically appear in that column, and the column will automatically appear in the document.
+
+_Columns will later embed GraphRAG to help visualize the knowledge graph of the collection._
+
+## Sharing and Subscription
+
+Columns can be set to public. Public columns will appear in the column community where users can browse and subscribe.
+
+_In the future, when a subscribed column is updated, subscribers will receive notifications._
+
+In the **cloud version**, there will be paid column support. Users can monetize their knowledge by setting their columns as paid. Revornix Cloud will charge a **10%** service fee.
+
+## Viewing Columns
+
+- Supports filtering by column tags.
+- Users can view their own columns, community columns, and columns they've subscribed to.
+- Supports time-based sorting.
+- Supports exact search by column title.
+
+## Community
+
+Columns support comments, and users can post comments on the right side of the column.
 
 ## Creation
 
-Currently, there is only one way to create columns - through the website interface. API creation is not yet supported.
+Currently, columns can only be created via the web interface. API-based creation is not yet supported.
 
-### Website Creation
+### Creating via Web
 
-After entering the Revornix application, there is a creation entry to the right of the "Columns" text in the expanded left sidebar. Click to enter the creation page.
+After entering the Qingyon app, in the sidebar, click the button next to “Columns” to enter the column creation page.
 
-#### Configuration Instructions
+#### Configuration Guide
 
-| Configuration | Description |
-| -------- | ---------------------------------------------------------------- |
-| Image | Each column must have a cover image |
-| Column Name | The name of the column |
-| Column Description | Description of the column |
-| Column Tags | Tags for the column, which not only help with filtering but also increase visibility in the community |
-| Public/Private | Default is private. If set to public, the column and its related documents will be visible in the community |
+| Field        | Description                                                                 |
+| ------------ | --------------------------------------------------------------------------- |
+| Image        | Every column must have a cover image                                        |
+| Column Name  | The name of the column                                                      |
+| Description  | A description for the column                                                |
+| Tags         | Tags for the column; helps with filtering and increases chances of being recommended in the community |
+| Public/Private | Whether the column is public. Private by default. If set to public, the column and its related documents will be visible in the community |

@@ -2,15 +2,41 @@ import { Tabs } from 'nextra/components';
 
 # Documents
 
-The system supports multiple types of document sources. Currently supported:
+The system supports multiple types of document sources. Currently supported: Website documents, Quick notes, File analysis.
 
-- Website documents
-- Quick notes
-- File analysis
+## Document Status
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
+Each document has its own independent status. You can freely switch between `read` and `unread`. You can also bookmark or tag documents for easier organization and later reference.
+
+By default, newly created documents are marked as `unread` (this includes quick notes you’ve edited yourself).
+
+## Document Viewing
+
+You can view documents by individual status or view all documents together. Filtering by tags is also supported.
+
+Precise search on document titles and content is supported (based on MySQL queries), along with global fuzzy search (powered by Milvus).
+
+Sorting by time is also supported.
+
+## Document Storage
+
+Currently, document storage is managed by `file-backend`. Document content is stored locally, while vectorized versions of the documents are stored in Milvus using embedding technology. This supports global search and AI-powered interactions.
+
+## Smart Summary
+
+You can configure a model (via the settings page) to enable automatic summarization of document content. The system will then replace the default site title, description, and other metadata with the generated summary.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031531236.png)
+
+## Supplementary Note
+
+你可以为文档添加补充笔记，方便你后续再查看的时候浏览。
+
+You can add supplementary notes to documents for easier reference later.
 
 ## Document Collection
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
 
 There are various ways to collect documents and information. The simplest and most straightforward way is through the website interface to add documents.
 
