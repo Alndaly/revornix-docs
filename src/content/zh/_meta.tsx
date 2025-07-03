@@ -27,6 +27,11 @@ const meta: MetaRecord = {
 			typesetting: 'article',
 		},
 	},
+	roadmap: {
+		type: 'page',
+		href: 'https://huaqinda.notion.site/RoadMap-224bbdbfa03380fabd7beda0b0337ea3',
+		title: '项目规划',
+	},
 };
 
 export default meta;

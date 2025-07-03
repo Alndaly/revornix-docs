@@ -2,12 +2,13 @@ import { getPageMap } from 'nextra/page-map';
 import BlogCard, { BlogCardProps } from './blog-card';
 import { PageMapItem, MetaJsonFile, MdxFile, FrontMatter } from 'nextra';
 import { cookies } from 'next/headers';
+import { cn } from '@/lib/utils';
 
 const checkData = (item: PageMapItem): item is MetaJsonFile => {
 	return 'data' in item;
 };
 
-const Blogs = async () => {
+const Blogs = async ({ className }: { className?: string }) => {
 	const cookieStore = await cookies();
 	const locale = cookieStore.get('NEXT_LOCALE')?.value || 'en';
 
@@ -25,7 +26,7 @@ const Blogs = async () => {
 			};
 		});
 	return (
-		<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+		<div className={cn('grid grid-cols-1 gap-4 md:grid-cols-2', className)}>
 			{blogs.map((blog, index) => {
 				return <BlogCard key={index} {...blog} />;
 			})}

@@ -12,7 +12,8 @@ const CustomFooter = () => {
 			<Link href='https://github.com/Qingyon-AI/Revornix/blob/develop/LICENSE'>
 				{t('opensource_legal')}
 			</Link>
-			<Link href='/blogs/background'>{t('blogs')}</Link>
+			<Link href='https://huaqinda.notion.site/RoadMap-224bbdbfa03380fabd7beda0b0337ea3'>{t('roadmap')}</Link>
+			<Link href='/blogs'>{t('blogs')}</Link>
 			<p>
 				© {new Date().getFullYear()}{' '}
 				<Link href='https://qingyon.com'>{t('company')}</Link>

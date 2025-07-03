@@ -12,11 +12,11 @@ const meta: MetaRecord = {
 	},
 	docs: {
 		type: 'page',
-		title: 'Documentation', // Translated to English
+		title: 'Documentation',
 	},
 	blogs: {
 		type: 'page',
-		title: 'Blog', // Translated to English
+		title: 'Blog',
 		theme: {
 			breadcrumb: false,
 			sidebar: false,
@@ -27,6 +27,11 @@ const meta: MetaRecord = {
 			typesetting: 'article'
 		},
 	},
+	roadmap: {
+		type: 'page',
+		href: 'https://huaqinda.notion.site/RoadMap-224bbdbfa03380fabd7beda0b0337ea3',
+		title: 'Roadmap',
+	}
 };
 
 export default meta;
