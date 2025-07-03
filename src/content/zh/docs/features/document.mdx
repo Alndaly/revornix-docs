@@ -2,15 +2,41 @@ import { Tabs } from 'nextra/components';
 
 # 文档
 
-本系统支持多类型文档来源，当前支持如下：
+本系统支持多类型文档来源，当前支持如下：网站文档，速记文档，文件分析。
 
-- 网站文档
-- 速记文档
-- 文件分析
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031639028.png)
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
+## 文档状态
+
+每个文档具有独立的状态，你可以在已读、未读状态之间自由切换。同时支持文档的收藏以及打标功能，方便你后续分类和查看。
+
+默认情况下，新文档的状态都是`未读`（包括自己编辑的速记文档）。
+
+## 文档查看
+
+支持不同状态的文档单独查看，也支持查看所有文档。你也可以通过标签来筛选。
+
+支持文档标题和内容的精准搜索（基于mysql查询），也支持全局模糊搜索（基于milvus）。
+
+支持时间排序。
+
+## 文档存储
+
+当前文档存储服务是file-backend在负责，文档内容会存储在本地，同时会基于Embedding技术存储向量化的文档到milvus中，方便后续的全局搜索以及AI交互。
+
+## 智能总结
+
+你可以通过配置模型（设置页面内）来让系统支持自动总结文档内容，并替换掉默认的网站标题、描述等内容。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031531236.png)
+
+## 补充笔记
+
+你可以为文档添加补充笔记，方便你后续再查看的时候浏览。
 
 ## 文档收录
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
 
 有多种收录文档、资讯的方式，其中最简单的方式也是最直白的方式就是通过网站端的增加文档。
 
