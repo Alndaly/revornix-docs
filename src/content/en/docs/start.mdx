@@ -27,6 +27,10 @@ cp ./envs/.web.env.example ./web/.env
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
 
+<Callout>
+In most cases, you only need to configure the `SECRET_KEY` parameter for the user authentication mechanism, and leave the other parameters as default. Note that the `SECRET_KEY` must be consistent across different services; otherwise, the user authentication systems will not be interoperable.
+</Callout>
+
 ### Pull Necessary Repositories with Docker and Start
 
 ```shell
