@@ -22,7 +22,7 @@ cp ./envs/.file.env.example ./envs/.file.env
 cp ./envs/.celery.env.example ./envs/.celery.env
 cp ./envs/.hot.env.example ./envs/.hot.env
 cp ./envs/.mcp.env.example ./envs/.mcp.env
-cp ./envs/.web.env.example ./web/.env
+cp ./envs/.web.env.example .env
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
@@ -66,13 +66,7 @@ cp ./envs/.file.env.example ./file-backend/.env
 cp ./envs/.celery.env.example ./celery-worker/.env
 cp ./envs/.hot.env.example ./daily-hot/.env
 cp ./envs/.mcp.env.example ./mcp-server/.env
-cp ./envs/.web.env.example ./web/.env
-```
-
-Please add the following content to the `./api/.env` and `./file-backend/.env` files:
-
-```
-ENV=dev
+export ENV=dev
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
