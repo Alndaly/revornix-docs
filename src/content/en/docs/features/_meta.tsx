@@ -4,6 +4,7 @@ const meta: MetaRecord = {
 	dashboard: 'Dashboard',
 	account: 'Account',
 	document: 'Document Manage',
+	'custom-file-system': 'Custom File System',
 	engine: 'Document Converter',
 	'hot-search': 'Hot Search',
 	mcp: 'Built-In MCP',

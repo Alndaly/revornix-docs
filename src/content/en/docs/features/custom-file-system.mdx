@@ -1,0 +1,13 @@
+import { Callout } from 'nextra/components';
+
+# Custom File System
+
+Starting from version `v0.3.0-beta1`, support for custom file systems has been added. You can use a custom file system to store your files instead of the default one.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507241728083.png)
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507241731257.png)
+
+By configuring a custom file system, you can choose Alibaba Cloud OSS, Amazon S3, or the built-in MinIO service as your file storage system.
+
+Please note that when you update the file system, files from the previous system will not be automatically migrated to the new file system—you need to migrate them manually.

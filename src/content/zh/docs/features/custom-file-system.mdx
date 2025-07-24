@@ -1,0 +1,13 @@
+import { Callout } from 'nextra/components';
+
+# 自定义文件系统
+
+在`v0.3.0-beta1`版本之后，我增加了自定义文件系统的支持。你可以使用自定义文件系统来存储你的文件，而不是使用默认的文件系统。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507241728083.png)
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507241731257.png)
+
+通过配置自定义文件系统，你可以自行选择阿里云的OSS/亚马逊的S3/系统内建Minio服务作为你的文件存储系统。
+
+注意，当你更新文件系统后，原先系统中的文件并不会自动迁移到新的文件系统中去，你需要自行迁移。
