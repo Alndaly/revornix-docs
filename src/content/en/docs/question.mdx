@@ -1,21 +1,33 @@
 # Frequently Asked Questions
 
-### Why is Nginx service required for Docker deployment?
+### Why is an Nginx service needed when using Docker?
 
-Initially, I didn't implement the Nginx service. However, when browsers try to directly access the API host deployed via Docker, it becomes inaccessible (since the host doesn't exist on your machine, and even if it does, the internal IP may change after service restart due to Docker's nature). After careful consideration, I added the Nginx service as a proxy to ensure direct access.
+Initially, I didn’t include an Nginx service. However, when accessing the API deployed via Docker directly from the browser, it often fails — mainly because the host doesn’t actually exist on your machine. Even if it does, due to Docker’s nature, the internal IP of the service may change after a restart. So after careful consideration, I added an Nginx service as a proxy to ensure stable access.
 
-### Why do web service environment variables need special configuration?
+### Why do the web service environment variables need special configuration?
 
-Due to certain NextJS characteristics, we currently cannot make the web service obtain the env_file passed through docker compose during compilation.
+Because of certain Next.js limitations, the web service can’t access environment variables passed via env_file during the Docker Compose build process.
 
 ### Is the product free?
 
-The open-source version will always be free but doesn't include commercial support. Please strictly follow our [open-source license](https://github.com/Qingyon-AI/Revornix/blob/develop/LICENSE). The cloud version requires a paid subscription!
+The open-source version will always be free, but it does not include commercial support. Please make sure to strictly follow our open-source license when using it. The cloud version, however, is subscription-based.
 
-### What's the difference between open-source and cloud versions?
+### How can I get commercial support?
 
-They are essentially identical, with key differences being:
+Feel free to add me on WeChat. My WeChat ID is: Kinda0412.
 
-- Cloud version needs no configuration
-- Cloud version provides commercial support
-- Cloud version includes monetization mechanisms
+### Can I use this as my note-taking app?
+
+Absolutely! I warmly welcome users to use this as their note-taking app. Just keep in mind that the product is still under active development, so there may be some bugs. You’ll need to use it at your own risk and make regular backups! (At this stage, it’s best for testing and exploration. I don’t recommend using it as your main productivity tool until the official v1.0.0 release.)
+
+### Will there be a desktop version?
+
+The current roadmap includes web, iOS, WeChat Mini Program, and WeChat customer service interfaces. A desktop version is not planned at this time.
+
+### What’s the difference between the open-source and cloud versions?
+
+They’re nearly identical. The core differences are:
+
+- The cloud version requires zero setup — just register and use
+- The cloud version offers commercial support
+- The cloud version provides monetization features
