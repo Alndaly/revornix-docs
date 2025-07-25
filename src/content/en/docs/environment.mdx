@@ -8,6 +8,26 @@ import { Callout } from 'nextra/components';
 	extremely important!
 </Callout>
 
+## Root Env
+
+| Name                                     | Description                                  |
+| ---------------------------------------- | -------------------------------------------- |
+| `MYSQL_ROOT_PASSWORD`                    | MySQL root password                          |
+| `MYSQL_DATABASE`                         | Name of the MySQL database                   |
+| `FILE_SYSTEM_USER_NAME`                  | Username for the file system                 |
+| `FILE_SYSTEM_PASSWORD`                   | Password for the file system                 |
+| `NEO4J_AUTH`                             | Neo4j authentication                         |
+| `ETCD_AUTO_COMPACTION_MODE`              | Enables etcd's auto-compaction mechanism     |
+| `ETCD_AUTO_COMPACTION_RETENTION`         | Number of revisions to retain for compaction |
+| `ETCD_QUOTA_BACKEND_BYTES`               | Storage quota for etcd backend database      |
+| `ETCD_SNAPSHOT_COUNT`                    | Number of transactions before snapshotting   |
+| `MILVUS_MINIO_USER_NAME`                 | Username for Milvus’s MinIO service          |
+| `MILVUS_MINIO_PASSWORD`                  | Password for Milvus’s MinIO service          |
+| `HF_ENDPOINT`                            | Hugging Face service endpoint                |
+| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service prefix                  |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | File service WebSocket endpoint prefix       |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Trending service API prefix                  |
+
 ## Web Service
 
 | Name                                     | Description                                            |

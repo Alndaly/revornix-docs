@@ -6,6 +6,26 @@ import { Callout } from 'nextra/components';
 	本系统有部分变量采用环境变量来便于不同环境下的部署，所以这一部分的正确配置极其重要！
 </Callout>
 
+## 根目录 env
+
+| 名称                                     | 说明                           |
+| ---------------------------------------- | ------------------------------ |
+| `MYSQL_ROOT_PASSWORD`                    | mysql root 密码                |
+| `MYSQL_DATABASE`                         | mysql 数据库名称               |
+| `FILE_SYSTEM_USER_NAME`                  | 文件系统用户名                 |
+| `FILE_SYSTEM_PASSWORD`                   | 文件系统密码                   |
+| `NEO4J_AUTH`                             | neo4j 认证                     |
+| `ETCD_AUTO_COMPACTION_MODE`              | 启用 etcd 的自动压缩机制       |
+| `ETCD_AUTO_COMPACTION_RETENTION`         | 压缩保留的修订数               |
+| `ETCD_QUOTA_BACKEND_BYTES`               | 设置 etcd 后端数据库的存储配额 |
+| `ETCD_SNAPSHOT_COUNT`                    | 写入多少事务后生成一个快照     |
+| `MILVUS_MINIO_USER_NAME`                 | milvus 的 minio 服务的用户名   |
+| `MILVUS_MINIO_PASSWORD`                  | milvus 的 minio 服务的密码     |
+| `HF_ENDPOINT`                            | huggingface 服务地址           |
+| `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务前缀               |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 文件服务接口前缀               |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | 热搜服务接口前缀               |
+
 ## web 服务
 
 | 名称                                     | 说明                                                |

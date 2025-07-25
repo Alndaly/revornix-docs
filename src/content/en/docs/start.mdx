@@ -17,12 +17,11 @@ cd Revornix
 ### Environment Variable Configuration
 
 ```shell
+cp .env.example .env
 cp ./envs/.api.env.example ./envs/.api.env
 cp ./envs/.file.env.example ./envs/.file.env
 cp ./envs/.celery.env.example ./envs/.celery.env
-cp ./envs/.hot.env.example ./envs/.hot.env
 cp ./envs/.mcp.env.example ./envs/.mcp.env
-cp ./envs/.web.env.example .env
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
@@ -61,10 +60,10 @@ cd Revornix
 ### Environment Variable Configuration
 
 ```shell
+cp .env.example .env
 cp ./envs/.api.env.example ./api/.env
 cp ./envs/.file.env.example ./file-backend/.env
 cp ./envs/.celery.env.example ./celery-worker/.env
-cp ./envs/.hot.env.example ./daily-hot/.env
 cp ./envs/.mcp.env.example ./mcp-server/.env
 export ENV=dev
 ```
