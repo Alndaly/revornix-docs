@@ -10,17 +10,27 @@ import { Callout } from 'nextra/components';
 
 | 名称                                     | 说明                           |
 | ---------------------------------------- | ------------------------------ |
-| `MYSQL_ROOT_PASSWORD`                    | mysql root 密码                |
-| `MYSQL_DATABASE`                         | mysql 数据库名称               |
+| `OAUTH_SECRET_KEY`                       | 用户认证体系 JWT 机制的密钥    |
+| `POSTGRES_USER`                          | postgres 用户名                |
+| `POSTGRES_PASSWORD`                      | postgres 密码                  |
+| `POSTGRES_DB`                            | postgres 数据库名称            |
+| `POSTGRES_DB_URL`                        | postgres 数据库链接            |
+| `MILVUS_CLUSTER_ENDPOINT`                | milvus 集群地址                |
+| `MILVUS_TOKEN`                           | milvus 认证 token              |
 | `FILE_SYSTEM_USER_NAME`                  | 文件系统用户名                 |
 | `FILE_SYSTEM_PASSWORD`                   | 文件系统密码                   |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL`         | 文件系统服务地址 (docker 内网) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`          | 文件系统服务地址 (公网)        |
 | `NEO4J_AUTH`                             | neo4j 认证                     |
+| `ETCD_ENDPOINTS`                         | etcd 集群地址                  |
 | `ETCD_AUTO_COMPACTION_MODE`              | 启用 etcd 的自动压缩机制       |
 | `ETCD_AUTO_COMPACTION_RETENTION`         | 压缩保留的修订数               |
 | `ETCD_QUOTA_BACKEND_BYTES`               | 设置 etcd 后端数据库的存储配额 |
 | `ETCD_SNAPSHOT_COUNT`                    | 写入多少事务后生成一个快照     |
 | `MILVUS_MINIO_USER_NAME`                 | milvus 的 minio 服务的用户名   |
 | `MILVUS_MINIO_PASSWORD`                  | milvus 的 minio 服务的密码     |
+| `REDIS_URL`                              | redis 连接地址                 |
+| `REDIS_PORT`                             | redis 连接端口                 |
 | `HF_ENDPOINT`                            | huggingface 服务地址           |
 | `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务前缀               |
 | `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 文件服务接口前缀               |
@@ -32,56 +42,61 @@ import { Callout } from 'nextra/components';
 | ---------------------------------------- | --------------------------------------------------- |
 | `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务前缀                                    |
 | `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 核心后端服务中的实时通知服务部分 websocket 接口前缀 |
-| `NEXT_PUBLIC_FILE_API_PREFIX`            | 文件服务接口前缀                                    |
 | `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | 热搜服务接口前缀                                    |
 
 ## api 服务
 
-| 名称                           | 说明                        |
-| ------------------------------ | --------------------------- |
-| `SECRET_KEY`                   | 用户认证体系 JWT 机制的密钥 |
-| `ALGORITHM`                    | JWT 加密算法                |
-| `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
-| `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
-| `REDIS_URL`                    | redis 连接地址              |
-| `REDIS_PASSWORD`               | redis 连接密码              |
-| `REDIS_PORT`                   | redis 连接端口              |
-| `USER_NAME`                    | mysql 用户名                |
-| `PASSWORD`                     | mysql 密码                  |
-| `DATABASE_URL`                 | mysql 主机                  |
-| `DATABASE_NAME`                | mysql 数据库名称            |
-| `MILVUS_CLUSTER_ENDPOINT`      | milvus 连接地址             |
-| `MILVUS_TOKEN`                 | milvus 连接 token           |
-| `FILE_SERVER_URL`              | 文件服务地址                |
+| 名称                             | 说明                           |
+| -------------------------------- | ------------------------------ |
+| `OAUTH_SECRET_KEY`               | 用户认证体系 JWT 机制的密钥    |
+| `REDIS_URL`                      | redis 连接地址                 |
+| `REDIS_PASSWORD`                 | redis 连接密码                 |
+| `REDIS_PORT`                     | redis 连接端口                 |
+| `POSTGRES_USER`                  | postgres 用户名                |
+| `POSTGRES_PASSWORD`              | postgres 密码                  |
+| `POSTGRES_DB`                    | postgres 数据库名称            |
+| `POSTGRES_DB_URL`                | postgres 数据库链接            |
+| `MILVUS_CLUSTER_ENDPOINT`        | milvus 连接地址                |
+| `MILVUS_TOKEN`                   | milvus 连接 token              |
+| `FILE_SYSTEM_USER_NAME`          | 文件系统用户名                 |
+| `FILE_SYSTEM_PASSWORD`           | 文件系统密码                   |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | 文件系统服务地址 (docker 内网) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | 文件系统服务地址 (公网)        |
 
-## file-backend
+## mcp-server
 
-| 名称                           | 说明                        |
-| ------------------------------ | --------------------------- |
-| `SECRET_KEY`                   | 用户认证体系 JWT 机制的密钥 |
-| `ALGORITHM`                    | JWT 加密算法                |
-| `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
-| `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
-| `USER_NAME`                    | mysql 用户名                |
-| `PASSWORD`                     | mysql 密码                  |
-| `DATABASE_URL`                 | mysql 主机                  |
-| `DATABASE_NAME`                | mysql 数据库名称            |
+| 名称                             | 说明                           |
+| -------------------------------- | ------------------------------ |
+| `OAUTH_SECRET_KEY`               | 用户认证体系 JWT 机制的密钥    |
+| `REDIS_URL`                      | redis 连接地址                 |
+| `REDIS_PASSWORD`                 | redis 连接密码                 |
+| `REDIS_PORT`                     | redis 连接端口                 |
+| `POSTGRES_USER`                  | postgres 用户名                |
+| `POSTGRES_PASSWORD`              | postgres 密码                  |
+| `POSTGRES_DB`                    | postgres 数据库名称            |
+| `POSTGRES_DB_URL`                | postgres 数据库链接            |
+| `MILVUS_CLUSTER_ENDPOINT`        | milvus 连接地址                |
+| `MILVUS_TOKEN`                   | milvus 连接 token              |
+| `FILE_SYSTEM_USER_NAME`          | 文件系统用户名                 |
+| `FILE_SYSTEM_PASSWORD`           | 文件系统密码                   |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | 文件系统服务地址 (docker 内网) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | 文件系统服务地址 (公网)        |
 
 ## celery-wroker
 
-| 名称                           | 说明                        |
-| ------------------------------ | --------------------------- |
-| `SECRET_KEY`                   | 用户认证体系 JWT 机制的密钥 |
-| `ALGORITHM`                    | JWT 加密算法                |
-| `ACCESS_TOKEN_EXPIRE_MINUTES`  | 用户 access_token 过期时间  |
-| `REFRESH_TOKEN_EXPIRE_MINUTES` | 用户 refresh_token 过期时间 |
-| `REDIS_URL`                    | redis 连接地址              |
-| `REDIS_PASSWORD`               | redis 连接密码              |
-| `REDIS_PORT`                   | redis 连接端口              |
-| `USER_NAME`                    | mysql 用户名                |
-| `PASSWORD`                     | mysql 密码                  |
-| `DATABASE_URL`                 | mysql 主机                  |
-| `DATABASE_NAME`                | mysql 数据库名称            |
-| `MILVUS_CLUSTER_ENDPOINT`      | milvus 连接地址             |
-| `MILVUS_TOKEN`                 | milvus 连接 token           |
-| `FILE_SERVER_URL`              | 文件服务地址                |
+| 名称                             | 说明                           |
+| -------------------------------- | ------------------------------ |
+| `OAUTH_SECRET_KEY`               | 用户认证体系 JWT 机制的密钥    |
+| `REDIS_URL`                      | redis 连接地址                 |
+| `REDIS_PASSWORD`                 | redis 连接密码                 |
+| `REDIS_PORT`                     | redis 连接端口                 |
+| `POSTGRES_USER`                  | postgres 用户名                |
+| `POSTGRES_PASSWORD`              | postgres 密码                  |
+| `POSTGRES_DB`                    | postgres 数据库名称            |
+| `POSTGRES_DB_URL`                | postgres 数据库链接            |
+| `MILVUS_CLUSTER_ENDPOINT`        | milvus 连接地址                |
+| `MILVUS_TOKEN`                   | milvus 连接 token              |
+| `FILE_SYSTEM_USER_NAME`          | 文件系统用户名                 |
+| `FILE_SYSTEM_PASSWORD`           | 文件系统密码                   |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | 文件系统服务地址 (docker 内网) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | 文件系统服务地址 (公网)        |

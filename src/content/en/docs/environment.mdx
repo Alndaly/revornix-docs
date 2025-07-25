@@ -1,89 +1,104 @@
 import { Callout } from 'nextra/components';
 
-# Environment Variable Settings
+# Environment Variable Configuration
 
 <Callout type='info'>
-	Most variables in this system use environment variables to facilitate
-	deployment in different environments, so correct configuration of this part is
-	extremely important!
+	Some variables in this system are configured using environment variables to
+	facilitate deployment across different environments, so it is extremely
+	important to set them correctly!
 </Callout>
 
-## Root Env
+## Root Directory `.env`
 
-| Name                                     | Description                                  |
-| ---------------------------------------- | -------------------------------------------- |
-| `MYSQL_ROOT_PASSWORD`                    | MySQL root password                          |
-| `MYSQL_DATABASE`                         | Name of the MySQL database                   |
-| `FILE_SYSTEM_USER_NAME`                  | Username for the file system                 |
-| `FILE_SYSTEM_PASSWORD`                   | Password for the file system                 |
-| `NEO4J_AUTH`                             | Neo4j authentication                         |
-| `ETCD_AUTO_COMPACTION_MODE`              | Enables etcd's auto-compaction mechanism     |
-| `ETCD_AUTO_COMPACTION_RETENTION`         | Number of revisions to retain for compaction |
-| `ETCD_QUOTA_BACKEND_BYTES`               | Storage quota for etcd backend database      |
-| `ETCD_SNAPSHOT_COUNT`                    | Number of transactions before snapshotting   |
-| `MILVUS_MINIO_USER_NAME`                 | Username for Milvus’s MinIO service          |
-| `MILVUS_MINIO_PASSWORD`                  | Password for Milvus’s MinIO service          |
-| `HF_ENDPOINT`                            | Hugging Face service endpoint                |
-| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service prefix                  |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | File service WebSocket endpoint prefix       |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Trending service API prefix                  |
+| Name                                     | Description                                   |
+| ---------------------------------------- | --------------------------------------------- |
+| `OAUTH_SECRET_KEY`                       | Secret key for JWT user authentication system |
+| `POSTGRES_USER`                          | PostgreSQL username                           |
+| `POSTGRES_PASSWORD`                      | PostgreSQL password                           |
+| `POSTGRES_DB`                            | PostgreSQL database name                      |
+| `POSTGRES_DB_URL`                        | PostgreSQL database URL                       |
+| `MILVUS_CLUSTER_ENDPOINT`                | Milvus cluster address                        |
+| `MILVUS_TOKEN`                           | Milvus authentication token                   |
+| `FILE_SYSTEM_USER_NAME`                  | File system username                          |
+| `FILE_SYSTEM_PASSWORD`                   | File system password                          |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL`         | File system service address (Docker internal) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`          | File system service address (public network)  |
+| `NEO4J_AUTH`                             | Neo4j authentication                          |
+| `ETCD_ENDPOINTS`                         | etcd cluster endpoints                        |
+| `ETCD_AUTO_COMPACTION_MODE`              | Enable etcd auto-compaction mode              |
+| `ETCD_AUTO_COMPACTION_RETENTION`         | Revisions to retain during compaction         |
+| `ETCD_QUOTA_BACKEND_BYTES`               | etcd backend DB storage quota                 |
+| `ETCD_SNAPSHOT_COUNT`                    | Transactions to write before snapshot         |
+| `MILVUS_MINIO_USER_NAME`                 | MinIO username for Milvus service             |
+| `MILVUS_MINIO_PASSWORD`                  | MinIO password for Milvus service             |
+| `REDIS_URL`                              | Redis connection URL                          |
+| `REDIS_PORT`                             | Redis connection port                         |
+| `HF_ENDPOINT`                            | HuggingFace service endpoint                  |
+| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service prefix                   |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | File service interface prefix                 |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Trending service interface prefix             |
 
 ## Web Service
 
-| Name                                     | Description                                            |
-| ---------------------------------------- | ------------------------------------------------------ |
-| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service                                   |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | WebSocket interface for real-time notification service |
-| `NEXT_PUBLIC_FILE_API_PREFIX`            | File service                                           |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Daily hot search service                               |
+| Name                                     | Description                                          |
+| ---------------------------------------- | ---------------------------------------------------- |
+| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service prefix                          |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | WebSocket interface prefix of real-time notification |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Trending service interface prefix                    |
 
 ## API Service
 
-| Name                           | Description                               |
-| ------------------------------ | ----------------------------------------- |
-| `SECRET_KEY`                   | JWT mechanism key for user authentication |
-| `ALGORITHM`                    | JWT encryption algorithm                  |
-| `ACCESS_TOKEN_EXPIRE_MINUTES`  | User access_token expiration time         |
-| `REFRESH_TOKEN_EXPIRE_MINUTES` | User refresh_token expiration time        |
-| `REDIS_URL`                    | Redis connection address                  |
-| `REDIS_PASSWORD`               | Redis connection password                 |
-| `REDIS_PORT`                   | Redis connection port                     |
-| `USER_NAME`                    | MySQL username                            |
-| `PASSWORD`                     | MySQL password                            |
-| `DATABASE_URL`                 | MySQL host                                |
-| `DATABASE_NAME`                | MySQL database name                       |
-| `MILVUS_CLUSTER_ENDPOINT`      | Milvus connection address                 |
-| `MILVUS_TOKEN`                 | Milvus connection token                   |
-| `FILE_SERVER_URL`              | File service address                      |
+| Name                             | Description                                   |
+| -------------------------------- | --------------------------------------------- |
+| `OAUTH_SECRET_KEY`               | Secret key for JWT user authentication system |
+| `REDIS_URL`                      | Redis connection URL                          |
+| `REDIS_PASSWORD`                 | Redis connection password                     |
+| `REDIS_PORT`                     | Redis connection port                         |
+| `POSTGRES_USER`                  | PostgreSQL username                           |
+| `POSTGRES_PASSWORD`              | PostgreSQL password                           |
+| `POSTGRES_DB`                    | PostgreSQL database name                      |
+| `POSTGRES_DB_URL`                | PostgreSQL database URL                       |
+| `MILVUS_CLUSTER_ENDPOINT`        | Milvus connection address                     |
+| `MILVUS_TOKEN`                   | Milvus authentication token                   |
+| `FILE_SYSTEM_USER_NAME`          | File system username                          |
+| `FILE_SYSTEM_PASSWORD`           | File system password                          |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | File system service address (Docker internal) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | File system service address (public network)  |
 
-## File Backend
+## mcp-server
 
-| Name                           | Description                               |
-| ------------------------------ | ----------------------------------------- |
-| `SECRET_KEY`                   | JWT mechanism key for user authentication |
-| `ALGORITHM`                    | JWT encryption algorithm                  |
-| `ACCESS_TOKEN_EXPIRE_MINUTES`  | User access_token expiration time         |
-| `REFRESH_TOKEN_EXPIRE_MINUTES` | User refresh_token expiration time        |
-| `USER_NAME`                    | MySQL username                            |
-| `PASSWORD`                     | MySQL password                            |
-| `DATABASE_URL`                 | MySQL host                                |
-| `DATABASE_NAME`                | MySQL database name                       |
+| Name                             | Description                                   |
+| -------------------------------- | --------------------------------------------- |
+| `OAUTH_SECRET_KEY`               | Secret key for JWT user authentication system |
+| `REDIS_URL`                      | Redis connection URL                          |
+| `REDIS_PASSWORD`                 | Redis connection password                     |
+| `REDIS_PORT`                     | Redis connection port                         |
+| `POSTGRES_USER`                  | PostgreSQL username                           |
+| `POSTGRES_PASSWORD`              | PostgreSQL password                           |
+| `POSTGRES_DB`                    | PostgreSQL database name                      |
+| `POSTGRES_DB_URL`                | PostgreSQL database URL                       |
+| `MILVUS_CLUSTER_ENDPOINT`        | Milvus connection address                     |
+| `MILVUS_TOKEN`                   | Milvus authentication token                   |
+| `FILE_SYSTEM_USER_NAME`          | File system username                          |
+| `FILE_SYSTEM_PASSWORD`           | File system password                          |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | File system service address (Docker internal) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | File system service address (public network)  |
 
-## Celery Worker
+## celery-worker
 
-| Name                           | Description                               |
-| ------------------------------ | ----------------------------------------- |
-| `SECRET_KEY`                   | JWT mechanism key for user authentication |
-| `ALGORITHM`                    | JWT encryption algorithm                  |
-| `ACCESS_TOKEN_EXPIRE_MINUTES`  | User access_token expiration time         |
-| `REFRESH_TOKEN_EXPIRE_MINUTES` | User refresh_token expiration time        |
-| `REDIS_URL`                    | Redis connection address                  |
-| `REDIS_PASSWORD`               | Redis connection password                 |
-| `REDIS_PORT`                   | Redis connection port                     |
-| `USER_NAME`                    | MySQL username                            |
-| `PASSWORD`                     | MySQL password                            |
-| `DATABASE_URL`                 | MySQL host                                |
-| `DATABASE_NAME`                | MySQL database name                       |
-| `MILVUS_CLUSTER_ENDPOINT`      | Milvus connection address                 |
-| `MILVUS_TOKEN`                 | Milvus connection token                   |
-| `FILE_SERVER_URL`              | File service address                      |
+| Name                             | Description                                   |
+| -------------------------------- | --------------------------------------------- |
+| `OAUTH_SECRET_KEY`               | Secret key for JWT user authentication system |
+| `REDIS_URL`                      | Redis connection URL                          |
+| `REDIS_PASSWORD`                 | Redis connection password                     |
+| `REDIS_PORT`                     | Redis connection port                         |
+| `POSTGRES_USER`                  | PostgreSQL username                           |
+| `POSTGRES_PASSWORD`              | PostgreSQL password                           |
+| `POSTGRES_DB`                    | PostgreSQL database name                      |
+| `POSTGRES_DB_URL`                | PostgreSQL database URL                       |
+| `MILVUS_CLUSTER_ENDPOINT`        | Milvus connection address                     |
+| `MILVUS_TOKEN`                   | Milvus authentication token                   |
+| `FILE_SYSTEM_USER_NAME`          | File system username                          |
+| `FILE_SYSTEM_PASSWORD`           | File system password                          |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | File system service address (Docker internal) |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | File system service address (public network)  |
