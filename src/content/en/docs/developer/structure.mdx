@@ -4,7 +4,7 @@ import { Callout } from 'nextra/components';
 
 ## Services
 
-The project currently has five core services.
+The project currently has four core services.
 
 <Callout type='warning'>
 	Since it's still in the early development phase, the service architecture may undergo significant changes at any time.
@@ -13,7 +13,6 @@ The project currently has five core services.
 - `web`: Frontend
 - `api`: Handles all core and basic requests, including document creation/deletion, column creation/deletion, etc.
 - `celery-worker`: Handles all background tasks, including notification sending, vectorization, transcoding, data synchronization, data cleanup, etc.
-- `file-backend`: File server that stores all document and column information
 - `daily-hot`: Hot search aggregation service. Note this service is entirely based on [DailyHotApi](https://github.com/imsyy/DailyHotApi), thanks to the original author [imsyy](https://github.com/imsyy) for their contribution.
 
 ## Packaging

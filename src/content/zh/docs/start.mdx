@@ -62,7 +62,6 @@ cp .env.local.example .env.local
 cp ./web/.env.example ./web/.env.development
 cp ./api/.env.example ./api/.env
 cp ./celery-worker/.env.example ./celery-worker/.env
-cp ./mcp-server/.env.example ./mcp-server/.env
 export ENV=dev
 ```
 
@@ -98,15 +97,6 @@ cd api
 conda create -n api python=3.11 -y
 pip install -r ./requirements.txt
 fastapi run --port 8001
-```
-
-### 启动MCP服务端服务
-
-```shell
-cd mcp-server
-conda create -n mcp-server python=3.11 -y
-pip install -r ./requirements.txt
-fastapi run --port 8003
 ```
 
 ### 启动热搜聚集服务

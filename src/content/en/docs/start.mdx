@@ -18,7 +18,6 @@ cd Revornix
 
 ```shell
 cp .env.example .env
-export ENV=dev
 ```
 
 Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
@@ -61,7 +60,6 @@ cp .env.local.example .env.local
 cp ./web/.env.example ./web/.env.development
 cp ./api/.env.example ./api/.env
 cp ./celery-worker/.env.example ./celery-worker/.env
-cp ./mcp-server/.env.example ./mcp-server/.env
 export ENV=dev
 ```
 
@@ -97,15 +95,6 @@ cd api
 conda create -n api python=3.11 -y
 pip install -r ./requirements.txt
 fastapi run --port 8001
-```
-
-### Start MCP Server
-
-```shell
-cd mcp-server
-conda create -n mcp-server python=3.11 -y
-pip install -r ./requirements.txt
-fastapi run --port 8003
 ```
 
 ### Start Hot Search Aggregation Service
