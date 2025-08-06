@@ -23,10 +23,55 @@ cp .env.example .env
 前往对应的环境变量文件配置，详情见[环境变量配置篇章](environment)
 
 <Callout>
-一般情况下，你仅仅只需要配置用户认证机制的`SECRET_KEY`这一参数，其他参数保持默认即可。注意不同服务的`SECRET_KEY`必须保持一致，否则会导致不同服务之间的用户认证体系无法互通。
+	一般情况下，你仅仅只需要配置用户认证机制的`SECRET_KEY`这一参数，其他参数保持默认即可。注意不同服务的`SECRET_KEY`必须保持一致，否则会导致不同服务之间的用户认证体系无法互通。
 </Callout>
 
 ### docker 拉取必要仓库并启动
+
+**注意：如果你的机器在中国大陆内，请配置 Dockerfile 的系统依赖镜像源。修改`api`和`celery-worker`目录下的`Dockerfile`文件。**
+
+```Dockerfile filename="api/Dockerfile"
+
+...
+
+WORKDIR /app
+
+
+##### 在下方增加该内容 #####
+
+RUN rm -f /etc/apt/sources.list.d/debian.sources \
+ && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main non-free contrib" > /etc/apt/sources.list \
+ && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list \
+ && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main" >> /etc/apt/sources.list \
+ && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
+
+##### 在上方增加该内容 #####
+
+RUN apt-get update -o Acquire::Check-Valid-Until=false \
+...
+
+```
+
+```Dockerfile filename="celery-worker/Dockerfile"
+
+...
+
+WORKDIR /app
+
+##### 在下方增加该内容 #####
+
+RUN rm -f /etc/apt/sources.list.d/debian.sources \
+ && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main non-free contrib" > /etc/apt/sources.list \
+ && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list \
+ && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main" >> /etc/apt/sources.list \
+ && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
+
+##### 在上方增加该内容 #####
+
+RUN apt-get update -o Acquire::Check-Valid-Until=false \
+...
+
+```
 
 ```shell
 docker compose up -d
@@ -82,12 +127,12 @@ python -m script.init_sql_base_data
 	考虑到这些属于比较麻烦且不重要的工作，我特地做了一个`docker-compose-local.yaml`文件，你可以直接使用这个文件下载并且启动这些服务。
 </Callout>
 
-<Callout type="warning">
+<Callout type='warning'>
 	注意：如果你本地已经安装了其中的部分服务，请按照你的实际情况在`docker-compose-local.yaml`文件中关闭对应的服务配置，否则可能会引起一些意料之外的情况。
 </Callout>
 
 ```shell
-docker compose -f ./docker-compose-local.yaml --env-file .env.local up -d 
+docker compose -f ./docker-compose-local.yaml --env-file .env.local up -d
 ```
 
 ### 启动核心后端服务
@@ -103,7 +148,7 @@ fastapi run --port 8001
 
 ```shell
 cd daily-hot
-pnpm i 
+pnpm i
 pnpm dev
 ```
 
