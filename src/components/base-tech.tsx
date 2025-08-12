@@ -25,8 +25,8 @@ const BaseTech = () => {
 			href: 'https://docs.celeryq.dev/en/stable/',
 		},
 		{
-			name: 'Mysql',
-			href: 'https://www.mysql.com',
+			name: 'PostgreSQL',
+			href: 'https://www.postgresql.org',
 		},
 		{
 			name: 'Milvus',

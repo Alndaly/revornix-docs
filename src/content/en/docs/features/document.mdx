@@ -16,13 +16,13 @@ By default, newly created documents are marked as `unread` (this includes quick 
 
 You can view documents by individual status or view all documents together. Filtering by tags is also supported.
 
-Precise search on document titles and content is supported (based on MySQL queries), along with global fuzzy search (powered by Milvus).
+Precise search on document titles and content is supported (based on Postgres queries), along with global fuzzy search (powered by Milvus).
 
 Sorting by time is also supported.
 
 ## Document Storage
 
-Currently, document storage is managed by `file-backend`. Document content is stored locally, while vectorized versions of the documents are stored in Milvus using embedding technology. This supports global search and AI-powered interactions.
+Currently, we have already support the custom file system, you can check the detail in [custom file system](./custom-file-system). At the same time, vectorized versions of the documents are stored in Milvus using embedding technology. This supports global search and AI-powered interactions.
 
 ## Smart Summary
 
