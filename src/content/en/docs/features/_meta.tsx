@@ -7,6 +7,7 @@ const meta: MetaRecord = {
 	'custom-file-system': 'Custom File System',
 	engine: 'Document Converter',
 	'hot-search': 'Hot Search',
+	rss: 'RSS',
 	mcp: 'Built-In MCP',
 	notification: 'Notification Manage',
 	model: 'Custom Model',

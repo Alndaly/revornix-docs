@@ -1,6 +1,7 @@
 import type { MetaRecord } from 'nextra';
 
 const meta: MetaRecord = {
+	'v0.4.0-beta1': 'Revornix v0.4.0-beta1',
 	'v0.3.0': 'Revornix v0.3.0',
 	'v0.3.0-beta2': 'Revornix v0.3.0-beta2',
 	'v0.3.0-beta1': 'Revornix v0.3.0-beta1',

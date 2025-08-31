@@ -7,6 +7,7 @@ const meta: MetaRecord = {
 	document: '文档管理',
 	engine: '文档解析',
 	'hot-search': '热搜面板',
+	rss: 'RSS',
 	mcp: '内置MCP',
 	notification: '通知管理',
 	model: '自定义模型',
