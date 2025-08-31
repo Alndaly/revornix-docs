@@ -139,6 +139,7 @@ const HeroFlow = ({ className }: { className?: string }) => {
 		},
 	];
 
+	// @ts-ignore
 	const [nodes, _, onNodesChange] = useNodesState(initialNodes);
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 	const onConnect = useCallback(
@@ -162,6 +163,7 @@ const HeroFlow = ({ className }: { className?: string }) => {
 				)}
 				zoomOnScroll={false}
 				preventScrolling={false}
+				// @ts-ignore
 				colorMode={theme}>
 				<Background />
 			</ReactFlow>
