@@ -5,6 +5,7 @@ const meta: MetaRecord = {
 	account: '账户体系',
 	'custom-file-system': '自定义文件系统',
 	document: '文档管理',
+	graphrag: '知识图谱',
 	engine: '文档解析',
 	'hot-search': '热搜面板',
 	rss: 'RSS',
