@@ -1,23 +1,36 @@
 import { Callout } from 'nextra/components';
 
-# Document Conversion Engines
+# Document Converter
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507301354538.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004154643218.png)
 
-Starting from `v0.2.0`, users can choose their document conversion engine instead of being limited to MinerU (files) or Jina (websites). You can find the configuration page under **Settings → Engine Settings**.
+Currently, four official parsing engines are available:
 
-Currently, there are three official engines available:
+|Engine Name|Supported Types|
+|---|---|
+|MinerU|Webpages / Files|
+|MinerU API|Webpages / Files|
+|Jina|Webpages|
+|Markitdown|Webpages / Files|
 
-- MinerU  
-- Jina  
-- Markitdown  
+**The currently provided Jina engine only supports webpage parsing, not file conversion. If you're parsing file-type documents, please choose one of the other three engines.**
 
-<Callout type="warning">
-The Jina engine **does not yet support file document conversion**, only website conversion. So if you’re working with a file type, please set the engine to MinerU or Markitdown.
-</Callout>
+Note that after clicking the configuration button for an installed engine, the corresponding configuration options will appear at the bottom of the pop-up window. You can follow the example to set the parameters.
 
-After clicking to install the corresponding engine, you can proceed with its configuration. Once configured, you can use that engine for document conversion.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004155307013.png)
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507301355522.png)
+It is recommended to set the `openai_api_key` when using the Markitdown engine, especially for parsing image files. Without this key, image parsing will not work. You can apply for the key on the OpenAI official website: https://openai.com
 
-Note that the configuration options will appear in a modal below when you click the **Configure** button for an installed engine. You can set parameters based on the provided example.
+For the MinerU API engine, you will need to apply for an API Key yourself. For detailed instructions, visit the official site: https://mineru.net
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004154545134.png)
+
+Jina also requires an API Key. You can apply for one from the official website: https://jina.ai
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004154449488.png)
+
+**If you are using the MinerU API engine, please note that MinerU officially does not support requests from non-China IPs. If you encounter errors while using this engine, make sure your local proxy is enabled and check whether your local `HTTP_PROXY` / `HTTPS_PROXY` environment variables are set. If they are, please remove them.**
+
+Once you've installed the desired engine, you can proceed with the corresponding configuration. After configuration, the engine will be ready for document conversion.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004155235662.png)

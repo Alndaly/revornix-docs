@@ -28,52 +28,8 @@ cp .env.example .env
 
 ### docker 拉取必要仓库并启动
 
-**注意：如果你的机器在中国大陆内，请配置 Dockerfile 的系统依赖镜像源。修改`api`和`celery-worker`目录下的`Dockerfile`文件。**
-
-```Dockerfile filename="api/Dockerfile"
-
-...
-
-WORKDIR /app
-
-
-##### 在下方增加该内容 #####
-
-RUN rm -f /etc/apt/sources.list.d/debian.sources \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main non-free contrib" > /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main" >> /etc/apt/sources.list \
- && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
-
-##### 在上方增加该内容 #####
-
-RUN apt-get update -o Acquire::Check-Valid-Until=false \
-...
-
-```
-
-```Dockerfile filename="celery-worker/Dockerfile"
-
-...
-
-WORKDIR /app
-
-##### 在下方增加该内容 #####
-
-RUN rm -f /etc/apt/sources.list.d/debian.sources \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main non-free contrib" > /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main" >> /etc/apt/sources.list \
- && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
-
-##### 在上方增加该内容 #####
-
-RUN apt-get update -o Acquire::Check-Valid-Until=false \
-...
-
-```
-
 ```shell
+docker compose pull
 docker compose up -d
 ```
 

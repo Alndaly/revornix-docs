@@ -28,49 +28,8 @@ In most cases, you only need to configure the `SECRET_KEY` parameter for the use
 
 ### Pull Necessary Repositories with Docker and Start
 
-**Note: If your machine is in China mainland, please configure the system dependency mirror source in the `Dockerfile` of the `api` and `celery-worker` directories.**
-
-```Dockerfile filename="api/Dockerfile"
-
-...
-
-WORKDIR /app
-
-##### Add the content below #####
-
-RUN rm -f /etc/apt/sources.list.d/debian.sources \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main non-free contrib" > /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main" >> /etc/apt/sources.list \
- && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
-
-##### Add the content above #####
-
-RUN apt-get update -o Acquire::Check-Valid-Until=false \
-...
-```
-
-```Dockerfile filename="celery-worker/Dockerfile"
-
-...
-
-WORKDIR /app
-
-##### Add the content below #####
-
-RUN rm -f /etc/apt/sources.list.d/debian.sources \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm main non-free contrib" > /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian/ bookworm-updates main non-free contrib" >> /etc/apt/sources.list \
- && echo "deb http://mirrors.tuna.tsinghua.edu.cn/debian-security bookworm-security main" >> /etc/apt/sources.list \
- && echo 'Acquire::Retries "5";' > /etc/apt/apt.conf.d/80-retries
-
-##### Add the content above #####
-
-RUN apt-get update -o Acquire::Check-Valid-Until=false \
-...
-```
-
 ```shell
+docker compose pull
 docker compose up -d
 ```
 
