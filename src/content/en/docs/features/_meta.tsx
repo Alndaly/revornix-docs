@@ -3,7 +3,8 @@ import type { MetaRecord } from 'nextra';
 const meta: MetaRecord = {
 	dashboard: 'Dashboard',
 	account: 'Account',
-	document: 'Document Manage',
+	'document-collect': 'Document Collect',
+	'document-manage': 'Document Manage',
 	graphrag: 'Knowledge Graph',
 	'custom-file-system': 'Custom File System',
 	engine: 'Document Converter',
@@ -14,7 +15,7 @@ const meta: MetaRecord = {
 	model: 'Custom Model',
 	'revornix-ai': 'Revornix AI',
 	section: 'Section Manage',
-	api: 'API Manage'
+	api: 'API Manage',
 };
 
 export default meta;

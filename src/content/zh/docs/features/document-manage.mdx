@@ -1,0 +1,82 @@
+import { Tabs, Callout } from 'nextra/components';
+
+# 文档管理
+
+通过各种方式收集到 Revornix 的文档皆可被统一管理。
+
+<Callout>
+	目前，除了速记文档以外，其他类型源的文档转化后的结果本质上都是一份markdown文件。
+</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251002010512086.png)
+
+## 文档基础信息
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224258922.png)
+
+文档在被收集并转化完成以后，文档的标题、描述、标签、专栏等都是可以修改的，且会重新触发专栏的更新。
+
+## 文档状态
+
+每个文档具有独立的状态，你可以在已读、未读状态之间自由切换。同时支持文档的收藏以及打标功能，方便你后续分类和查看。
+
+支持文档的转化过程状态查看，包括向量化进程、知识图谱构建进程等。
+
+也支持文档类型、来源的查看。
+
+默认情况下，新文档的状态都是`未读`（包括自己编辑的速记文档）。
+
+同时，针对文档的状态切换，目前 Revornix 支持如下几种方式：
+
+- 进入文档详情页
+- 文档详情页滑动到底部
+- 手动标记
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224414001.png)
+
+## 文档查看
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224517049.png)
+
+支持不同状态的文档单独查看，也支持查看所有文档。你也可以通过标签来筛选。
+
+支持文档标题和内容的精准搜索（基于 postgres 查询），也支持全局模糊搜索（基于 milvus）。
+
+支持时间正向/逆向排序。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224609258.png)
+
+## 文档存储
+
+文档的存储分为多个部分。
+
+| 数据                                                  | 存储位置                               |
+| ----------------------------------------------------- | -------------------------------------- |
+| 文档元数据                                            | postgres                               |
+| 文档的文件格式（比如原文件文档/转化后的 markdown 等） | [自定义文件服务](./custom-file-system) |
+| Embedding 后的文档向量                                | milvus                                 |
+| 文档知识图谱相关信息                                  | neo4j                                  |
+
+<Callout>
+	考虑到效益，默认的文档Embedding模型当前使用的是`Qwen/Qwen3-Embedding-0.6B`，如果你对Embedding有着更高的要求，可以浏览源码进行修改。后续我也会将这一项解耦，让用户可以自行设置。
+</Callout>
+
+## AI智能总结
+
+你可以通过配置模型（设置页面内）来让系统支持自动总结文档内容，并替换掉默认的网站标题、描述等内容。
+
+<Callout type='warning'>注意，若使用了自动总结，你所配置的该文档的标题、描述将都会被覆盖，这是目前AI总结的默认行为。</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031531236.png)
+
+## 文档补充笔记
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010225530879.png)
+
+你可以为文档添加补充笔记，方便你后续再查看的时候浏览。
+
+## 文档知识图谱
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010225439549.png)
+
+你可以通过右下角的文档知识图谱来查看该文档有哪些知识点，知识点之间的关联关系。

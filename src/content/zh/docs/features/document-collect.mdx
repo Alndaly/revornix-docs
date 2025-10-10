@@ -1,0 +1,59 @@
+import { Tabs, Callout } from 'nextra/components';
+
+# 文档收集
+
+本系统支持多类型文档来源，当前支持如下：**网站文档**、**速记文档**、**文件文档**。
+
+<Callout type='warning'>
+	由于当前Jina引擎仅支持网站文档，所以若你需要使用文件文档，请修改文件转化引擎，切换为除了Jina以外的方式。
+</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
+
+有多种收录文档、资讯的方式，其中最简单的方式也是最直白的方式就是通过网站端的增加文档。
+
+## 网站端收录
+
+### 配置说明
+
+- 链接 你想要收录的网站链接
+- 标签 你的文档标签，可以添加多个，方便后续筛选查看
+- AI 自动总结 开启后，系统会自动调用 AI 接口，将文档内容进行总结，并替换掉默认的网站标题、描述等内容。
+- 推送专栏 可以选择你希望推送的专栏，系统会自动将文档推送到你选择的专栏中，并更新该专栏的总结。
+
+<Callout>
+	注意，如果你选择自动总结，那么你所配置的网站标题、描述等内容将不会生效，而是由
+	AI 总结生成并替换。
+</Callout>
+
+## API 收录
+
+为了方便开发者**接入三方应用**或者**自行构建工作流**，Revornix 已开放 API 方式来进行文档的收录。
+
+你可通过点击左下角**用户头像**，然后选择**账户**进入账户配置页，选择其中的**APIKey 管理**右侧的**前往配置**进入到配置页。
+
+关于 API 方式的请求参数和返回范例，可参考[三方 API](./api)
+
+## Chrome 插件 收录
+
+见对应插件源码详情页，[Revornix-Chrome-Extension](https://github.com/Qingyon-AI/Revornix-Chrome-Extension)
+
+## JS 包 收录
+
+见对应 NPM 包详情页，[Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib)
+
+## Python 库 收录
+
+见对应 PIP 包详情页，[Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib)
+
+## APP 收录
+
+IOS 端开发中，敬请期待。
+
+安卓端暂不计划开发，若使用安卓，可通过手机端登陆网站或者后续的小程序进行收录。
+
+当然，如果你愿意参与安卓端的开发，我非常欢迎的！可以加入我们的[Discord 群组](https://discord.gg/3XZfz84aPN)，一起讨论开发问题。
+
+## 小程序收录
+
+开发中，敬请期待。

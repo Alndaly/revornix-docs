@@ -1,0 +1,58 @@
+import { Tabs, Callout } from 'nextra/components';
+
+# Document Collection
+
+This system supports multiple types of document sources. Currently, the following are supported: **Website Documents**, **Quick Notes**, and **File Documents**.
+
+<Callout type='warning'>
+	Since the current Jina engine only supports website documents, please switch to another conversion engine if you need to process file documents.
+</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
+
+There are several ways to collect documents and information. The simplest and most straightforward method is to add documents directly through the web interface.
+
+## Web Collection
+
+### Configuration Description
+
+- **Link**: The website URL you wish to collect.
+- **Tags**: Your document tags. You can add multiple tags to facilitate filtering and viewing later.
+- **AI Auto Summary**: When enabled, the system will automatically call the AI interface to summarize the document content, replacing the default website title and description.
+- **Push to Column**: You can select the column to which you want to push the document. The system will automatically push the document to the selected column and update that column’s summary.
+
+<Callout>
+	Note: If you enable AI Auto Summary, your manually configured website title and description will not take effect, as they will be replaced by AI-generated summaries.
+</Callout>
+
+## API Collection
+
+To help developers **integrate third-party applications** or **build custom workflows**, Revornix provides an API-based method for document collection.
+
+You can click on the **user avatar** in the bottom left corner, select **Account** to open the account settings page, then go to **API Key Management** and click **Go to Settings** to access the configuration page.
+
+For request parameters and response examples of the API method, please refer to [Third-Party API](./api).
+
+## Chrome Extension Collection
+
+See the corresponding plugin source page: [Revornix-Chrome-Extension](https://github.com/Qingyon-AI/Revornix-Chrome-Extension)
+
+## JS Library Collection
+
+See the corresponding NPM package page: [Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib)
+
+## Python Library Collection
+
+See the corresponding PIP package page: [Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib)
+
+## App Collection
+
+The iOS version is under development — stay tuned.
+
+The Android version is not currently planned. If you’re using Android, you can collect documents by logging into the website on your mobile device or using the upcoming mini-program.
+
+Of course, if you’d like to contribute to Android development, you’re very welcome! Join our [Discord group](https://discord.gg/3XZfz84aPN) to discuss development together.
+
+## Mini-Program Collection
+
+Under development — stay tuned.
