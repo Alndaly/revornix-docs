@@ -2,12 +2,162 @@ import { Callout } from 'nextra/components';
 
 # 自定义文件系统
 
-在`v0.3.0-beta1`版本之后，我增加了自定义文件系统的支持。你可以使用自定义文件系统来存储你的文件，而不是使用默认的文件系统。
+<Callout type='warning'>
+	注意，当你更新文件系统后，原先系统中的文件（包括你所有的专栏/文档的原文件和转换后的markdown文件，以及所有的静态文件）并不会自动迁移到新的文件系统中去，你需要自行迁移，所以切换文件系统是一个影响极大的操作，一般情况下建议账户创建完成后设置，后续尽量避免切换文件系统。
+</Callout>
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507241728083.png)
+Revornix 系统支持自定义文件存储位置，目前支持如下几种方式：
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507241731257.png)
+- 系统内建 Minio 服务
+- 阿里云 OSS
+- 通用 S3 协议兼容服务
+- 亚马逊 S3
 
-通过配置自定义文件系统，你可以自行选择阿里云的OSS/亚马逊的S3/系统内建Minio服务作为你的文件存储系统。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010135024210.png)
 
-注意，当你更新文件系统后，原先系统中的文件并不会自动迁移到新的文件系统中去，你需要自行迁移。
+## 如何添加
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010135024211.png)
+
+添加文件系统非常简单，只需要进入设置页面，然后点击文件相关设置组下的我的文件系统右侧的前往管理按钮即可进入文件系统管理页面，然后点击增加文件系统按钮即可添加新的文件系统。
+
+## 配置参数讲解
+
+### 系统内建 Minio 服务
+
+该服务为默认情况下 Revornix 的存储行为，不需要你做任何的配置处理。
+
+### 阿里云 OSS
+
+<Callout>
+	本存储方式使用的是STS授权方案用来确保权限最小化。阿里云的STS方案详情可参考官方文档：https://help.aliyun.com/zh/oss/developer-reference/use-temporary-access-credentials-provided-by-sts-to-access-oss
+</Callout>
+
+#### 实际步骤
+
+阿里云 OSS 创建 bucket 的相关步骤较为简单，此处不做赘述，注意**开启公共读权限**即可。
+
+1. 创建用户
+
+基于最小化权限策略，该用户仅需具备扮演 STS 临时角色的权限即可，具体授权见第 5 步骤。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171438412.png)
+
+2. 创建角色
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171631703.png)
+
+3. 创建策略
+
+注意对照下图所给的权限和资源组适配你自己的 bucket 和用户，有所缺失都会导致失败。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171754815.png)
+
+4. 将创建好的策略授权给角色
+
+5. 将临时扮演角色的权限授权给用户
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171906040.png)
+
+#### Revornix 系统中的阿里云存储系统方式参数说明
+
+| 参数名                 | 类型   | 描述                                                                                 |
+| ---------------------- | ------ | ------------------------------------------------------------------------------------ |
+| user_access_key_id     | string | 阿里云用户的 AccessKeyID，可以在阿里云控制台获取                                     |
+| user_access_key_secret | string | 阿里云用户的 AccessKeySecret，可以在阿里云控制台获取                                 |
+| role_arn               | string | 扮演的角色的 arn                                                                     |
+| region_id              | string | oss bucket 的 region_id                                                              |
+| endpoint_url           | string | oss bucket 的 endpoint_url                                                           |
+| bucket                 | string | oss 的 bucket，详情见https://oss.console.aliyun.com/bucket 中 bucket 详情页面        |
+| url_prefix             | string | oss 外网静态访问地址，详情见https://oss.console.aliyun.com/bucket 中 bucket 详情页面 |
+
+### 亚马逊 S3
+
+<Callout>
+	本存储方式使用的是STS授权方案用来确保权限最小化。AWS
+	S3的实际操作可参照这篇Medium上的文章：https://bharat-singh-06.medium.com/access-s3-bucket-through-sts-security-token-service-f6c613b5db5f
+</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212621095.png)
+
+#### 操作步骤
+
+同样，AWS S3 创建 bucket 的相关步骤较为简单，此处不做赘述，注意**正确配置 Permissions**即可，具体权限配置如下：
+
+Bucket policy 配置
+
+```json
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "Statement1",
+			"Effect": "Allow",
+			"Principal": "*",
+			"Action": "s3:GetObject",
+			"Resource": "arn:aws:s3:::your_bucket_name/*"
+		}
+	]
+}
+```
+
+CORS 配置
+
+```json
+[
+	{
+		"AllowedHeaders": ["*"],
+		"AllowedMethods": ["POST", "GET"],
+		"AllowedOrigins": ["*"],
+		"ExposeHeaders": ["ETag"],
+		"MaxAgeSeconds": 3000
+	}
+]
+```
+
+1. 创建用户
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212902951.png)
+
+2. 创建角色
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212955359.png)
+
+3. 创建策略
+
+注意严格对照我所设置的权限和资源，并依据你的资源组适配。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010213045318.png)
+
+4. 将创建好的策略授权给角色
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010213309793.png)
+
+5. 将临时扮演角色的权限授权给用户
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010213221173.png)
+
+#### Revornix 系统中的 AWS S3 云存储系统方式参数说明
+
+| 参数名                 | 类型   | 描述                                   |
+| ---------------------- | ------ | -------------------------------------- |
+| role_arn               | string | 扮演的角色的 arn                       |
+| user_access_key_id     | string | 用户的 AccessKeyID，详见用户详情页     |
+| user_access_key_secret | string | 用户的 AccessKeySecret，详见用户详情页 |
+| region_name            | string | bucket 的 region_name                  |
+| bucket                 | string | bucket 名字                            |
+| url_prefix             | string | 外网静态访问地址                       |
+
+### 通用 S3 协议兼容服务
+
+所有只要支持 S3 协议的服务都可以使用该方式。
+
+注意该方式下，对应的用户需要具备完整的 OSS 操作权限，包括上传、下载、删除、列表等。由于该权限过大，所以主观来讲我不太推荐使用这种方式，如果你必须使用一些其他平台，我这里又暂时没有做官方的支持，你可以暂时选择用这个通用方式来做临时处理。
+
+| 参数名                 | 类型   | 描述                                                 |
+| ---------------------- | ------ | ---------------------------------------------------- |
+| user_access_key_id     | string | 用户的 AccessKeyID，详见对应第三方的用户管理系统     |
+| user_access_key_secret | string | 用户的 AccessKeySecret，详见对应第三方的用户管理系统 |
+| region_name            | string | bucket 的 region_id                                  |
+| endpoint_url           | string | bucket 的 endpoint_url                               |
+| url_prefix             | string | 外网静态访问地址                                     |
