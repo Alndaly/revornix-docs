@@ -1,5 +1,27 @@
 # 整体架构
 
+```mermaid
+flowchart TD
+    A[User] -->|HTTP/WebSocket| B[Nginx Gateway]
+    B -->|UI| C[Next.js Frontend]
+    B -->|/api/*| D[FastAPI Backend]
+    C -->|REST/WS| D
+    D -->|Auth & DB Ops| E[(PostgreSQL)]
+    D -->|Queue Tasks| F[(Redis)]
+    D -->|File Ops| G[(Remote File Storage)]
+    F -->|Consume| H[Celery Worker]
+    H -->|Parse Documents| G
+    H -->|Update Metadata| E
+    H -->|Write Embeddings| I[(Milvus)]
+    H -->|Write Graph Entities| J[(Neo4j)]
+    D -->|Schedule Jobs| K[APScheduler]
+    K -->|RSS Sync & Notifications| D
+    D -->|WebSocket/Notifications| L[Clients]
+    D -->|Expose Data| C
+    C -->|Visualize Graph| J
+    C -->|Search/QA| I
+```
+
 - Docker Compose 统一编排网关、前端、主后端、异步 worker 及数据基础设施，服务清单和依赖参见 `docker-compose.yaml:1`
 - Nginx 作为统一入口，将 `/api/*` 请求分别代理到主后端、文件服务、RSS 等微服务，配置见 `nginx/nginx.conf:1`
 - FastAPI 主服务暴露 REST 与 WebSocket 接口，并挂载 MCP 子应用，初始化流程在 `api/main.py:1`

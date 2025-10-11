@@ -1,5 +1,27 @@
 # Overall Architecture
 
+```mermaid
+flowchart TD
+    A[User] -->|HTTP/WebSocket| B[Nginx Gateway]
+    B -->|UI| C[Next.js Frontend]
+    B -->|/api/*| D[FastAPI Backend]
+    C -->|REST/WS| D
+    D -->|Auth & DB Ops| E[(PostgreSQL)]
+    D -->|Queue Tasks| F[(Redis)]
+    D -->|File Ops| G[(Remote File Storage)]
+    F -->|Consume| H[Celery Worker]
+    H -->|Parse Documents| G
+    H -->|Update Metadata| E
+    H -->|Write Embeddings| I[(Milvus)]
+    H -->|Write Graph Entities| J[(Neo4j)]
+    D -->|Schedule Jobs| K[APScheduler]
+    K -->|RSS Sync & Notifications| D
+    D -->|WebSocket/Notifications| L[Clients]
+    D -->|Expose Data| C
+    C -->|Visualize Graph| J
+    C -->|Search/QA| I
+```
+
 - Docker Compose orchestrates the gateway, frontend, main backend, async worker, and data infrastructure; see the service inventory and dependencies in `docker-compose.yaml:1`.
 - Nginx serves as the unified entry point, routing `/api/*` traffic to the main backend, file service, RSS service, etc.; configuration is in `nginx/nginx.conf:1`.
 - The FastAPI service exposes REST and WebSocket endpoints and mounts MCP sub-apps; startup lifecycle is defined in `api/main.py:1`.

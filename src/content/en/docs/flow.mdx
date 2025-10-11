@@ -1,9 +1,59 @@
-import { ImageZoom } from 'nextra/components'
+# Processing Flow
 
-# WorkFlow
+Revornix handles every document in three phases, providing real-time feedback at each step so you always know its status.
 
-This is the basic workflow of the project.
+## 1. Collection
 
-<ImageZoom className="dark:hidden" src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202505061356706.svg" />
+When you submit a file or a link:
 
-<ImageZoom className="hidden dark:block" src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021546517.svg" />
+```mermaid
+flowchart TD
+    A[User uploads or pastes a link] --> B[Immediately save the original content to the personal space]
+    B --> C[Create a processing task]
+    C --> D[Interface displays a “Processing” message]
+```
+
+The original source is securely stored to preserve traceability.
+
+The system instantly creates a pending task, and the interface shows a “Processing” indicator to eliminate guesswork.
+
+The document is automatically organized under the right topic or directory for easier management later.
+
+## 2. Analysis
+
+The background assistant starts parsing and enriching the content:
+
+```mermaid
+flowchart TD
+    E[Background task starts] --> F[Extract body text & generate Markdown]
+    F --> G[Identify title, cover image, and summary]
+    G --> H[Perform semantic chunking & embedding]
+    H --> I[Build the knowledge graph and summaries]
+```
+
+The system reads the original, extracts the main text, and produces Markdown while adding a title, cover, and description.
+
+Semantic chunking and vectorization make the content ready for search, Q&A, and recommendations.
+
+Knowledge graphs and summaries highlight key points, relationships, and context.
+
+If auto-summary or section updates are enabled, related content refreshes automatically.
+
+## 3. Notification
+
+Results are returned and immediately ready to use:
+
+```mermaid
+flowchart TD
+    J[Parsing completes] --> K[Interface refreshes the result view]
+    K --> L[Supports search / questions / graph exploration]
+    L --> M[Trigger notifications or hand off to the assistant]
+```
+
+The page updates in real time with Markdown reading, summaries, graph views, and more.
+
+You can search, ask questions, or explore relationships, with every change shown right away.
+
+If notifications are configured, you’ll receive an alert—whether in the notification center, email, or mobile—that the document is ready. You can also delegate follow-up tasks to the assistant.
+
+With this flow, every post-upload step stays transparent, keeping you in control from collection to analysis to sharing.
