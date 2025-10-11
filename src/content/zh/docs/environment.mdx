@@ -1,83 +1,133 @@
 import { Callout } from 'nextra/components';
 
-# 环境变量设置
+# Revornix 环境变量使用指南
 
-<Callout type='info'>
-	本系统有部分变量采用环境变量来便于不同环境下的部署，所以这一部分的正确配置极其重要！
+本文帮助你在部署或自定义 Revornix 时快速理解每一个环境变量的作用与所在服务。除非特别说明，示例值均来自仓库根目录的 `.env`。
+
+<Callout type='warning'>
+	所有密钥类变量请存放在安全的密钥管理工具中，不要提交到版本库。
 </Callout>
 
-## 根目录 env
+> 🧭 常见放置位置：根目录 `.env` 供 Docker Compose 使用；`api/.env`、`celery-worker/.env` 便于本地单独运行 API 或 Worker。
 
-| 名称                                     | 说明                           |
-| ---------------------------------------- | ------------------------------ |
-| `OAUTH_SECRET_KEY`                       | 用户认证体系 JWT 机制的密钥    |
-| `POSTGRES_USER`                          | postgres 用户名                |
-| `POSTGRES_PASSWORD`                      | postgres 密码                  |
-| `POSTGRES_DB`                            | postgres 数据库名称            |
-| `POSTGRES_DB_URL`                        | postgres 数据库链接            |
-| `MILVUS_CLUSTER_ENDPOINT`                | milvus 集群地址                |
-| `MILVUS_TOKEN`                           | milvus 认证 token              |
-| `FILE_SYSTEM_USER_NAME`                  | 文件系统用户名                 |
-| `FILE_SYSTEM_PASSWORD`                   | 文件系统密码                   |
-| `FILE_SYSTEM_SERVER_PRIVATE_URL`         | 文件系统服务地址 (docker 内网) |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL`          | 文件系统服务地址 (公网)        |
-| `NEO4J_AUTH`                             | neo4j 认证                     |
-| `ETCD_ENDPOINTS`                         | etcd 集群地址                  |
-| `ETCD_AUTO_COMPACTION_MODE`              | 启用 etcd 的自动压缩机制       |
-| `ETCD_AUTO_COMPACTION_RETENTION`         | 压缩保留的修订数               |
-| `ETCD_QUOTA_BACKEND_BYTES`               | 设置 etcd 后端数据库的存储配额 |
-| `ETCD_SNAPSHOT_COUNT`                    | 写入多少事务后生成一个快照     |
-| `MILVUS_MINIO_USER_NAME`                 | milvus 的 minio 服务的用户名   |
-| `MILVUS_MINIO_PASSWORD`                  | milvus 的 minio 服务的密码     |
-| `REDIS_URL`                              | redis 连接地址                 |
-| `REDIS_PORT`                             | redis 连接端口                 |
-| `HF_ENDPOINT`                            | huggingface 服务地址           |
-| `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务前缀               |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 文件服务接口前缀               |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | 热搜服务接口前缀               |
+---
 
-## web 服务
+## 1. 核心安全与鉴权
 
-| 名称                                     | 说明                                                |
-| ---------------------------------------- | --------------------------------------------------- |
-| `NEXT_PUBLIC_API_PREFIX`                 | 核心后端服务前缀                                    |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | 核心后端服务中的实时通知服务部分 websocket 接口前缀 |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | 热搜服务接口前缀                                    |
+| 变量                 | 示例值             | 说明                                                          | 主要作用范围                                                                           |
+| -------------------- | ------------------ | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `OAUTH_SECRET_KEY`   | `d2cd0e...ce6f9`   | 用于用户登录态与 JWT 加密，必须在所有后端与 Worker 中保持一致 | `api/config/oauth2.py:4`, `celery-worker/config/oauth2.py:4`, `docker-compose.yaml:62` |
+| `APIKEY_ENCRYPT_KEY` | `623f8bce26d03...` | Base64 编码的 32 字节密钥，用于加密存储第三方模型/API 密钥    | `api/common/encrypt.py:5`, `celery-worker/common/encrypt.py:5`                         |
+| `ENV`（可选）        | `dev`              | 设置为 `dev` 时，服务会自动加载本地 `.env` 并开启更详细日志   | `api/main.py:3`, `celery-worker/common/celery/app.py:3`                                |
 
-## api 服务
+---
 
-| 名称                             | 说明                           |
-| -------------------------------- | ------------------------------ |
-| `OAUTH_SECRET_KEY`               | 用户认证体系 JWT 机制的密钥    |
-| `REDIS_URL`                      | redis 连接地址                 |
-| `REDIS_PASSWORD`                 | redis 连接密码                 |
-| `REDIS_PORT`                     | redis 连接端口                 |
-| `POSTGRES_USER`                  | postgres 用户名                |
-| `POSTGRES_PASSWORD`              | postgres 密码                  |
-| `POSTGRES_DB`                    | postgres 数据库名称            |
-| `POSTGRES_DB_URL`                | postgres 数据库链接            |
-| `MILVUS_CLUSTER_ENDPOINT`        | milvus 连接地址                |
-| `MILVUS_TOKEN`                   | milvus 连接 token              |
-| `FILE_SYSTEM_USER_NAME`          | 文件系统用户名                 |
-| `FILE_SYSTEM_PASSWORD`           | 文件系统密码                   |
-| `FILE_SYSTEM_SERVER_PRIVATE_URL` | 文件系统服务地址 (docker 内网) |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | 文件系统服务地址 (公网)        |
+## 2. 数据与队列服务
 
-## celery-wroker
+| 变量                      | 示例值                           | 说明                                                    | 主要作用范围                                                     |
+| ------------------------- | -------------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------- |
+| `POSTGRES_USER`           | `revornix`                       | PostgreSQL 用户名                                       | `api/common/sql.py:3`, `docker-compose.yaml:176`                 |
+| `POSTGRES_PASSWORD`       | `12345678`                       | PostgreSQL 密码                                         | 同上                                                             |
+| `POSTGRES_DB`             | `revornix`                       | 主数据库名称                                            | 同上                                                             |
+| `POSTGRES_DB_URL`         | `postgres`                       | 数据库主机地址（Docker 模式）或 `localhost`（本地运行） | `api/common/sql.py:6`, `alembic/env.py:21`                       |
+| `REDIS_URL`               | `redis`                          | Redis 主机地址；用作缓存、会话、任务队列 Broker         | `api/common/redis.py:5`, `celery-worker/common/celery/app.py:35` |
+| `REDIS_PORT`              | `6379`                           | Redis 端口                                              | 同上                                                             |
+| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus 集群访问地址                                     | `api/data/milvus/base.py:9`, `celery-worker/config/milvus.py:3`  |
+| `MILVUS_TOKEN`            | `root:Milvus`                    | 访问 Milvus 的凭证                                      | 同上                                                             |
+| `NEO4J_URI`               | `bolt://localhost:7687`          | Neo4j 图数据库节点                                      | `api/data/neo4j/base.py:8`, `celery-worker/data/neo4j/base.py:8` |
+| `NEO4J_USER`              | `neo4j`                          | Neo4j 登录用户                                          | 同上                                                             |
+| `NEO4J_PASS`              | `12345678`                       | Neo4j 密码                                              | 同上                                                             |
+| `HF_ENDPOINT`             | `https://hf-mirror.com`          | HuggingFace Hub 请求入口（可配自建镜像）                | `docker-compose.yaml:68`, `docker-compose.yaml:114`              |
 
-| 名称                             | 说明                           |
-| -------------------------------- | ------------------------------ |
-| `OAUTH_SECRET_KEY`               | 用户认证体系 JWT 机制的密钥    |
-| `REDIS_URL`                      | redis 连接地址                 |
-| `REDIS_PASSWORD`                 | redis 连接密码                 |
-| `REDIS_PORT`                     | redis 连接端口                 |
-| `POSTGRES_USER`                  | postgres 用户名                |
-| `POSTGRES_PASSWORD`              | postgres 密码                  |
-| `POSTGRES_DB`                    | postgres 数据库名称            |
-| `POSTGRES_DB_URL`                | postgres 数据库链接            |
-| `MILVUS_CLUSTER_ENDPOINT`        | milvus 连接地址                |
-| `MILVUS_TOKEN`                   | milvus 连接 token              |
-| `FILE_SYSTEM_USER_NAME`          | 文件系统用户名                 |
-| `FILE_SYSTEM_PASSWORD`           | 文件系统密码                   |
-| `FILE_SYSTEM_SERVER_PRIVATE_URL` | 文件系统服务地址 (docker 内网) |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | 文件系统服务地址 (公网)        |
+---
+
+## 3. 文件系统与对象存储
+
+| 变量                             | 示例值                              | 说明                                     | 主要作用范围                                                           |
+| -------------------------------- | ----------------------------------- | ---------------------------------------- | ---------------------------------------------------------------------- |
+| `FILE_SYSTEM_USER_NAME`          | `revornix`                          | MinIO/Built-in 文件系统账号              | `api/config/file_system.py:3`, `celery-worker/config/file_system.py:3` |
+| `FILE_SYSTEM_PASSWORD`           | `12345678`                          | MinIO/Built-in 文件系统密码              | 同上                                                                   |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | `http://localhost/api/file-service` | 前端访问文件的公开入口（通常经过 Nginx） | `api/protocol/remote_file_service.py:25`, `nginx/nginx.conf:53`        |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | `http://file-backend:9010`          | 后端/Worker 在容器网络中访问文件的地址   | 同上                                                                   |
+
+---
+
+## 4. Milvus 依赖组件（Etcd / MinIO）
+
+仅在使用 Docker Compose 部署 Milvus 时需要配置：
+
+| 变量                             | 示例值             | 说明                               | 主要作用范围              |
+| -------------------------------- | ------------------ | ---------------------------------- | ------------------------- |
+| `ETCD_ENDPOINTS`                 | `http://etcd:2379` | Milvus 所依赖的 Etcd 服务地址      | `docker-compose.yaml:150` |
+| `ETCD_AUTO_COMPACTION_MODE`      | `revision`         | Etcd 自动压缩模式                  | 同上                      |
+| `ETCD_AUTO_COMPACTION_RETENTION` | `1000`             | Etcd 保留修订数                    | 同上                      |
+| `ETCD_QUOTA_BACKEND_BYTES`       | `4294967296`       | Etcd 存储配额                      | 同上                      |
+| `ETCD_SNAPSHOT_COUNT`            | `50000`            | Etcd 快照阈值                      | 同上                      |
+| `MILVUS_MINIO_USER_NAME`         | `minioadmin`       | Milvus 内部 MinIO 账号             | `docker-compose.yaml:122` |
+| `MILVUS_MINIO_PASSWORD`          | `minioadmin`       | Milvus 内部 MinIO 密码             | 同上                      |
+| `NEO4J_AUTH`                     | `neo4j/12345678`   | Docker 模式下 Neo4j 容器的初始凭证 | `docker-compose.yaml:163` |
+
+---
+
+## 5. 第三方登录与通知
+
+| 变量                     | 示例值                              | 说明                         | 主要作用范围                                         |
+| ------------------------ | ----------------------------------- | ---------------------------- | ---------------------------------------------------- |
+| `GOOGLE_CLIENT_ID`       | `4173...apps.googleusercontent.com` | Google OAuth 应用 ID         | `api/router/user.py:399`, `api/router/user.py:454`   |
+| `GOOGLE_CLIENT_SECRET`   | `GOCSPX-...`                        | Google OAuth 密钥            | 同上                                                 |
+| `GITHUB_CLIENT_ID`       | `Iv23liJSg8...`                     | GitHub OAuth 应用 ID         | `api/router/user.py:486`, `api/router/user.py:541`   |
+| `GITHUB_CLIENT_SECRET`   | `a752f8c8...`                       | GitHub OAuth 密钥            | 同上                                                 |
+| `WECHAT_APP_ID`          | `wx8bdsa4...`                       | 微信公众平台/开放平台应用 ID | `api/router/user.py:680`, `api/router/user.py:740`   |
+| `WECHAT_APP_SECRET`      | `bcbaf3...8072`                     | 微信应用密钥                 | 同上                                                 |
+| `TENCENT_SECRET_ID`      | `AKIDwlRu...`                       | 腾讯云短信 `SecretId`        | `api/config/sms.py:3`, `docker-compose.yaml:51`      |
+| `TENCENT_SECRET_KEY`     | `96sQlsmTx...`                      | 腾讯云短信 `SecretKey`       | 同上                                                 |
+| `TENCENT_SMS_SDK_APP_ID` | `140...`                            | 腾讯短信应用 ID              | 同上                                                 |
+| `TENCENT_SMS_APP_KEY`    | `cf1551461de61cd6...`               | 腾讯短信 AppKey              | 同上                                                 |
+| `TENCENT_SMS_SIGN`       | `SIGNATURE`                         | 短信签名                     | 同上                                                 |
+| `MAIL_SENDER`（可选）    | `noreply@yourdomain.com`            | 邮件通知发送账号             | `celery-worker/config/mail.py:2`, `api/notify/email` |
+| `MAIL_PASSWORD`（可选）  | `your-app-pass`                     | 邮件发送凭证或授权码         | 同上                                                 |
+
+---
+
+## 6. 前端可见变量（必须以 `NEXT_PUBLIC_` 开头）
+
+这些变量会被打包进浏览器，切勿写入敏感信息。
+
+| 变量                                     | 示例值                                            | 说明                             | 主要作用范围                                   |
+| ---------------------------------------- | ------------------------------------------------- | -------------------------------- | ---------------------------------------------- |
+| `NEXT_PUBLIC_API_PREFIX`                 | `http://localhost/api/main-service`               | 前端调用主后端的基础 URL         | `web/src/config/api.ts:1`, `next.config.ts:28` |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost/api/main-service/notification/ws` | WebSocket 通知地址               | `web/src/config/api.ts:2`                      |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | `http://localhost/api/daily-hot-service`          | Daily Hot 聚合接口地址           | `web/src/config/api.ts:3`                      |
+| `NEXT_PUBLIC_WECHAT_APP_ID`              | `wx8b244c17b73a8672`                              | 用于在前端生成微信二维码登录地址 | `web/components/user/wechat-bind.tsx:50`       |
+| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`     | `true`/`false`                                    | 控制是否显示第三方登录入口       | `web/src/app/(public)/account/page.tsx:87`     |
+
+---
+
+## 7. Daily Hot 聚合服务（Node 应用）
+
+| 变量              | 默认值      | 说明                          | 主要作用范围                 |
+| ----------------- | ----------- | ----------------------------- | ---------------------------- |
+| `PORT`            | `6688`      | Daily Hot 服务监听端口        | `daily-hot/src/config.ts:36` |
+| `DISALLOW_ROBOT`  | `true`      | 是否禁止爬虫抓取              | 同上                         |
+| `CACHE_TTL`       | `3600`      | 榜单缓存时间（秒）            | 同上                         |
+| `REQUEST_TIMEOUT` | `6000`      | Upstream 请求超时时间（毫秒） | 同上                         |
+| `ALLOWED_DOMAIN`  | `*`         | 允许访问的域名通配            | 同上                         |
+| `ALLOWED_HOST`    | `imsyy.top` | 校验请求来源的顶级域          | 同上                         |
+| `USE_LOG_FILE`    | `true`      | 是否写入日志文件              | 同上                         |
+| `RSS_MODE`        | `false`     | 是否默认输出 RSS              | 同上                         |
+| `REDIS_HOST`      | `127.0.0.1` | Daily Hot 使用的 Redis 主机   | 同上                         |
+| `REDIS_PORT`      | `6379`      | Redis 端口                    | 同上                         |
+| `REDIS_PASSWORD`  | `""`        | Redis 密码（若需要）          | 同上                         |
+
+---
+
+## 8. 其他提示
+
+- **本地开发建议：**  
+  使用 `api/.env`、`celery-worker/.env` 覆盖主 `.env`，以免影响线上配置。示例文件可参考 `api/.env.example`、`celery-worker/.env.example`。
+- **Docker 部署：**  
+  `docker-compose.yaml` 会从根目录 `.env` 读取变量，并传入 `api`、`celery-worker`、`web`、`daily-hot` 等服务。确保该文件内容与部署环境一致。
+- **敏感信息管理：**  
+  建议配合 Vault、AWS Secrets Manager 或 Docker secrets 管理生产密钥；不要在日志或终端输出密钥值。
+
+祝你部署顺利，随时欢迎反馈使用体验！

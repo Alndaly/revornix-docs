@@ -1,85 +1,131 @@
 import { Callout } from 'nextra/components';
 
-# Environment Variable Configuration
+# Revornix Environment Variable Guide
 
-<Callout type='info'>
-	Some variables in this system are configured using environment variables to
-	facilitate deployment across different environments, so it is extremely
-	important to set them correctly!
+This guide helps you understand the purpose and service scope of each environment variable when deploying or customizing Revornix. Unless noted otherwise, the sample values come from the root-level `.env`.
+
+<Callout type='warning'>
+	Store all secret-style variables in a secure secret management tool and never
+	commit them to version control.
 </Callout>
 
-## Root Directory `.env`
+> 🧭 Common placement: the root `.env` for Docker Compose; `api/.env` and `celery-worker/.env` for running the API or worker locally.
 
-| Name                                     | Description                                   |
-| ---------------------------------------- | --------------------------------------------- |
-| `OAUTH_SECRET_KEY`                       | Secret key for JWT user authentication system |
-| `POSTGRES_USER`                          | PostgreSQL username                           |
-| `POSTGRES_PASSWORD`                      | PostgreSQL password                           |
-| `POSTGRES_DB`                            | PostgreSQL database name                      |
-| `POSTGRES_DB_URL`                        | PostgreSQL database URL                       |
-| `MILVUS_CLUSTER_ENDPOINT`                | Milvus cluster address                        |
-| `MILVUS_TOKEN`                           | Milvus authentication token                   |
-| `FILE_SYSTEM_USER_NAME`                  | File system username                          |
-| `FILE_SYSTEM_PASSWORD`                   | File system password                          |
-| `FILE_SYSTEM_SERVER_PRIVATE_URL`         | File system service address (Docker internal) |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL`          | File system service address (public network)  |
-| `NEO4J_AUTH`                             | Neo4j authentication                          |
-| `ETCD_ENDPOINTS`                         | etcd cluster endpoints                        |
-| `ETCD_AUTO_COMPACTION_MODE`              | Enable etcd auto-compaction mode              |
-| `ETCD_AUTO_COMPACTION_RETENTION`         | Revisions to retain during compaction         |
-| `ETCD_QUOTA_BACKEND_BYTES`               | etcd backend DB storage quota                 |
-| `ETCD_SNAPSHOT_COUNT`                    | Transactions to write before snapshot         |
-| `MILVUS_MINIO_USER_NAME`                 | MinIO username for Milvus service             |
-| `MILVUS_MINIO_PASSWORD`                  | MinIO password for Milvus service             |
-| `REDIS_URL`                              | Redis connection URL                          |
-| `REDIS_PORT`                             | Redis connection port                         |
-| `HF_ENDPOINT`                            | HuggingFace service endpoint                  |
-| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service prefix                   |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | File service interface prefix                 |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Trending service interface prefix             |
+---
 
-## Web Service
+## 1. Core Security & Authentication
 
-| Name                                     | Description                                          |
-| ---------------------------------------- | ---------------------------------------------------- |
-| `NEXT_PUBLIC_API_PREFIX`                 | Core backend service prefix                          |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | WebSocket interface prefix of real-time notification |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | Trending service interface prefix                    |
+| Variable             | Example            | Description                                                                  | Primary locations                                                                      |
+| -------------------- | ------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `OAUTH_SECRET_KEY`   | `d2cd0e...ce6f9`   | Used for user sessions and JWT encryption; must match across API and workers | `api/config/oauth2.py:4`, `celery-worker/config/oauth2.py:4`, `docker-compose.yaml:62` |
+| `APIKEY_ENCRYPT_KEY` | `623f8bce26d03...` | Base64-encoded 32-byte key for encrypting third-party model/API secrets      | `api/common/encrypt.py:5`, `celery-worker/common/encrypt.py:5`                         |
+| `ENV` (optional)     | `dev`              | Set to `dev` to auto-load the local `.env` file and enable verbose logs      | `api/main.py:3`, `celery-worker/common/celery/app.py:3`                                |
 
-## API Service
+---
 
-| Name                             | Description                                   |
-| -------------------------------- | --------------------------------------------- |
-| `OAUTH_SECRET_KEY`               | Secret key for JWT user authentication system |
-| `REDIS_URL`                      | Redis connection URL                          |
-| `REDIS_PASSWORD`                 | Redis connection password                     |
-| `REDIS_PORT`                     | Redis connection port                         |
-| `POSTGRES_USER`                  | PostgreSQL username                           |
-| `POSTGRES_PASSWORD`              | PostgreSQL password                           |
-| `POSTGRES_DB`                    | PostgreSQL database name                      |
-| `POSTGRES_DB_URL`                | PostgreSQL database URL                       |
-| `MILVUS_CLUSTER_ENDPOINT`        | Milvus connection address                     |
-| `MILVUS_TOKEN`                   | Milvus authentication token                   |
-| `FILE_SYSTEM_USER_NAME`          | File system username                          |
-| `FILE_SYSTEM_PASSWORD`           | File system password                          |
-| `FILE_SYSTEM_SERVER_PRIVATE_URL` | File system service address (Docker internal) |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | File system service address (public network)  |
+## 2. Data & Queue Services
 
-## celery-worker
+| Variable                  | Example                          | Description                                                      | Primary locations                                                |
+| ------------------------- | -------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `POSTGRES_USER`           | `revornix`                       | PostgreSQL username                                              | `api/common/sql.py:3`, `docker-compose.yaml:176`                 |
+| `POSTGRES_PASSWORD`       | `12345678`                       | PostgreSQL password                                              | Same as above                                                    |
+| `POSTGRES_DB`             | `revornix`                       | Primary database name                                            | Same as above                                                    |
+| `POSTGRES_DB_URL`         | `postgres`                       | Database host (`postgres` in Docker, `localhost` for local runs) | `api/common/sql.py:6`, `alembic/env.py:21`                       |
+| `REDIS_URL`               | `redis`                          | Redis host, used for cache, sessions, and task queue broker      | `api/common/redis.py:5`, `celery-worker/common/celery/app.py:35` |
+| `REDIS_PORT`              | `6379`                           | Redis port                                                       | Same as above                                                    |
+| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus cluster endpoint                                          | `api/data/milvus/base.py:9`, `celery-worker/config/milvus.py:3`  |
+| `MILVUS_TOKEN`            | `root:Milvus`                    | Credentials for Milvus                                           | Same as above                                                    |
+| `NEO4J_URI`               | `bolt://localhost:7687`          | Neo4j database URI                                               | `api/data/neo4j/base.py:8`, `celery-worker/data/neo4j/base.py:8` |
+| `NEO4J_USER`              | `neo4j`                          | Neo4j username                                                   | Same as above                                                    |
+| `NEO4J_PASS`              | `12345678`                       | Neo4j password                                                   | Same as above                                                    |
+| `HF_ENDPOINT`             | `https://hf-mirror.com`          | HuggingFace Hub entry point (custom mirrors supported)           | `docker-compose.yaml:68`, `docker-compose.yaml:114`              |
 
-| Name                             | Description                                   |
-| -------------------------------- | --------------------------------------------- |
-| `OAUTH_SECRET_KEY`               | Secret key for JWT user authentication system |
-| `REDIS_URL`                      | Redis connection URL                          |
-| `REDIS_PASSWORD`                 | Redis connection password                     |
-| `REDIS_PORT`                     | Redis connection port                         |
-| `POSTGRES_USER`                  | PostgreSQL username                           |
-| `POSTGRES_PASSWORD`              | PostgreSQL password                           |
-| `POSTGRES_DB`                    | PostgreSQL database name                      |
-| `POSTGRES_DB_URL`                | PostgreSQL database URL                       |
-| `MILVUS_CLUSTER_ENDPOINT`        | Milvus connection address                     |
-| `MILVUS_TOKEN`                   | Milvus authentication token                   |
-| `FILE_SYSTEM_USER_NAME`          | File system username                          |
-| `FILE_SYSTEM_PASSWORD`           | File system password                          |
-| `FILE_SYSTEM_SERVER_PRIVATE_URL` | File system service address (Docker internal) |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | File system service address (public network)  |
+---
+
+## 3. File System & Object Storage
+
+| Variable                         | Example                             | Description                                        | Primary locations                                                      |
+| -------------------------------- | ----------------------------------- | -------------------------------------------------- | ---------------------------------------------------------------------- |
+| `FILE_SYSTEM_USER_NAME`          | `revornix`                          | MinIO/Built-in file system username                | `api/config/file_system.py:3`, `celery-worker/config/file_system.py:3` |
+| `FILE_SYSTEM_PASSWORD`           | `12345678`                          | MinIO/Built-in file system password                | Same as above                                                          |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL`  | `http://localhost/api/file-service` | Public URL for file access (usually via Nginx)     | `api/protocol/remote_file_service.py:25`, `nginx/nginx.conf:53`        |
+| `FILE_SYSTEM_SERVER_PRIVATE_URL` | `http://file-backend:9010`          | Internal address for API/worker within the network | Same as above                                                          |
+
+---
+
+## 4. Milvus Dependencies (Etcd / MinIO)
+
+Required only when deploying Milvus via Docker Compose:
+
+| Variable                         | Example            | Description                             | Primary locations         |
+| -------------------------------- | ------------------ | --------------------------------------- | ------------------------- |
+| `ETCD_ENDPOINTS`                 | `http://etcd:2379` | Etcd endpoint used by Milvus            | `docker-compose.yaml:150` |
+| `ETCD_AUTO_COMPACTION_MODE`      | `revision`         | Etcd auto-compaction mode               | Same as above             |
+| `ETCD_AUTO_COMPACTION_RETENTION` | `1000`             | Etcd revision retention                 | Same as above             |
+| `ETCD_QUOTA_BACKEND_BYTES`       | `4294967296`       | Etcd storage quota                      | Same as above             |
+| `ETCD_SNAPSHOT_COUNT`            | `50000`            | Etcd snapshot threshold                 | Same as above             |
+| `MILVUS_MINIO_USER_NAME`         | `minioadmin`       | Internal MinIO username for Milvus      | `docker-compose.yaml:122` |
+| `MILVUS_MINIO_PASSWORD`          | `minioadmin`       | Internal MinIO password for Milvus      | Same as above             |
+| `NEO4J_AUTH`                     | `neo4j/12345678`   | Initial credentials for Neo4j container | `docker-compose.yaml:163` |
+
+---
+
+## 5. Third-Party Login & Notifications
+
+| Variable                   | Example                             | Description                          | Primary locations                                    |
+| -------------------------- | ----------------------------------- | ------------------------------------ | ---------------------------------------------------- |
+| `GOOGLE_CLIENT_ID`         | `4173...apps.googleusercontent.com` | Google OAuth application ID          | `api/router/user.py:399`, `api/router/user.py:454`   |
+| `GOOGLE_CLIENT_SECRET`     | `GOCSPX-...`                        | Google OAuth secret                  | Same as above                                        |
+| `GITHUB_CLIENT_ID`         | `Iv23liJSg8...`                     | GitHub OAuth application ID          | `api/router/user.py:486`, `api/router/user.py:541`   |
+| `GITHUB_CLIENT_SECRET`     | `a752f8c8...`                       | GitHub OAuth secret                  | Same as above                                        |
+| `WECHAT_APP_ID`            | `wx8bdsa4...`                       | WeChat Official/Open Platform App ID | `api/router/user.py:680`, `api/router/user.py:740`   |
+| `WECHAT_APP_SECRET`        | `bcbaf3...8072`                     | WeChat application secret            | Same as above                                        |
+| `TENCENT_SECRET_ID`        | `AKIDwlRu...`                       | Tencent Cloud SMS `SecretId`         | `api/config/sms.py:3`, `docker-compose.yaml:51`      |
+| `TENCENT_SECRET_KEY`       | `96sQlsmTx...`                      | Tencent Cloud SMS `SecretKey`        | Same as above                                        |
+| `TENCENT_SMS_SDK_APP_ID`   | `140...`                            | Tencent SMS application ID           | Same as above                                        |
+| `TENCENT_SMS_APP_KEY`      | `cf1551461de61cd6...`               | Tencent SMS AppKey                   | Same as above                                        |
+| `TENCENT_SMS_SIGN`         | `SIGNATURE`                         | SMS signature                        | Same as above                                        |
+| `MAIL_SENDER` (optional)   | `noreply@yourdomain.com`            | Email account for notifications      | `celery-worker/config/mail.py:2`, `api/notify/email` |
+| `MAIL_PASSWORD` (optional) | `your-app-pass`                     | Email password or app token          | Same as above                                        |
+
+---
+
+## 6. Front-End Visible Variables (`NEXT_PUBLIC_*`)
+
+These variables are bundled into the browser build—do not place sensitive information here.
+
+| Variable                                 | Example                                           | Description                              | Primary locations                              |
+| ---------------------------------------- | ------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- |
+| `NEXT_PUBLIC_API_PREFIX`                 | `http://localhost/api/main-service`               | Base URL for the core backend            | `web/src/config/api.ts:1`, `next.config.ts:28` |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost/api/main-service/notification/ws` | WebSocket endpoint for notifications     | `web/src/config/api.ts:2`                      |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | `http://localhost/api/daily-hot-service`          | Daily Hot aggregation endpoint           | `web/src/config/api.ts:3`                      |
+| `NEXT_PUBLIC_WECHAT_APP_ID`              | `wx8b244c17b73a8672`                              | Used to generate the WeChat QR login URL | `web/components/user/wechat-bind.tsx:50`       |
+| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`     | `true`/`false`                                    | Toggles third-party login entry points   | `web/src/app/(public)/account/page.tsx:87`     |
+
+---
+
+## 7. Daily Hot Aggregation Service (Node App)
+
+| Variable          | Default     | Description                             | Primary locations            |
+| ----------------- | ----------- | --------------------------------------- | ---------------------------- |
+| `PORT`            | `6688`      | Listening port for Daily Hot            | `daily-hot/src/config.ts:36` |
+| `DISALLOW_ROBOT`  | `true`      | Whether to block crawlers               | Same as above                |
+| `CACHE_TTL`       | `3600`      | Cache duration for rankings (seconds)   | Same as above                |
+| `REQUEST_TIMEOUT` | `6000`      | Upstream request timeout (milliseconds) | Same as above                |
+| `ALLOWED_DOMAIN`  | `*`         | Allowed domain wildcard                 | Same as above                |
+| `ALLOWED_HOST`    | `imsyy.top` | Top-level host whitelist                | Same as above                |
+| `USE_LOG_FILE`    | `true`      | Whether to write log files              | Same as above                |
+| `RSS_MODE`        | `false`     | Whether to output RSS by default        | Same as above                |
+| `REDIS_HOST`      | `127.0.0.1` | Redis host used by Daily Hot            | Same as above                |
+| `REDIS_PORT`      | `6379`      | Redis port                              | Same as above                |
+| `REDIS_PASSWORD`  | `""`        | Redis password (if required)            | Same as above                |
+
+---
+
+## 8. Additional Tips
+
+- **Local development:** Use `api/.env` and `celery-worker/.env` to override the main `.env` so production settings remain untouched. Refer to `api/.env.example` and `celery-worker/.env.example` for samples.
+- **Docker deployment:** `docker-compose.yaml` reads variables from the root `.env` and passes them to services such as `api`, `celery-worker`, `web`, and `daily-hot`. Ensure the contents match your target environment.
+- **Secret management:** Use Vault, AWS Secrets Manager, or Docker secrets in production. Never print secret values in logs or terminals.
+
+Good luck with your deployment—feedback is always welcome!
