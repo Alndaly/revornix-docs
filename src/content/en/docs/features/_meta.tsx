@@ -1,3 +1,4 @@
+import BetaBadge from '@/components/beta-badge';
 import type { MetaRecord } from 'nextra';
 
 const meta: MetaRecord = {
@@ -5,16 +6,51 @@ const meta: MetaRecord = {
 	account: 'Account',
 	'document-collect': 'Document Collect',
 	'document-manage': 'Document Manage',
-	graphrag: 'Knowledge Graph',
+	graphrag: {
+		title: (
+			<div className='flex items-center gap-2'>
+				Knowledge Graph
+				<BetaBadge />
+			</div>
+		),
+	},
 	'custom-file-system': 'Custom File System',
 	engine: 'Document Converter',
 	'hot-search': 'Hot Search',
-	rss: 'RSS',
-	mcp: 'Built-In MCP',
+	rss: {
+		title: (
+			<div className='flex items-center gap-2'>
+				RSS
+				<BetaBadge />
+			</div>
+		),
+	},
+	mcp: {
+		title: (
+			<div className='flex items-center gap-2'>
+				Built-In MCP
+				<BetaBadge />
+			</div>
+		),
+	},
 	notification: 'Notification Manage',
 	'custom-model': 'Custom Model',
-	'revornix-ai': 'Revornix AI',
-	section: 'Section Manage',
+	'revornix-ai': {
+		title: (
+			<div className='flex items-center gap-2'>
+				Revornix AI
+				<BetaBadge />
+			</div>
+		),
+	},
+	section: {
+		title: (
+			<div className='flex items-center gap-2'>
+				Section Manage
+				<BetaBadge />
+			</div>
+		),
+	},
 	api: 'API Manage',
 };
 
