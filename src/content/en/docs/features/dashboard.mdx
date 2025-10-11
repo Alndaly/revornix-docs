@@ -2,18 +2,22 @@ import { Callout } from 'nextra/components';
 
 # Dashboard
 
-In this version, I’ve migrated some core foundational information into the Dashboard page. This allows you to quickly and easily get an overview of your current knowledge coverage. Moving forward, I’ll continue to bring more content into the dashboard through thoughtful logic and UI layout improvements.
-
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507292031988.png)
-
-The current data covered includes:
-
-- Daily document collection statistics
-- Number of unread documents
-- Total documents read recently
-- Number of documents bookmarked
-- Tags across documents and columns
-
 <Callout>
 Since the data is real-time, any document that is deleted will not be included in the statistics and will no longer appear on this page.
 </Callout>
+
+Most of the system’s core information is available on the dashboard so you can access it quickly. I will continue migrating additional content to this page over time with more refined logic and UI layout.
+
+If you are a **new user**, you will find onboarding tasks at the top of the dashboard, such as binding models and configuring engines.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011141251012.png)
+
+The data currently shown includes:
+
+- Daily summaries (the sections generated after summarizing all documents for the day)
+- Current trending searches (powered by the [daily-hot](./hot-search) service)
+- Document collection statistics by day
+- Total unread documents and the most recent collected document that remains unread
+- Recent reading statistics and the most recently read document
+- Favorite document statistics and the most recent document you starred
+- Tags for documents and sections
