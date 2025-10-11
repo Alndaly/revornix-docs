@@ -1,0 +1,31 @@
+import { Callout } from 'nextra/components';
+
+# Custom Models
+
+The Revornix system supports adding custom third-party models so you can integrate the models you prefer.
+
+<Callout>
+Currently, only models that follow the `openai` protocol are supported, meaning third-party models must be compatible with the OpenAI API.
+</Callout>
+
+## How to Configure and Add Models
+
+1. Click the settings button in the top-right corner to open the settings page. In the Model Configuration group, locate **Model Integration** and click the Configure button on the right to open the details page.  
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105845507.png)
+2. Click **Add Model Provider** and complete the provider’s basic information. You can fill in the name and description however you like to make them easy to remember, then click **Save**.  
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105712488.png)
+3. Click **Configure Models** on the provider card to enter the model group configuration page. Click **Add Model**, fill in the model name, and then click the **Save** button on the right. The model name must match the exact name of the third-party model; you cannot use a custom name.  
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105638316.png)
+
+## Selecting Custom Models
+
+Users can assign custom models to specific purposes.
+
+<Callout>
+By default, the document summarization model not only creates document summaries, generates summaries, titles, descriptions, and sections, but it also participates in building the knowledge graph as the primary model for entity and relationship extraction. We recommend configuring a high-quality model for this role.
+</Callout>
+
+- Document ingestion summarization model  
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105845507.png)
+- Revornix AI conversation model configuration  
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105953173.png)

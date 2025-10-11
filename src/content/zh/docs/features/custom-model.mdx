@@ -1,0 +1,29 @@
+import { Callout } from 'nextra/components';
+
+# 自定义模型
+
+Revornix 系统支持自定义三方模型，你可自行配制增加想用的模型。
+
+<Callout>
+当前仅支持符合`openai`协议的模型，即兼容`openai api`的三方模型。
+</Callout>
+
+## 如何配置增加
+
+1. 点击右上角设置按钮进入设置页面，找到模型配制设置组下的模型集成，点击右侧模型配置进入详情页。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105845507.png)
+2. 点击增加模型供应商，配制模型供应商的基础信息，其中名称和描述可任意填写，方便自己记忆即可，然后点击保存。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105712488.png)
+3. 点击模型供应商卡片的配置模型组，进入模型组配置页面，点击增加模型，填写模型名称，然后点击右侧保存按钮。注意这个模型名称必须是三方模型的实际全称，你不能自己随意写。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105638316.png)
+
+## 选择自定义模型使用
+
+用户可自行选择制定模型用在指定用途。
+
+<Callout>当前默认情况下，文档总结模型除了进行文档总结，生成Summary、标题、描述和专栏以外，还参与构建了知识图谱，是实体和关系抽取的主要模型。所以主观上建议这最好配置为一个很好的模型。</Callout>
+
+- 文档收录总结模型
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105845507.png)
+- Revornix AI对话模型配制
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105953173.png)

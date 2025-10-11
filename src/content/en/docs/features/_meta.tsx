@@ -12,7 +12,7 @@ const meta: MetaRecord = {
 	rss: 'RSS',
 	mcp: 'Built-In MCP',
 	notification: 'Notification Manage',
-	model: 'Custom Model',
+	'custom-model': 'Custom Model',
 	'revornix-ai': 'Revornix AI',
 	section: 'Section Manage',
 	api: 'API Manage',
