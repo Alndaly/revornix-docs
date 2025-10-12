@@ -3,70 +3,61 @@ import { Steps } from 'nextra/components';
 
 # Quick Start
 
-## Docker Method (Recommended)
-
-<Steps>
-
-### Clone the Repository Locally
-
-```shell
-git clone git@github.com:Qingyon-AI/Revornix.git
-cd Revornix
-```
-
-### Environment Variable Configuration
-
-```shell
-cp .env.example .env
-```
-
-Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
-
-<Callout>
-In most cases, you only need to configure the `SECRET_KEY` parameter for the user authentication mechanism, and leave the other parameters as default. Note that the `SECRET_KEY` must be consistent across different services; otherwise, the user authentication systems will not be interoperable.
-</Callout>
-
-### Pull Necessary Repositories with Docker and Start
-
-```shell
-docker compose pull
-docker compose up -d
-```
-
-After all services have started, visit http://localhost to see the frontend page. Note that because the backend services take longer to start, the frontend may need to wait for a period of time (normally about 10-15 minutes) before it can make normal API requests. You can check the core backend service startup status with `docker compose logs api`.
-
-</Steps>
+Because the current system architecture design is not the final version and there are still several issues with the Docker packaging, we currently recommend using the manual deployment method.
 
 ## Manual Deployment Method
 
-Unless you need to modify some source code to adapt to custom functionality, this method is not recommended. The process is indeed quite complex.
-
 <Callout>
-	It is strongly recommended to use conda to create different Python virtual environments for each service, as Python dependencies between different services may conflict. Of course, if you have other Python virtual environment management tools, you can use those as well.
+	We strongly recommend using conda to create a separate Python virtual environment for each service, because the Python dependencies of different services may conflict. If you prefer another Python virtual environment manager, feel free to use that instead.
 </Callout>
 
 <Steps>
 
-### Clone the Repository Locally
+### Clone the repository to your local machine
 
 ```shell
 git clone git@github.com:Qingyon-AI/Revornix.git
 cd Revornix
 ```
 
-### Environment Variable Configuration
+### Install and start the foundational services
+
+<Callout>
+	If you do not have postgres, redis, neo4j, minio, milvus, rsshub, or browserless installed, you need to install these services locally and configure their environment variables according to your actual needs. Refer to the requirements of each service and to the [Revornix Environment Variables section](environment) for details.
+	To save you from this tedious yet unimportant work, I prepared a `docker-compose-local.yaml` file and a `.env.local.example` file. You can use `docker-compose-local.yaml` to download these services and `.env.local.example` as a base for your environment variables.
+</Callout>
+
+<Callout type='warning'>
+	Note: If you already have some of these services installed locally, disable the corresponding services in the `docker-compose-local.yaml` file according to your actual situation, otherwise unexpected issues may occur.
+</Callout>
+
+Copy the example file I provided and modify the fields according to your needs together with the [Revornix Environment Variables section](environment). If you do not have special requirements, you usually only need to change the `OAUTH_SECRET_KEY` field.
 
 ```shell
 cp .env.local.example .env.local
-cp ./web/.env.example ./web/.env.development
-cp ./api/.env.example ./api/.env
-cp ./celery-worker/.env.example ./celery-worker/.env
-export ENV=dev
 ```
 
-Go to the corresponding environment variable files for configuration, see [Environment Variable Configuration Chapter](environment) for details.
+Start the postgres, redis, neo4j, minio, milvus, rsshub, and browserless services.
 
-### Initialize Some Necessary Data
+```shell
+docker compose -f ./docker-compose-local.yaml --env-file .env.local up -d
+```
+
+### Configure environment variables for each microservice
+
+```shell
+cp ./web/.env.example ./web/.env
+cp ./api/.env.example ./api/.env
+cp ./celery-worker/.env.example ./celery-worker/.env
+```
+
+Update the environment variable files as needed. For details, see the [Revornix Environment Variables section](environment).
+
+<Callout type='warning'>
+	If you deploy manually, the `SECRET_KEY` must be identical across all services; otherwise, the user authentication systems cannot communicate with each other.
+</Callout>
+
+### Initialize the required baseline data
 
 ```shell
 cd api
@@ -74,22 +65,7 @@ python -m script.init_vector_base_data
 python -m script.init_sql_base_data
 ```
 
-### Install and Start Basic Services
-
-<Callout>
-	If you don't have Postgres, Redis, and Milvus installed, you'll need to manually install these services locally and modify the corresponding parameter configurations in the environment variable files.
-	Considering that these are relatively troublesome and unimportant tasks, I've specifically created a `docker-compose-local.yaml` file that you can use directly to download and start these services.
-</Callout>
-
-<Callout type="warning">
-	Note: If you have already installed some of these services locally, please disable the corresponding service configurations in the `docker-compose-local.yaml` file according to your actual situation, otherwise it may cause some unexpected situations.
-</Callout>
-
-```shell
-docker compose -f ./docker-compose-local.yaml --env-file .env.local up -d 
-```
-
-### Start Core Backend Service
+### Start the core backend service
 
 ```shell
 cd api
@@ -98,31 +74,33 @@ pip install -r ./requirements.txt
 fastapi run --port 8001
 ```
 
-### Start Hot Search Aggregation Service
+### Start the hot-search aggregation service
 
 ```shell
 cd daily-hot
-pnpm i 
-pnpm dev
+pnpm build
+pnpm start
 ```
 
-### Start Celery Task Sequence
+### Start the Celery task queue
+
+Currently only `pool=solo` (single-process mode) is supported; multi-process mode will be supported later.
 
 ```shell
 cd celery-worker
 conda create -n celery-worker python=3.11 -y
 pip install -r ./requirements.txt
-celery -A common.celery.app.celery_app worker --loglevel=info --pool threads
+celery -A common.celery.app.celery_app worker --pool=solo
 ```
 
-### Start Frontend Service
+### Start the frontend service
 
 ```shell
 cd web
-pnpm i
-pnpm dev
+pnpm build
+pnpm start
 ```
 
 </Steps>
 
-After you have started all services, visit http://localhost:3000 to see the frontend page.
+Once all services are running, visit http://localhost:3000 to see the frontend page.

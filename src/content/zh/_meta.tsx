@@ -5,6 +5,7 @@ const meta: MetaRecord = {
 		type: 'page',
 		display: 'hidden',
 		theme: {
+			copyPage: false,
 			timestamp: false,
 			layout: 'full',
 			toc: false,
@@ -18,6 +19,7 @@ const meta: MetaRecord = {
 		type: 'page',
 		title: '博客',
 		theme: {
+			copyPage: false,
 			breadcrumb: false,
 			sidebar: false,
 			timestamp: false,
