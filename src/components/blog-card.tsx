@@ -24,7 +24,7 @@ const BlogCard = ({
 		<Link
 			href={href}
 			className={cn(
-				'bg-muted p-5 border-border rounded-lg flex flex-row gap-5',
+				'bg-muted p-5 border-border rounded-lg flex flex-row gap-5 !no-underline group hover:bg-muted/80',
 				className
 			)}>
 			{cover && <ImageZoom className='rounded' src={cover} alt={title} width={150} height={150} />}

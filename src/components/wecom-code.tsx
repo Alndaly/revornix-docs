@@ -27,7 +27,7 @@ const WeComCode = ({
 					<Button
 						variant='link'
 						className={cn(
-							'p-0 m-0 font-normal underline text-md hover:no-underline cursor-pointer decoration-from-font',
+							'p-0 m-0 font-normal underline text-md hover:no-underline cursor-pointer decoration-from-font text-sm',
 							className
 						)}>
 						{t('wecom')}
