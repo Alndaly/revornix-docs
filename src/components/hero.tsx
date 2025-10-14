@@ -31,9 +31,9 @@ const Hero = () => {
 				target={'_blank'}
 				className='w-fit'>
 				<Badge
-					className='flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-medium border-blue-500 mb-5'
+					className='flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-medium border-blue-500 mb-5 whitespace-break-spaces'
 					variant={'outline'}>
-					<MegaphoneIcon className='h-4 w-4' />
+					<MegaphoneIcon className='h-4 w-4 shrink-0' />
 					<span>{t('latest_news')}</span>
 				</Badge>
 			</Link>
