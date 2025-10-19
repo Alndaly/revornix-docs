@@ -7,6 +7,11 @@ const meta: MetaRecord = {
 	'custom-file-system': '自定义文件系统',
 	'document-collect': '文档收集',
 	'document-manage': '文档管理',
+	engine: '文档解析',
+	'section-info': '专栏基础信息',
+	'day-section': '今日专栏',
+	'section-share': '专栏分享与共创',
+	'section-create': '专栏创建',
 	graphrag: {
 		title: (
 			<div className='flex items-center gap-2'>
@@ -15,7 +20,6 @@ const meta: MetaRecord = {
 			</div>
 		),
 	},
-	engine: '文档解析',
 	'hot-search': '热搜面板',
 	rss: {
 		title: (
@@ -39,14 +43,6 @@ const meta: MetaRecord = {
 		title: (
 			<div className='flex items-center gap-2'>
 				智能助手
-				<BetaBadge />
-			</div>
-		),
-	},
-	section: {
-		title: (
-			<div className='flex items-center gap-2'>
-				专栏管理
 				<BetaBadge />
 			</div>
 		),

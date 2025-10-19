@@ -1,0 +1,48 @@
+import { Callout } from 'nextra/components';
+import BetaBadge from '@/components/beta-badge';
+
+# 专栏
+
+设计专栏功能的目的是为了能够更方便的集成知识库，方便用户进行**知识总结、吸收以及分享**。在表现上，形成了主动式 AI 结合人类参与的形式。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019103207923.png)
+
+## 文档绑定
+
+专栏可以视为一种**特定知识集合**，我对专栏的设计理念是便于知识的**总结、吸收与分享**。
+
+所以这一功能和文档是高强度绑定的，文档绑定专栏后，文档将自动出现在专栏中，专栏将自动出现在文档中。
+
+两者相互绑定的方式有两种，一种是在文档创建页面内选择特定专栏推送，而另一种则是在专栏详情页面内点击文档按钮，在弹窗中点击底部的添加文档按钮。
+
+<Callout>
+	针对该项能力，必须保证专栏是你创建的，或者你对专栏具备完整能力/读写能力，如果你仅仅是订阅者或者仅被赋予了只读能力，都无法对该专栏进行任何修改操作。
+</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019202906752.png)
+
+你可以在专栏详情页面的底部点击文档按钮查看专栏的所有文档，也可以在文档的详情页面内的信息栏目内查看到文档所有关联的专栏。
+
+## 专栏查看
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019202353574.png)
+
+支持专栏标签筛选。
+
+支持用户查看自己的专栏、社区的专栏以及自己订阅的专栏。
+
+支持时间排序。
+
+支持专栏标题精准搜索。
+
+## 交流机制
+
+系统支持对专栏进行评论，用户可以点击专栏详情页面内的底部的评论按钮查看所有专栏评论并进行评论。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019202656912.png)
+
+## 知识图谱 <BetaBadge />
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019202635557.png)
+
+每个专栏都会有属于自己的一份知识图谱，你可以在专栏详情页面内的知识图谱栏目内查看，通过知识图谱你能快速对该专栏及其内的所有文档知识点有个把控。

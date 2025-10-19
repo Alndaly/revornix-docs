@@ -4,8 +4,14 @@ import type { MetaRecord } from 'nextra';
 const meta: MetaRecord = {
 	dashboard: 'Dashboard',
 	account: 'Account',
+	'custom-file-system': 'Custom File System',
 	'document-collect': 'Document Collect',
 	'document-manage': 'Document Manage',
+	engine: 'Document Converter',
+	'section-info': 'Section Overview',
+	'day-section': 'Daily Section',
+	'section-share': 'Section Sharing & Co-Creation',
+	'section-create': 'Section Creation',
 	graphrag: {
 		title: (
 			<div className='flex items-center gap-2'>
@@ -14,8 +20,6 @@ const meta: MetaRecord = {
 			</div>
 		),
 	},
-	'custom-file-system': 'Custom File System',
-	engine: 'Document Converter',
 	'hot-search': 'Hot Search',
 	rss: {
 		title: (
@@ -39,14 +43,6 @@ const meta: MetaRecord = {
 		title: (
 			<div className='flex items-center gap-2'>
 				Revornix AI
-				<BetaBadge />
-			</div>
-		),
-	},
-	section: {
-		title: (
-			<div className='flex items-center gap-2'>
-				Section Manage
 				<BetaBadge />
 			</div>
 		),
