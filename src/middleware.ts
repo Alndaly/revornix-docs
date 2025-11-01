@@ -9,7 +9,10 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - img (image files)
+     * - _pagefind (pagefind search index)
+     * - .well-known (standard verification directory)
+     * - HL81yzkFvB.txt (custom verification file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|img|_pagefind|.well-known).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|img|_pagefind|.well-known|HL81yzkFvB\\.txt).*)',
   ],
 }
