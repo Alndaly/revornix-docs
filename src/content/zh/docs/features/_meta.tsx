@@ -7,6 +7,7 @@ const meta: MetaRecord = {
 	'custom-file-system': '自定义文件系统',
 	'document-collect': '文档收集',
 	'document-manage': '文档管理',
+	'podcast': '播客机制',
 	engine: '文档解析',
 	'section-info': '专栏基础信息',
 	'day-section': '今日专栏',

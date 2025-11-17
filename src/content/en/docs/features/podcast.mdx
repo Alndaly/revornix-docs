@@ -1,0 +1,38 @@
+import { Callout } from 'nextra/components';
+import { ImageZoom } from 'nextra/components'
+
+# Podcast Engine
+
+<Callout>Podcast generation is an audio capability that consumes a large number of tokens. Please monitor your usage and enable it only when necessary.</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211409571.png)
+
+To provide multiple ways to distribute knowledge, Revornix now supports generating podcasts directly from your content.
+
+## Configure the Engine
+
+Before using this feature, configure a podcast engine in **Settings**. We currently support the ByteDance Volcano Engine. Register on [Volcano Engine](https://console.volcengine.com/speech/app), obtain your AppID and Access Token, and follow these steps:
+
+1. Visit the [Volcano Engine console](https://console.volcengine.com/speech/app) and click **Create Application**.
+2. Fill in the required settings, ensure **Doubao Voice Podcast Model** is selected under capabilities, and confirm.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117210827919.png)
+3. In the left sidebar, click **Doubao Voice Podcast Model**, choose the application you created on the right, and enable the service.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211117247.png)
+4. After activation, you can view your AppID, Access Token, and token consumption. Volcano currently provides 1M free tokens, which is still limited for audio tasks, so use them wisely.
+5. In Revornix, go to **Settings → Engine Configuration**, choose the ByteDance podcast engine, enter your AppID and Access Token, then save.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211931536.png)
+6. Locate the podcast engine option inside the Revornix settings page and select the engine you just added.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211729069.png)
+7. Start generating podcasts!
+
+## For Documents
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117212151587.png)
+
+When creating a document, you can decide whether to auto-generate a podcast. If enabled, Revornix creates a podcast right after the document is created. If not, you can manually trigger podcast generation later from the document detail page.
+
+## For Sections
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117212217839.png)
+
+When creating a section, choose whether to auto-update the section podcast. If enabled, Revornix automatically refreshes the section podcast whenever new documents are added or updated. Otherwise, you can manually update the podcast from the section detail page.

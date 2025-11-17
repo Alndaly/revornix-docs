@@ -1,0 +1,38 @@
+import { Callout } from 'nextra/components';
+import { ImageZoom } from 'nextra/components'
+
+# 播客机制
+
+<Callout>由于播客生成是音频功能，Token耗费极高，请根据实际情况使用，并且注意保持关注Token的损耗情况。</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211409571.png)
+
+为了提供多种知识产出的方式，目前Revornix提供了播客的生成机制。
+
+## 配置引擎
+
+在使用这个功能之前，你需要先在设置页面内配置你的播客生成引擎，目前仅支持字节跳动火山引擎的播客生成引擎，你可以通过火山引擎的[官网](https://console.volcengine.com/speech/app)进行注册，并获取你的火山引擎的AppID和Access Token，具体操作如下
+
+1. 进入火山引擎的[官网](https://console.volcengine.com/speech/app)，点击创建应用
+2. 填写相关配置，注意接入能力中必选豆包语音播客大模型，点击确定
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117210827919.png)
+3. 点击左侧豆包语音播客大模型，右侧选择你刚刚创建的应用名称，点击豆包语音播客大模型的开通服务
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211117247.png)
+4. 开通服务成功后，你就可以看到自己的AppID和Access Token，以及Token消耗情况了，当前火山引擎会免费增加100w token的使用额度，实测下来，100w token可以生成的量并不多，所以请省着用哦。
+5. 在Revornix系统内点击设置，进入引擎配置页面，选择字节跳动的播客引擎，并填入AppID和Access Token，点击保存即可。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211931536.png)
+6. 在Revornix设置页面内找到播客引擎设置的选项，选择你刚才增加的播客引擎即可。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117211729069.png)
+7. 快乐的使用吧
+
+## 针对文档
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117212151587.png)
+
+你可以在创建文档的时候设置是否需要自动生成博客，如果设置了自动生成，那么在文档创建成功之后，Revornix会自动为其生成一个播客；如果没有设置自动生成，你也可以在文档创建完成后在文档详情页面内手动生成播客。
+
+## 针对专栏
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117212217839.png)
+
+你可以在专栏创建页面设置是否需要自动更新专栏的播客，如果设置了自动更新，那么在专栏有新文档补充或者变更的时候，会自动触发专栏的播客更新；如果没有设置自动更新，你也可以在专栏详情页面内手动更新专栏的播客。

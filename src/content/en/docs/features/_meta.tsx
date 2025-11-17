@@ -7,6 +7,7 @@ const meta: MetaRecord = {
 	'custom-file-system': 'Custom File System',
 	'document-collect': 'Document Collect',
 	'document-manage': 'Document Manage',
+	podcast: 'Podcast Engine',
 	engine: 'Document Converter',
 	'section-info': 'Section Overview',
 	'day-section': 'Daily Section',
