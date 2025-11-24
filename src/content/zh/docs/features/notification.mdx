@@ -1,7 +1,9 @@
 import { Callout } from 'nextra/components';
-import { ImageZoom } from 'nextra/components'
+import { ImageZoom } from 'nextra/components';
 
 # 通知管理
+
+## 背景
 
 通知是一个比较重感觉的功能，和后台的跑模型/训练等用户低感知任务相反，它更多的是用户之间的互动。而每个用户对于这一点有着不同的频度需求。
 
@@ -9,15 +11,233 @@ import { ImageZoom } from 'nextra/components'
 
 现在你可以在设置页面内通过简单的配置将通知功能集成到你的系统中。
 
-<div className="grid grid-col grid-cols-1 md:grid-cols-2 w-full mt-5">
-<ImageZoom src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507012144925.png" />
-<ImageZoom src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507012144122.png" />
-</div>
+核心分为两个步骤
 
-注意你需要先配置通知源和通知目标。
+1. 配置通知源和通知目标
+2. 配置通知任务
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031525205.png)
+## 通知源管理
 
-其中通知源是你的发送信息的源系统，比如邮件源、飞书、企业微信、Apple APNS、短信服务提供商等，通知目标则是你的接收信息的终端，比如飞书、企业微信、邮件、设备等。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135251469.png)
 
-当前仅支持邮件源和邮件目标，我会在后续尽快补充。
+目前支持如下几种通知源
+
+### 邮件
+
+该源需要配置，其中的host和port根据你的邮箱服务商进行配置，username和password需要填写你的邮箱账号和密码。
+
+```json
+{
+    "host": "smtp.example.com", 
+    "port": 587, 
+    "username": "your_email@example.com", 
+    "password": "your_password"
+}
+```
+
+注意，该配置的密码并非是你邮箱的密码，而是smtp的授权码，具体如何获取授权码，请参考你的邮箱服务商的文档。
+
+举例163邮箱，其smtp服务授权码即可通过如下方式获取，当开启smtp服务之后会有弹窗，其中的一串字符即为smtp的授权码，注意想要使用这种源，你必须开启smtp服务。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124140427586.png)
+
+### 飞书
+
+该源需要配置参数app_id和app_secret
+
+```json
+{
+    "app_id": "cli_a3f3d6a3a3f3d6a3a",
+    "app_secret": "dkamsklmlksamkl"
+}
+```
+
+由于飞书不支持在通知中直接链接外网文件和图片，所以此处需要配置一个具备向飞书上传文件/图片能力的机器人，具体参考如下
+
+1. 进入[飞书开发者后台](https://open.feishu.cn/app?lang=zh-CN)并创建企业自建应用，创建完成后即可进入应用详情页面内，可以看到app id和app secret，将其填入配置中即可。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124141138428.png)
+2. 开启该自建应用的图片上传权限。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124141203861.png)
+
+### 钉钉
+
+该源暂不需要配置参数
+
+### Apple APNS
+
+该源配置较为复杂，详情参考Apple开发者文档https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
+
+```json
+{
+    "team_id": "your team_id"
+}
+```
+
+1. 进入[Apple Developer官网](https://developer.apple.com/account)，登录你的Apple开发者账号
+2. 找到其中的`Membership details`，可以看到你的`Team ID`
+3. 进入[`Certificates, Identifiers & Profiles`页面](https://developer.apple.com/account/resources/authkeys/list)，创建Key并配置参数，注意打开APNS选项并配置环境（Production/Sandbox）
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124155033875.png)
+4. 在Key详情页面即可看到`Key ID`
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124155322031.png)
+5. 点击Download，下载该Key文件，该文件具体内容就是`Private Key`
+6. `apns_topic`为你推送的APP的`Bundle ID`
+
+### Apple APNS (SandBox)
+
+同上，不过要注意你的`Key`需要是沙盒环境的
+
+### Telegram
+
+该源需要配置参数
+
+```json
+{
+    "bot_token": "your_bot_token"
+}
+```
+
+1. 进入Telegram，搜索`@BotFather`找到机器人创建助手
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154333723.png)
+2. 点击Start，如果已经点击过了那就不需要点击了
+3. 输入`/newbot`
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154316532.png)
+4. 按照提示填写机器人的昵称
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154410992.png)
+5. 按照提示填写机器人的id，注意该id必须全Telegram唯一并且以bot结尾
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154425825.png)
+6. 创建完成，`BotFather`会返回你一个带有机器人token的消息，将其复制下来，填入配置中即可。
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154540196.png)
+
+## 通知目标管理
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135803397.png)
+
+目前支持如下几种通知目标
+
+### 邮件
+
+该目标需要配置参数
+
+```json
+{
+    "email": "your_email@example.com"
+}
+```
+
+`email`就是你想发送邮件的邮箱地址
+
+### 飞书
+
+该通知目标需要配置参数
+
+```json
+{
+    "webhook_url": "https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxxxxxxxxxxxxxxx",
+    "sign": "xxxxxxxxx"
+}
+```
+
+1. 在群内创建自定义webhook机器人
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124140746854.png)
+2. 进入机器人配置详情页面，打开signature
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124161144598.png)
+3. 复制`Webhook URL`和`signature`，填入配置中即可
+
+### 钉钉
+
+同上面飞书
+
+### Apple APNS
+
+```json
+{
+    "device_token": "your_device_token"
+}
+```
+
+<Callout>这种方式适合开发者使用，即你必须要具备该设备在你应用下的唯一ID</Callout>
+
+具体获取方式需要在应用开发的时候进行代码配置，具体参考如下
+
+```swift {15}
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    var window: UIWindow?
+    
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        registerForRemoteNotifications()
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // 如果注册成功，那么会调用此处函数
+        // 存储到 UserDefaults
+        UserDefaults(suiteName: "group.com.qingyon.Revornix")!.set(deviceToken.hexString, forKey: "device_token")
+        print("deviceToken:", deviceToken.hexString)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error)")
+    }
+
+    ...
+}
+```
+
+### Apple APNS (SandBox)
+
+同上
+
+### Telegram
+
+该通知目标需要配置
+
+```json
+{
+    "chat_id": "your_chat_id"
+}
+```
+
+1. 新建一个Telegram群
+2. 将你创建的Telegram机器人邀请到这个群里
+3. 在群内发一条`/`开头的话
+4. 打开这个网页`https://api.telegram.org/bot[your bot_token]/getUpdates`（注意用你的bot_token替换掉`[your bot_token]`），搜索刚才你发送的那句话
+5. 可以看到其中有一个id，复制这个id，填入配置中即可
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124162437455.png)
+
+## 通知任务管理
+
+<Callout>
+	注意：通知源和通知目标必须匹配，否则无法成功发送通知。具体匹配如下表所示：
+</Callout>
+
+|        通知源        |       通知目标       |
+| :------------------: | :------------------: |
+|         邮件         |         邮件         |
+|         飞书         |         飞书         |
+|         钉钉         |         钉钉         |
+|      Apple APNS      |      Apple APNS      |
+| Apple APNS (SandBox) | Apple APNS (SandBox) |
+|       Telegram       |       Telegram       |
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135940420.png)
+
+支持时间触发和事件触发，你可以自行根据实际需求选择。
+
+事件触发目前仅支持如下事件：
+
+- RemovedFromSection 你被移出专栏
+- SectionCommented 你创建/参与的专栏被评论
+- SectionSubscribed 你创建/参与的专栏被订阅
+- SectionUpdated 你参与/订阅的专栏发生更新
+
+目前支持自定义通知内容和模版通知内容，如果你想要实时的消息，则必须选择模版内容，因为目前自定义内容在你配置的时候就已经写死了，无法动态修改。
+
+目前仅提供如下模版：
+
+- Daily Summary Template 每日总结模版
+- Removed From Section Template 被移出专栏的通知模版
+- Section Commented Template 专栏被评论的通知模版
+- Section Subscribed Template 专栏被订阅的通知模版
+- Section Updated Template 专栏发生更新通知模版

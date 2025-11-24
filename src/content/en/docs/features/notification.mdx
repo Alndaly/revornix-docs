@@ -1,23 +1,242 @@
 import { Callout } from 'nextra/components';
-import { ImageZoom } from 'nextra/components'
+import { ImageZoom } from 'nextra/components';
 
-# Notification Manage
+# Notification Management
 
-Notifications are a relatively “heavy” feature — unlike background tasks such as model running or training that operate with low user awareness, notifications are more about user-to-user interaction. And each user has different preferences for how frequently they want to be notified.
+## Background
 
-With that in mind, starting from v0.2.5, the notification feature has been decoupled from the core logic to avoid overwhelming some users with excessive notifications.
+Notifications are a relatively heavy feature. Unlike low-touch background tasks such as running models or training jobs, notifications focus on interaction between users, and everyone has different preferences for how often they want to be notified.
 
-Now, you can easily integrate the notification system into your own setup through a simple configuration on the settings page.
+Starting in `v0.2.5`, the notification feature has been decoupled from the core logic to prevent overwhelming users with too many messages.
 
-<div className="grid grid-col grid-cols-1 md:grid-cols-2 w-full mt-5">
-<ImageZoom src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507012144925.png" />
-<ImageZoom src="https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507012144122.png" />
-</div>
+You can now integrate notifications into your system with simple configuration on the settings page.
 
-Please note: You need to configure both the notification source and the notification target first.
+There are two core steps:
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031525205.png)
+1. Configure notification sources and targets.
+2. Configure notification jobs.
 
-The notification source refers to the system that sends messages — such as an email server, Lark (Feishu), WeCom (Enterprise WeChat), Apple APNS, or SMS providers. The notification target refers to the receiving endpoint — such as Lark, WeCom, email inboxes, or devices.
+## Notification Source Management
 
-Currently, only email sources and email targets are supported, but support for more options will be added soon.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135251469.png)
+
+Currently, the following notification sources are supported:
+
+### Email
+
+This source needs to be configured. Set `host` and `port` according to your email provider; `username` and `password` should be your email account and the SMTP authorization code.
+
+```json
+{
+    "host": "smtp.example.com", 
+    "port": 587, 
+    "username": "your_email@example.com", 
+    "password": "your_password"
+}
+```
+
+Note that the password here is the SMTP authorization code, not your mailbox password. Check your email provider's docs for how to get it.
+
+For example, with 163 Mail, enable SMTP service and a popup will show an authorization code - that string is the SMTP auth code. You must turn on SMTP service to use this source.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124140427586.png)
+
+### Feishu
+
+This source requires `app_id` and `app_secret`:
+
+```json
+{
+    "app_id": "cli_a3f3d6a3a3f3d6a3a",
+    "app_secret": "dkamsklmlksamkl"
+}
+```
+
+Feishu does not allow linking external files or images directly in notifications, so you need a bot that can upload files/images to Feishu. Steps:
+
+1. Go to the [Feishu Developer Console](https://open.feishu.cn/app?lang=zh-CN) and create a self-built enterprise app. In the app details page, copy the app id and app secret into the configuration.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124141138428.png)
+2. Enable the image upload permission for this self-built app.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124141203861.png)
+
+### DingTalk
+
+No parameters are required for this source for now.
+
+### Apple APNS
+
+This source is more complex. Refer to Apple's docs: https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
+
+```json
+{
+    "team_id": "your team_id"
+}
+```
+
+1. Sign in to the [Apple Developer site](https://developer.apple.com/account).
+2. Open `Membership details` to find your `Team ID`.
+3. Go to [`Certificates, Identifiers & Profiles`](https://developer.apple.com/account/resources/authkeys/list), create a key, and configure it. Enable the APNS option and choose the environment (Production/Sandbox).
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124155033875.png)
+4. In the key details page you can see the `Key ID`.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124155322031.png)
+5. Click Download to get the key file; its contents are the `Private Key`.
+6. `apns_topic` is the `Bundle ID` of the app you are pushing to.
+
+### Apple APNS (SandBox)
+
+Same as above, but ensure the key is for the sandbox environment.
+
+### Telegram
+
+This source requires:
+
+```json
+{
+    "bot_token": "your_bot_token"
+}
+```
+
+1. In Telegram, search for `@BotFather` to find the bot creator.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154333723.png)
+2. Click Start (skip if you've already started).
+3. Enter `/newbot`.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154316532.png)
+4. Follow the prompts to set the bot's display name.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154410992.png)
+5. Follow the prompts to set the bot id; it must be unique across Telegram and end with `bot`.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154425825.png)
+6. After creation, BotFather returns a message with the bot token. Copy it into the config.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154540196.png)
+
+## Notification Target Management
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135803397.png)
+
+Currently supported targets:
+
+### Email
+
+Configuration:
+
+```json
+{
+    "email": "your_email@example.com"
+}
+```
+
+`email` is the address you want to send to.
+
+### Feishu
+
+Configuration:
+
+```json
+{
+    "webhook_url": "https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxxxxxxxxxxxxxxx",
+    "sign": "xxxxxxxxx"
+}
+```
+
+1. Create a custom webhook bot in the group.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124140746854.png)
+2. Open the bot configuration page and enable signature.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124161144598.png)
+3. Copy the `Webhook URL` and `signature` and fill them in.
+
+### DingTalk
+
+Same as Feishu.
+
+### Apple APNS
+
+```json
+{
+    "device_token": "your_device_token"
+}
+```
+
+<Callout>This approach is for developers: you need the unique device ID for your app.</Callout>
+
+You must collect the token in your app code. Example:
+
+```swift {15}
+class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+    var window: UIWindow?
+    
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        registerForRemoteNotifications()
+        UNUserNotificationCenter.current().delegate = self
+        return true
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Called when registration succeeds
+        UserDefaults(suiteName: "group.com.qingyon.Revornix")!.set(deviceToken.hexString, forKey: "device_token")
+        print("deviceToken:", deviceToken.hexString)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error)")
+    }
+
+    ...
+}
+```
+
+### Apple APNS (SandBox)
+
+Same as above.
+
+### Telegram
+
+Configuration:
+
+```json
+{
+    "chat_id": "your_chat_id"
+}
+```
+
+1. Create a Telegram group.
+2. Invite the bot you created into the group.
+3. Send a message starting with `/` in the group.
+4. Open `https://api.telegram.org/bot[your bot_token]/getUpdates` (replace `[your bot_token]`), and find that message.
+5. Locate the `id` in the response, copy it, and use it as `chat_id`.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124162437455.png)
+
+## Notification Task Management
+
+<Callout>
+	Note: notification sources and targets must match, otherwise the notification will fail. See the table below.
+</Callout>
+
+|      Notification Source      |     Notification Target     |
+| :---------------------------: | :-------------------------: |
+|            Email              |            Email            |
+|            Feishu             |            Feishu           |
+|           DingTalk            |           DingTalk          |
+|          Apple APNS           |          Apple APNS         |
+| Apple APNS (SandBox)          | Apple APNS (SandBox)        |
+|           Telegram            |           Telegram          |
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135940420.png)
+
+Both time-based and event-based triggers are supported; choose based on your needs.
+
+Currently supported event triggers:
+
+- RemovedFromSection: you were removed from a section.
+- SectionCommented: a section you created/participate in was commented on.
+- SectionSubscribed: a section you created/participate in was subscribed to.
+- SectionUpdated: a section you participate in or subscribe to was updated.
+
+Custom notification content and template-based content are supported. For real-time messages, use templates, because custom content is static at configuration time.
+
+Available templates:
+
+- Daily Summary Template
+- Removed From Section Template
+- Section Commented Template
+- Section Subscribed Template
+- Section Updated Template
