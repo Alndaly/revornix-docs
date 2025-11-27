@@ -1,9 +1,11 @@
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Footer } from 'nextra-theme-docs';
+import ICP from './icp';
 
 const CustomFooter = () => {
 	const t = useTranslations();
+
 	return (
 		<Footer className='grid grid-cols-1 md:grid-cols-2 gap-5'>
 			<div className='flex flex-col text-sm gap-5'>
@@ -26,6 +28,7 @@ const CustomFooter = () => {
 					<Link href='https://qingyon.com'>{t('company')}</Link>
 					{t('rights')}
 				</p>
+				<ICP />
 			</div>
 			<div className='flex flex-col text-sm gap-5'>
 				<Link
