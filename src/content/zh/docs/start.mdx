@@ -63,8 +63,8 @@ cp ./celery-worker/.env.example ./celery-worker/.env
 
 ```shell
 cd api
-python -m script.init_vector_base_data
-python -m script.init_sql_base_data
+python -m data.milvus.create
+python -m data.sql.create
 ```
 
 ### 启动核心后端服务
