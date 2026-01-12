@@ -55,7 +55,7 @@ flowchart TD
 - 环境变量涵盖外部模型、OAuth、短信等密钥，FastAPI 启动时在 `api/main.py:23` 读取后注入依赖
 
 ## 辅助服务与集成
-- Daily Hot 聚合服务基于 Hono，应用入口 `daily-hot/src/app.tsx:1`，路由动态注册见 `daily-hot/src/registry.ts:1`
+- Daily Hot 聚合服务基于 Hono，应用入口 `hot-news/src/app.tsx:1`，路由动态注册见 `hot-news/src/registry.ts:1`
 - RSSHub 与 Browserless 容器提供 RSS/网页抓取能力，Nginx 将 `/api/rss-service` 代理至该服务（`nginx/nginx.conf:35`）
 - Celery Worker 共享 `common`/`crud` 模块，并挂载卷 `./volumes/temp` 处理临时文件（`docker-compose.yaml:78`）
 - MCP 工具通过 `api/mcp_router/common.py:1`、`api/mcp_router/document.py:1` 暴露时间查询与文档检索供内置 Agent 使用

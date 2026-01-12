@@ -98,7 +98,7 @@ These variables are bundled into the browser build—do not place sensitive info
 | ---------------------------------------- | ------------------------------------------------- | ---------------------------------------- | ---------------------------------------------- |
 | `NEXT_PUBLIC_API_PREFIX`                 | `http://localhost/api/main-service`               | Base URL for the core backend            | `web/src/config/api.ts:1`, `next.config.ts:28` |
 | `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost/api/main-service/notification/ws` | WebSocket endpoint for notifications     | `web/src/config/api.ts:2`                      |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | `http://localhost/api/daily-hot-service`          | Daily Hot aggregation endpoint           | `web/src/config/api.ts:3`                      |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | `http://localhost/api/hot-news-service`          | Daily Hot aggregation endpoint           | `web/src/config/api.ts:3`                      |
 | `NEXT_PUBLIC_WECHAT_APP_ID`              | `wx8b244c17b73a8672`                              | Used to generate the WeChat QR login URL | `web/components/user/wechat-bind.tsx:50`       |
 | `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`     | `true`/`false`                                    | Toggles third-party login entry points   | `web/src/app/(public)/account/page.tsx:87`     |
 
@@ -108,7 +108,7 @@ These variables are bundled into the browser build—do not place sensitive info
 
 | Variable          | Default     | Description                             | Primary locations            |
 | ----------------- | ----------- | --------------------------------------- | ---------------------------- |
-| `PORT`            | `6688`      | Listening port for Daily Hot            | `daily-hot/src/config.ts:36` |
+| `PORT`            | `6688`      | Listening port for Daily Hot            | `hot-news/src/config.ts:36` |
 | `DISALLOW_ROBOT`  | `true`      | Whether to block crawlers               | Same as above                |
 | `CACHE_TTL`       | `3600`      | Cache duration for rankings (seconds)   | Same as above                |
 | `REQUEST_TIMEOUT` | `6000`      | Upstream request timeout (milliseconds) | Same as above                |
@@ -125,7 +125,7 @@ These variables are bundled into the browser build—do not place sensitive info
 ## 8. Additional Tips
 
 - **Local development:** Use `api/.env` and `celery-worker/.env` to override the main `.env` so production settings remain untouched. Refer to `api/.env.example` and `celery-worker/.env.example` for samples.
-- **Docker deployment:** `docker-compose.yaml` reads variables from the root `.env` and passes them to services such as `api`, `celery-worker`, `web`, and `daily-hot`. Ensure the contents match your target environment.
+- **Docker deployment:** `docker-compose.yaml` reads variables from the root `.env` and passes them to services such as `api`, `celery-worker`, `web`, and `hot-news`. Ensure the contents match your target environment.
 - **Secret management:** Use Vault, AWS Secrets Manager, or Docker secrets in production. Never print secret values in logs or terminals.
 
 Good luck with your deployment—feedback is always welcome!

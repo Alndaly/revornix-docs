@@ -97,7 +97,7 @@ import { Callout } from 'nextra/components';
 | ---------------------------------------- | ------------------------------------------------- | -------------------------------- | ---------------------------------------------- |
 | `NEXT_PUBLIC_API_PREFIX`                 | `http://localhost/api/main-service`               | 前端调用主后端的基础 URL         | `web/src/config/api.ts:1`, `next.config.ts:28` |
 | `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost/api/main-service/notification/ws` | WebSocket 通知地址               | `web/src/config/api.ts:2`                      |
-| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | `http://localhost/api/daily-hot-service`          | Daily Hot 聚合接口地址           | `web/src/config/api.ts:3`                      |
+| `NEXT_PUBLIC_DAILY_HOT_API_PREFIX`       | `http://localhost/api/hot-news-service`          | Daily Hot 聚合接口地址           | `web/src/config/api.ts:3`                      |
 | `NEXT_PUBLIC_WECHAT_APP_ID`              | `wx8b244c17b73a8672`                              | 用于在前端生成微信二维码登录地址 | `web/components/user/wechat-bind.tsx:50`       |
 | `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`     | `true`/`false`                                    | 控制是否显示第三方登录入口       | `web/src/app/(public)/account/page.tsx:87`     |
 
@@ -107,7 +107,7 @@ import { Callout } from 'nextra/components';
 
 | 变量              | 默认值      | 说明                          | 主要作用范围                 |
 | ----------------- | ----------- | ----------------------------- | ---------------------------- |
-| `PORT`            | `6688`      | Daily Hot 服务监听端口        | `daily-hot/src/config.ts:36` |
+| `PORT`            | `6688`      | Daily Hot 服务监听端口        | `hot-news/src/config.ts:36` |
 | `DISALLOW_ROBOT`  | `true`      | 是否禁止爬虫抓取              | 同上                         |
 | `CACHE_TTL`       | `3600`      | 榜单缓存时间（秒）            | 同上                         |
 | `REQUEST_TIMEOUT` | `6000`      | Upstream 请求超时时间（毫秒） | 同上                         |
@@ -126,7 +126,7 @@ import { Callout } from 'nextra/components';
 - **本地开发建议：**  
   使用 `api/.env`、`celery-worker/.env` 覆盖主 `.env`，以免影响线上配置。示例文件可参考 `api/.env.example`、`celery-worker/.env.example`。
 - **Docker 部署：**  
-  `docker-compose.yaml` 会从根目录 `.env` 读取变量，并传入 `api`、`celery-worker`、`web`、`daily-hot` 等服务。确保该文件内容与部署环境一致。
+  `docker-compose.yaml` 会从根目录 `.env` 读取变量，并传入 `api`、`celery-worker`、`web`、`hot-news` 等服务。确保该文件内容与部署环境一致。
 - **敏感信息管理：**  
   建议配合 Vault、AWS Secrets Manager 或 Docker secrets 管理生产密钥；不要在日志或终端输出密钥值。
 

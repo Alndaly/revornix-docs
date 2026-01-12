@@ -60,7 +60,7 @@ flowchart TD
 
 ## Supporting Services & Integrations
 
-- The Daily Hot aggregation service runs on Hono; application entry is `daily-hot/src/app.tsx:1`, with dynamic routing setup in `daily-hot/src/registry.ts:1`.
+- The Daily Hot aggregation service runs on Hono; application entry is `hot-news/src/app.tsx:1`, with dynamic routing setup in `hot-news/src/registry.ts:1`.
 - RSSHub and Browserless containers support RSS aggregation and web rendering; Nginx routes `/api/rss-service` to them (`nginx/nginx.conf:35`).
 - Celery workers share `common`/`crud` modules and mount `./volumes/temp` for temporary processing (`docker-compose.yaml:78`).
 - MCP tools expose time queries and document search through `api/mcp_router/common.py:1` and `api/mcp_router/document.py:1`, available to the built-in agent.
