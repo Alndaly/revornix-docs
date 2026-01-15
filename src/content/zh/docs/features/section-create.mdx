@@ -2,7 +2,7 @@ import { Callout } from 'nextra/components';
 
 # 专栏创建
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019124934212.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115154637467.png)
 
 普通专栏的创建极其简单，只需要点击左侧菜单栏的专栏右侧的创建即可。
 
@@ -11,3 +11,18 @@ import { Callout } from 'nextra/components';
 <Callout>针对今日专栏，目前没有关闭的选项，即任何加入的文档都会自动被并入今日专栏并进行分析总结。</Callout>
 
 同时我还提供了API方式来创建专栏，具体可以参考[API文档专栏创建接口](./api/#tpsectioncreate)，当然，npm库和pip库中的revornix包也具有相应的功能，具体可以参考对应的github开源网站文档：[Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib)，[Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib)。
+
+## 专栏进程
+
+目前我提供了两种专栏进程触发的时机，分别是定时触发和事件触发。
+
+- 定时出发是指你可以设定一个时间点，在该时间点专栏会自动根据当前所有的专栏内部文档进行分析总结，并更新到当前专栏信息内。
+- 事件触发则是当专栏发生更新的时候（比如有文档被推送到当前专栏），系统会自动根据当前所有的专栏内部文档进行分析总结，并更新到当前专栏信息内。
+
+## 自动插图
+
+开启后，系统会自动根据当前专栏的文档内容，自动生成插图，并插入到当前专栏的文档中。（注意这必须要你在设置页面内配置生图模型）
+
+## 自动发布
+
+开启后，当你专栏创建完成的一刻，系统会自动将当前专栏发布到公域，即该专栏可被系统内部和搜索引擎搜索，同时其他用户可以不需要登录就能访问到你这一份专栏内容。

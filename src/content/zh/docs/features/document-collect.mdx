@@ -8,7 +8,11 @@ import { Tabs, Callout } from 'nextra/components';
 	由于当前Jina引擎仅支持网站文档，所以若你需要使用文件文档，请修改文件转化引擎，切换为除了Jina以外的方式。
 </Callout>
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115153224058.png)
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115153222532.png)
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115153218497.png)
 
 有多种收录文档、资讯的方式，其中最简单的方式也是最直白的方式就是通过网站端的增加文档。
 
@@ -16,14 +20,15 @@ import { Tabs, Callout } from 'nextra/components';
 
 ### 配置说明
 
-- 链接 你想要收录的网站链接
-- 标签 你的文档标签，可以添加多个，方便后续筛选查看
-- AI 自动总结 开启后，系统会自动调用 AI 接口，将文档内容进行总结，并替换掉默认的网站标题、描述等内容。
+- 链接 你想要收录的网站链接。
+- 标签 你的文档标签，可以添加多个，方便后续筛选查看。
+- 自动打标 开启后，AI会根据你的当前文档内容，在你所有的标签列表中选择合适的几个标签，并自动打上。
+- 自动总结 开启后，系统会自动调用 AI 接口，将文档内容进行总结，并替换掉默认的网站标题、描述等内容。
+- 自动生成播客 开启后，系统会自动根据你的这份文档内容，生成一份音频播客，并自动绑定到当前文档。
 - 推送专栏 可以选择你希望推送的专栏，系统会自动将文档推送到你选择的专栏中，并更新该专栏的总结。
 
 <Callout>
-	注意，如果你选择自动总结，那么你所配置的网站标题、描述等内容将不会生效，而是由
-	AI 总结生成并替换。
+	注意，如果你开启了自动总结，那么你所配置的网站标题、描述等内容将不会生效，而是由 AI 总结生成并替换。
 </Callout>
 
 ## API 收录

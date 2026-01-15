@@ -58,13 +58,17 @@ response = client.post(
 
 #### 参数
 
-| 参数名      | 类型   | 必填 | 描述     |
-| ----------- | ------ | ---- | -------- |
-| title       | string | 是   | 专栏名   |
-| description | string | 是   | 专栏描述 |
-| public      | bool   | 是   | 是否公开 |
-| cover       | string | 否   | 封面图片 |
-| labels      | int[]  | 是   | 标签组   |
+| 参数名                         | 类型   | 必填 | 描述                                        |
+| ------------------------------ | ------ | ---- | ------------------------------------------- |
+| title                          | string | 是   | 专栏名                                      |
+| description                    | string | 是   | 专栏描述                                    |
+| cover                          | string | 否   | 封面图片                                    |
+| labels                         | int[]  | 是   | 标签组                                      |
+| auto_publish                   | bool   | 否   | 是否自动发布                                |
+| auto_podcast                   | bool   | 否   | 是否自动生成音频播客                        |
+| auto_illustration              | bool   | 否   | 是否自动生成插图                            |
+| process_task_trigger_type      | int    | 是   | 进程触发原因（0: 时间触发/1: 更新事件触发） |
+| process_task_trigger_scheduler | bool   | 否   | 时间触发原因下的具体触发时间（cron 表达式） |
 
 #### 示例代码
 
@@ -80,9 +84,10 @@ response = client.post(
     json={
         "title": "test title",
         "description": "test description",
-        "public": true,
         "cover": "test/test.png",
         "labels": [1, 2],
+        "auto_publish": true,
+        "process_task_trigger_type": 1
     }
 )
 ```
@@ -166,13 +171,18 @@ response = client.post(
 | 参数名       | 类型    | 必填  | 描述                                                                                                                                    |
 | ------------ | ------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | category     | int     | 是    | 文档类型，0：文件文档，1：链接文档，2：速记文档                                                                                         |
-| from_plat    | string  | 是    | 来源平台，此处请根据实际情况填写，主观上建议这里填写 `api`                                                                              |
 | sections     | int[]   | 是    | 推送专栏组                                                                                                                              |
-| auto_summary | boolean | 否    | 是否自动生成摘要                                                                                                                        |
 | labels       | int[]   | 是    | 标签组                                                                                                                                  |
-| url          | string  | 是/否 | 链接，如果是链接文档则必填，且仅在链接文档下有效                                                                                        |
+| title        | string  | 否    | 标题                                                                                                                                    |
+| description  | string  | 否    | 描述                                                                                                                                    |
+| cover        | string  | 否    | 封面                                                                                                                                    |
 | content      | string  | 是/否 | 内容，如果是速记文档则必填，且仅在速记文档下有效                                                                                        |
+| url          | string  | 是/否 | 链接，如果是链接文档则必填，且仅在链接文档下有效                                                                                        |
 | file_name    | string  | 是/否 | 文件路径（本质上就是你上传文件的时候的`file_path`），如果是文件文档则必填，且仅在文件文档下有效，该方式需要你先调用文件上传接口上传文件 |
+| auto_summary | boolean | 否    | 是否自动生成摘要                                                                                                                        |
+| auto_podcast | boolean | 否    | 是否自动生成播客                                                                                                                        |
+| auto_tag     | boolean | 否    | 是否自动打标                                                                                                                            |
+| from_plat    | string  | 是    | 来源平台，此处请根据实际情况填写，主观上建议这里填写 `api`                                                                              |
 
 #### 示例代码
 
@@ -189,11 +199,11 @@ response = client.post(
     headers=headers,
     json={
         "category": 1,
-        "from_plat": "api",
+        "url": "https://baidu.com"
         "sections": [],
         "auto_summary": True,
         "labels": [],
-        "url": "https://baidu.com"
+        "from_plat": "api",
     }
 )
 ```

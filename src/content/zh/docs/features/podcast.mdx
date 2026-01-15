@@ -11,7 +11,9 @@ import { ImageZoom } from 'nextra/components'
 
 ## 配置引擎
 
-在使用这个功能之前，你需要先在设置页面内配置你的播客生成引擎，目前仅支持字节跳动火山引擎的播客生成引擎，你可以通过火山引擎的[官网](https://console.volcengine.com/speech/app)进行注册，并获取你的火山引擎的AppID和Access Token，具体操作如下
+在使用这个功能之前，你需要先在设置页面内配置你的播客生成引擎，目前仅支持字节跳动火山引擎的播客生成引擎和OpenAI的Chat Completions类多模态音频生成模型（比如[`gpt-audio`](https://platform.openai.com/docs/models/gpt-audio)）
+
+以火山引擎的播客生成模型作为例子，你可以通过火山引擎的[官网](https://console.volcengine.com/speech/app)进行注册，并获取你的火山引擎的AppID和Access Token，具体操作如下
 
 1. 进入火山引擎的[官网](https://console.volcengine.com/speech/app)，点击创建应用
 2. 填写相关配置，注意接入能力中必选豆包语音播客大模型，点击确定
@@ -27,12 +29,12 @@ import { ImageZoom } from 'nextra/components'
 
 ## 针对文档
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117212151587.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115154640582.png)
 
 你可以在创建文档的时候设置是否需要自动生成博客，如果设置了自动生成，那么在文档创建成功之后，Revornix会自动为其生成一个播客；如果没有设置自动生成，你也可以在文档创建完成后在文档详情页面内手动生成播客。
 
 ## 针对专栏
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117212217839.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115154637467.png)
 
 你可以在专栏创建页面设置是否需要自动更新专栏的播客，如果设置了自动更新，那么在专栏有新文档补充或者变更的时候，会自动触发专栏的播客更新；如果没有设置自动更新，你也可以在专栏详情页面内手动更新专栏的播客。

@@ -50,22 +50,26 @@ import { Tabs, Callout } from 'nextra/components';
 
 文档的存储分为多个部分。
 
-| 数据                                                  | 存储位置                               |
-| ----------------------------------------------------- | -------------------------------------- |
-| 文档元数据                                            | postgres                               |
-| 文档的文件格式（比如原文件文档/转化后的 markdown 等） | [自定义文件服务](./custom-file-system) |
-| Embedding 后的文档向量                                | milvus                                 |
-| 文档知识图谱相关信息                                  | neo4j                                  |
+| 数据                                              | 存储位置                               |
+| ------------------------------------------------- | -------------------------------------- |
+| 文档元数据                                        | postgres                               |
+| 文档的文件（比如原文件文档/转化后的 markdown 等） | [自定义文件服务](./custom-file-system) |
+| Embedding 后的文档向量                            | milvus                                 |
+| 文档知识图谱相关信息                              | neo4j                                  |
+| 文档播客音频                                      | [自定义文件服务](./custom-file-system) |
+| 文档插图                                          | [自定义文件服务](./custom-file-system) |
 
 <Callout>
-	考虑到效益，默认的文档Embedding模型当前使用的是`Qwen/Qwen3-Embedding-0.6B`，如果你对Embedding有着更高的要求，可以浏览源码进行修改。后续我也会将这一项解耦，让用户可以自行设置。
+	考虑到效益，我目前在代码中配置的embedding模型支持本地版本的`Qwen/Qwen3-Embedding-0.6B`和千问云版本的`text-embedding-v4`，默认使用的本地是`Qwen/Qwen3-Embedding-0.6B`，如果你对Embedding有着更高的要求，可以配置阿里百炼平台的APIKEY并开启云版本Embedding，或者也可以浏览源码进行修改。后续我也会将这一项解耦，让用户可以自行设置。
 </Callout>
 
-## AI智能总结
+## AI 智能总结
 
 你可以通过配置模型（设置页面内）来让系统支持自动总结文档内容，并替换掉默认的网站标题、描述等内容。
 
-<Callout type='warning'>注意，若使用了自动总结，你所配置的该文档的标题、描述将都会被覆盖，这是目前AI总结的默认行为。</Callout>
+<Callout type='warning'>
+	注意，若使用了自动总结，你所配置的该文档的标题、描述将都会被覆盖，这是目前AI总结的默认行为。
+</Callout>
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031531236.png)
 
@@ -80,3 +84,9 @@ import { Tabs, Callout } from 'nextra/components';
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010225439549.png)
 
 你可以通过右下角的文档知识图谱来查看该文档有哪些知识点，知识点之间的关联关系。
+
+## 文档播客音频
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115154038988.png)
+
+开启自动生成播客后，你可以通过右下角的音频来收听该文档的播客音频。
