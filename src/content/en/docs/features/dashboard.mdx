@@ -2,22 +2,22 @@ import { Callout } from 'nextra/components';
 
 # Dashboard
 
+Most core information in the system can be viewed quickly on the dashboard. In future development, I will gradually move more content to the dashboard with better logic and UI layout.
+
+If you are a **new user**, you will also see a to-do list at the top of the dashboard, such as model binding and engine configuration.
+
 <Callout>
-Since the data is real-time, any document that is deleted will not be included in the statistics and will no longer appear on this page.
+Because the data is real-time, once a document is deleted it will not be included in statistics and will not appear on this page.
 </Callout>
-
-Most of the system’s core information is available on the dashboard so you can access it quickly. I will continue migrating additional content to this page over time with more refined logic and UI layout.
-
-If you are a **new user**, you will find onboarding tasks at the top of the dashboard, such as binding models and configuring engines.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011141251012.png)
 
-The data currently shown includes:
+Current data includes:
 
-- Daily summaries (the sections generated after summarizing all documents for the day)
-- Current trending searches (powered by the [hot-news](./hot-search) service)
-- Document collection statistics by day
-- Total unread documents and the most recent collected document that remains unread
+- Daily summary (the section generated from summaries of all documents for the day)
+- Current hot search collection (based on the [hot-news](./hot-search) service)
+- Daily document collection statistics
+- Unread document count and the most recently collected but unread document
 - Recent reading statistics and the most recently read document
-- Favorite document statistics and the most recent document you starred
-- Tags for documents and sections
+- Favorite document statistics and the latest favorite
+- Document and section tags

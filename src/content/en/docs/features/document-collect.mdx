@@ -2,57 +2,63 @@ import { Tabs, Callout } from 'nextra/components';
 
 # Document Collection
 
-This system supports multiple types of document sources. Currently, the following are supported: **Website Documents**, **Quick Notes**, and **File Documents**.
+This system supports multiple document sources. Currently supported: **website documents**, **quick notes**, and **file documents**.
 
 <Callout type='warning'>
-	Since the current Jina engine only supports website documents, please switch to another conversion engine if you need to process file documents.
+	The Jina engine currently supports only website documents. If you need file documents, switch the conversion engine to something other than Jina.
 </Callout>
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507021304606.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115153224058.png)
 
-There are several ways to collect documents and information. The simplest and most straightforward method is to add documents directly through the web interface.
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115153222532.png)
 
-## Web Collection
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115153218497.png)
 
-### Configuration Description
+There are multiple ways to collect documents and information. The simplest and most direct way is to add a document from the web UI.
 
-- **Link**: The website URL you wish to collect.
-- **Tags**: Your document tags. You can add multiple tags to facilitate filtering and viewing later.
-- **AI Auto Summary**: When enabled, the system will automatically call the AI interface to summarize the document content, replacing the default website title and description.
-- **Push to Section**: You can select the section to which you want to push the document. The system will automatically push the document to the selected section and update that column’s summary.
+## Web collection
+
+### Configuration
+
+- Link: the website URL you want to collect.
+- Tags: document tags for later filtering.
+- Auto tag: when enabled, AI selects tags from your tag list based on the document content.
+- Auto summary: when enabled, the system calls AI to summarize the content and replaces the default website title/description.
+- Auto podcast: when enabled, the system generates an audio podcast from the document and attaches it to the document.
+- Push to sections: select sections to push to. The system will push the document to those sections and update section summaries.
 
 <Callout>
-	Note: If you enable AI Auto Summary, your manually configured website title and description will not take effect, as they will be replaced by AI-generated summaries.
+	Note: if auto summary is enabled, the title and description you set will not take effect and will be replaced by the AI summary.
 </Callout>
 
-## API Collection
+## API collection
 
-To help developers **integrate third-party applications** or **build custom workflows**, Revornix provides an API-based method for document collection.
+To help developers **integrate third-party apps** or **build custom workflows**, Revornix provides API-based ingestion.
 
-You can click on the **user avatar** in the bottom left corner, select **Account** to open the account settings page, then go to **API Key Management** and click **Go to Settings** to access the configuration page.
+Click the **user avatar** in the bottom-left, choose **Account**, then go to **APIKey Management** and click **Configure** on the right.
 
-For request parameters and response examples of the API method, please refer to [Third-Party API](./api).
+For request parameters and response examples, see [Third-Party API](./api).
 
-## Chrome Extension Collection
+## Chrome extension collection
 
-See the corresponding plugin source page: [Revornix-Chrome-Extension](https://github.com/Qingyon-AI/Revornix-Chrome-Extension)
+See the plugin repository: [Revornix-Chrome-Extension](https://github.com/Qingyon-AI/Revornix-Chrome-Extension)
 
-## JS Library Collection
+## JS package collection
 
-See the corresponding NPM package page: [Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib)
+See the NPM package: [Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib)
 
-## Python Library Collection
+## Python library collection
 
-See the corresponding PIP package page: [Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib)
+See the PIP package: [Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib)
 
-## App Collection
+## App collection
 
-The iOS version is under development — stay tuned.
+The iOS app is under development, stay tuned.
 
-The Android version is not currently planned. If you’re using Android, you can collect documents by logging into the website on your mobile device or using the upcoming mini-program.
+There are no plans for an Android app for now. If you use Android, you can log in on mobile web or use the upcoming mini program to collect documents.
 
-Of course, if you’d like to contribute to Android development, you’re very welcome! Join our [Discord group](https://discord.gg/3XZfz84aPN) to discuss development together.
+If you want to help with Android development, you are very welcome. Join our [Discord](https://discord.gg/3XZfz84aPN) to discuss.
 
-## Mini-Program Collection
+## Mini program collection
 
-Under development — stay tuned.
+Under development, stay tuned.

@@ -2,14 +2,27 @@ import { Callout } from 'nextra/components';
 
 # Section Creation
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251019124934212.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115154637467.png)
 
-Creating a standard section is straightforward—click **Create** next to **Section** in the left navigation.
+Creating a normal section is very simple. Just click Create next to Sections in the left menu.
 
-Some section types, such as **Today’s Section**, do not require manual configuration. As soon as you add documents, the system generates the section and keeps it updated by blending existing summaries with new content.
+For special sections like the Daily Section, users do not need to create them manually. When you add articles, the system automatically creates the Daily Section and, as more articles are added, it generates a new section based on the previous summary and new documents.
 
-<Callout>
-	Today’s Section cannot be disabled. Every document you add is automatically included for analysis and summarization.
-</Callout>
+<Callout>For the Daily Section, there is currently no option to disable it. Any document that is added will be merged into the Daily Section and summarized.</Callout>
 
-You can also create sections through the API—see the [Section creation endpoint](./api/#tpsectioncreate) for details. The Revornix npm and pip packages expose the same capabilities; refer to their documentation on GitHub: [Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib) and [Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib).
+I also provide an API to create sections. See the [section creation endpoint in the API docs](./api/#tpsectioncreate). The npm and pip Revornix packages also support this. See the GitHub docs: [Revornix-Npm-Lib](https://github.com/Qingyon-AI/Revornix-Npm-Lib), [Revornix-Python-Lib](https://github.com/Qingyon-AI/Revornix-Python-Lib).
+
+## Section process
+
+There are two trigger types for section processes: scheduled triggers and event triggers.
+
+- Scheduled trigger: you can set a time, and at that time the section will summarize all documents in the section and update the section info.
+- Event trigger: when a section is updated (e.g., a document is pushed to the section), the system summarizes all documents in the section and updates the section info.
+
+## Auto illustration
+
+When enabled, the system automatically generates illustrations based on the section's document content and inserts them into the section documents. (You must configure an image generation model in Settings.)
+
+## Auto publish
+
+When enabled, as soon as a section is created it is published to the public space. The section can be searched inside the system and by search engines, and other users can access it without logging in.

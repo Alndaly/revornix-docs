@@ -90,7 +90,7 @@ const Hero = () => {
 				<div className='relative w-full overflow-hidden rounded-lg border border-slate-200 bg-white/90 backdrop-blur-md dark:border-white/10 dark:bg-slate-900/60'>
 					<div className='relative aspect-[16/9] w-full'>
 						<img
-							src='https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011141251012.png'
+							src='https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115162941286.png'
 							alt='Revornix 产品界面预览'
 							className='absolute inset-0 h-full w-full object-cover'
 						/>

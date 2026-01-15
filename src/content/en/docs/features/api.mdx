@@ -2,15 +2,15 @@ import { Callout } from 'nextra/components';
 
 # Third-Party API
 
-This document explains all publicly available API endpoints. All requests start with `/tp`.
+This document describes all public API endpoints. All requests start with `/tp`.
 
 **All endpoints on this page must include the following request header**
 
-| Header  | Value        |
-| ------- | ------------ |
+| Header  | Value       |
+| ------- | ----------- |
 | API-KEY | your api key |
 
-You can add an API key by clicking **Revornix (avatar in the lower-left corner)** -> **Account** -> **APIKey Management**.
+API keys can be added via **Avatar (bottom-left) -> Account -> APIKey Management** in Revornix.
 
 ---
 
@@ -20,13 +20,13 @@ Upload a file
 
 #### Parameters
 
-| Parameter    | Type   | Required | Description |
-| ------------ | ------ | -------- | ----------- |
-| file         | File   | Yes      | File        |
-| file_path    | string | No       | File path   |
-| content_type | string | No       | File type   |
+| Parameter    | Type   | Required | Description  |
+| ------------ | ------ | -------- | ------------ |
+| file         | File   | Yes      | File         |
+| file_path    | string | No       | File path    |
+| content_type | string | No       | Content type |
 
-#### Example Code
+#### Example
 
 ```python
 import httpx
@@ -58,15 +58,19 @@ Create a section
 
 #### Parameters
 
-| Parameter   | Type   | Required | Description    |
-| ----------- | ------ | -------- | -------------- |
-| title       | string | Yes      | Section name   |
-| description | string | Yes      | Section description |
-| public      | bool   | Yes      | Whether it is public |
-| cover       | string | No       | Cover image    |
-| labels      | int[]  | Yes      | Label group    |
+| Parameter                      | Type   | Required | Description                                             |
+| ----------------------------- | ------ | -------- | ------------------------------------------------------- |
+| title                         | string | Yes      | Section title                                           |
+| description                   | string | Yes      | Section description                                     |
+| cover                         | string | No       | Cover image                                             |
+| labels                        | int[]  | Yes      | Label list                                              |
+| auto_publish                  | bool   | No       | Auto publish                                            |
+| auto_podcast                  | bool   | No       | Auto-generate audio podcast                             |
+| auto_illustration             | bool   | No       | Auto-generate illustrations                             |
+| process_task_trigger_type     | int    | Yes      | Trigger reason (0: time trigger / 1: update event)      |
+| process_task_trigger_scheduler | bool   | No       | Schedule for time trigger (cron expression)            |
 
-#### Example Code
+#### Example
 
 ```python
 import httpx
@@ -80,9 +84,10 @@ response = client.post(
     json={
         "title": "test title",
         "description": "test description",
-        "public": true,
         "cover": "test/test.png",
         "labels": [1, 2],
+        "auto_publish": true,
+        "process_task_trigger_type": 1
     }
 )
 ```
@@ -94,10 +99,10 @@ Create a section label
 #### Parameters
 
 | Parameter | Type   | Required | Description |
-| --------- | ------ | -------- | ----------- |
-| name      | string | Yes      | Label name  |
+| -------- | ------ | -------- | ----------- |
+| name     | string | Yes      | Label name  |
 
-#### Example Code
+#### Example
 
 ```python
 import httpx
@@ -118,13 +123,13 @@ response = client.post(
 
 ### `/tp/section/mine/all`
 
-Retrieve all of my sections
+Get all my sections
 
 ---
 
 ### `/tp/document/label/list`
 
-Retrieve all document labels
+Get all document labels
 
 ---
 
@@ -135,10 +140,10 @@ Create a document label
 #### Parameters
 
 | Parameter | Type   | Required | Description |
-| --------- | ------ | -------- | ----------- |
-| name      | string | Yes      | Label name  |
+| -------- | ------ | -------- | ----------- |
+| name     | string | Yes      | Label name  |
 
-#### Example Code
+#### Example
 
 ```python
 import httpx
@@ -163,20 +168,25 @@ Create a document
 
 #### Parameters
 
-| Parameter    | Type    | Required | Description                                                                                                                                     |
-| ------------ | ------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| category     | int     | Yes      | Document type: 0 for file documents, 1 for link documents, 2 for quick note documents                                                           |
-| from_plat    | string  | Yes      | Source platform; fill in according to your scenario. We recommend using `api`.                                                                  |
-| sections     | int[]   | Yes      | Sections to publish to                                                                                                                          |
-| auto_summary | boolean | No       | Whether to generate a summary automatically                                                                                                     |
-| labels       | int[]   | Yes      | Label group                                                                                                                                      |
-| url          | string  | Conditional | Link; required for link documents and only valid for link documents                                                                             |
-| content      | string  | Conditional | Content; required for quick note documents and only valid for quick note documents                                                              |
-| file_name    | string  | Conditional | File path (this is the `file_path` you used when uploading the file); required for file documents and only valid for file documents. You need to upload the file first. |
+| Parameter    | Type    | Required | Description |
+| ------------ | ------- | -------- | ----------- |
+| category     | int     | Yes      | Document type, 0: file document, 1: link document, 2: quick note document |
+| sections     | int[]   | Yes      | Sections to push to |
+| labels       | int[]   | Yes      | Label list |
+| title        | string  | No       | Title |
+| description  | string  | No       | Description |
+| cover        | string  | No       | Cover |
+| content      | string  | Yes/No   | Content, required for quick notes and only valid for quick note documents |
+| url          | string  | Yes/No   | URL, required for link documents and only valid for link documents |
+| file_name    | string  | Yes/No   | File path (same as `file_path` from upload). Required for file documents and only valid for file documents; upload the file first |
+| auto_summary | boolean | No       | Auto-generate summary |
+| auto_podcast | boolean | No       | Auto-generate podcast |
+| auto_tag     | boolean | No       | Auto-tag |
+| from_plat    | string  | Yes      | Source platform, recommended `api` |
 
-#### Example Code
+#### Example
 
-This example demonstrates a link document. Adjust it for other document types.
+This example is for link documents only. Modify it for other types.
 
 ```python
 import httpx
@@ -189,11 +199,11 @@ response = client.post(
     headers=headers,
     json={
         "category": 1,
-        "from_plat": "api",
+        "url": "https://baidu.com"
         "sections": [],
         "auto_summary": True,
         "labels": [],
-        "url": "https://baidu.com"
+        "from_plat": "api",
     }
 )
 ```

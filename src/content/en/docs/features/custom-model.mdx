@@ -1,31 +1,29 @@
 import { Callout } from 'nextra/components';
 
-# Custom Models
+# Custom Model
 
-The Revornix system supports adding custom third-party models so you can integrate the models you prefer.
+Revornix supports custom third-party models, so you can configure the models you want to use.
 
 <Callout>
-Currently, only models that follow the `openai` protocol are supported, meaning third-party models must be compatible with the OpenAI API.
+Only models compatible with the `openai` protocol are currently supported (i.e., third-party models compatible with the `openai api`).
 </Callout>
 
-## How to Configure and Add Models
+## How to configure
 
-1. Click the settings button in the top-right corner to open the settings page. In the Model Configuration group, locate **Model Integration** and click the Configure button on the right to open the details page.  
+1. Click the settings button in the top-right to open Settings. Find the model configuration group and click Model Integration, then click Model Config to open the details page.
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105845507.png)
-2. Click **Add Model Provider** and complete the provider’s basic information. You can fill in the name and description however you like to make them easy to remember, then click **Save**.  
+2. Click Add Model Provider and configure the basic information. The name and description can be anything for your own reference. Then click Save.
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105712488.png)
-3. Click **Configure Models** on the provider card to enter the model group configuration page. Click **Add Model**, fill in the model name, and then click the **Save** button on the right. The model name must match the exact name of the third-party model; you cannot use a custom name.  
+3. Click Configure Model Group on the provider card to open the model group page. Click Add Model, enter the model name, then click Save on the right. The model name must be the exact official model name; you cannot make it up.
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105638316.png)
 
-## Selecting Custom Models
+## Select custom models for use
 
-Users can assign custom models to specific purposes.
+Users can choose specific models for specific purposes.
 
-<Callout>
-By default, the document summarization model not only creates document summaries, generates summaries, titles, descriptions, and sections, but it also participates in building the knowledge graph as the primary model for entity and relationship extraction. We recommend configuring a high-quality model for this role.
-</Callout>
+<Callout>The document summary model not only summarizes documents and generates the Summary, title, description, and section, but also participates in knowledge graph construction as the main model for entity and relation extraction. I recommend configuring a strong model for this.</Callout>
 
-- Document ingestion summarization model  
+- Document ingestion summary model
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105845507.png)
-- Revornix AI conversation model configuration  
+- Revornix AI chat model configuration
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251011105953173.png)

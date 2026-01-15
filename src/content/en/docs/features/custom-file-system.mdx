@@ -3,87 +3,87 @@ import { Callout } from 'nextra/components';
 # Custom File System
 
 <Callout type='warning'>
-	Note: When you update the file system, the files in the previous system (including all original files and converted markdown files of your sections/documents, as well as all static files) will **not** be automatically migrated to the new file system. You need to migrate them manually. Therefore, switching file systems is a major operation and generally should be done right after account creation. Avoid changing it later whenever possible.
+	Note: when you update the file system, existing files in the system (including original files for all sections/documents, converted markdown files, and all static assets) will not be migrated to the new file system automatically. You must migrate them manually. Switching file systems is a high-impact operation, so it is recommended to set this after account creation and avoid switching later.
 </Callout>
 
-Revornix supports custom file storage locations. The currently supported options are:
+Revornix supports custom storage locations. The following options are currently supported:
 
 - Built-in Minio service
-- Alibaba Cloud OSS
+- Aliyun OSS
 - Generic S3-compatible services
 - Amazon S3
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010135024210.png)
 
-## How to Add
+## How to add
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010135024211.png)
 
-Adding a file system is very simple. Go to the Settings page, click the “Go to Manage” button next to **Mine File Systems** under the “File Settings” group. Then click “Add File System” to add a new one.
+Adding a file system is simple: go to Settings, then in the file settings group click the Manage button next to My File System to open the file system management page. Click Add File System to add a new one.
 
-## Configuration Parameters Explanation
+## Configuration details
 
-### Built-in Minio Service
+### Built-in Minio service
 
-This is the default storage mode of Revornix and requires no configuration.
+This is the default Revornix storage behavior and requires no configuration.
 
-### Alibaba Cloud OSS
+### Aliyun OSS
 
 <Callout>
-	This storage mode uses the STS authorization scheme to ensure minimal permissions. For details, refer to the official Alibaba Cloud documentation: https://help.aliyun.com/zh/oss/developer-reference/use-temporary-access-credentials-provided-by-sts-to-access-oss
+	This storage method uses STS authorization to ensure least privilege. For Aliyun STS details, see the official docs: https://help.aliyun.com/zh/oss/developer-reference/use-temporary-access-credentials-provided-by-sts-to-access-oss
 </Callout>
 
 #### Steps
 
-Creating a bucket in Alibaba Cloud OSS is straightforward, so details are omitted. Make sure to **enable public read access**.
+Creating a bucket in Aliyun OSS is straightforward, so the steps are omitted here. Just make sure **public read access is enabled**.
 
-1. **Create a User**
+1. Create a user
 
-Based on the principle of least privilege, this user only needs permission to assume an STS temporary role. The specific authorization is explained in Step 5.
+Based on least-privilege, this user only needs permission to assume an STS temporary role. See step 5 for details.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171438412.png)
 
-2. **Create a Role**
+2. Create a role
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171631703.png)
 
-3. **Create a Policy**
+3. Create a policy
 
-Match your own bucket and user with the permissions and resource group shown below. Missing any of them may cause failures.
+Match the permissions and resource group in the image to your own bucket and user. Missing permissions will cause failures.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171754815.png)
 
-4. **Attach the Created Policy to the Role**
+4. Attach the policy to the role
 
-5. **Grant the User Permission to Assume the Role**
+5. Grant the user permission to assume the role
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010171906040.png)
 
-#### Parameter Description for Alibaba Cloud OSS in Revornix
+#### Aliyun storage parameters in Revornix
 
-| Parameter              | Type   | Description                                                                 |
-| ---------------------- | ------ | --------------------------------------------------------------------------- |
-| user_access_key_id     | string | The AccessKeyID of the Alibaba Cloud user, obtainable in the console        |
-| user_access_key_secret | string | The AccessKeySecret of the Alibaba Cloud user, obtainable in the console    |
-| role_arn               | string | The ARN of the assumed role                                                 |
-| region_id              | string | The `region_id` of the OSS bucket                                           |
-| endpoint_url           | string | The `endpoint_url` of the OSS bucket                                        |
-| bucket                 | string | The OSS bucket name, viewable in https://oss.console.aliyun.com/bucket      |
-| url_prefix             | string | The external access URL, viewable in https://oss.console.aliyun.com/bucket  |
+| Parameter              | Type   | Description |
+| ---------------------- | ------ | ----------- |
+| user_access_key_id     | string | Aliyun AccessKeyID, available in the Aliyun console |
+| user_access_key_secret | string | Aliyun AccessKeySecret, available in the Aliyun console |
+| role_arn               | string | ARN of the assumed role |
+| region_id              | string | OSS bucket region ID |
+| endpoint_url           | string | OSS bucket endpoint URL |
+| bucket                 | string | OSS bucket name, see bucket details at https://oss.console.aliyun.com/bucket |
+| url_prefix             | string | Public access URL prefix, see bucket details at https://oss.console.aliyun.com/bucket |
 
 ### Amazon S3
 
 <Callout>
-	This storage mode uses the STS authorization scheme to ensure minimal permissions. For detailed setup, refer to this Medium article: https://bharat-singh-06.medium.com/access-s3-bucket-through-sts-security-token-service-f6c613b5db5f
+	This storage method uses STS authorization to ensure least privilege. For AWS S3 setup, see this Medium article: https://bharat-singh-06.medium.com/access-s3-bucket-through-sts-security-token-service-f6c613b5db5f
 </Callout>
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212621095.png)
 
 #### Steps
 
-Creating a bucket in AWS S3 is also straightforward, so details are omitted. Make sure to **configure permissions correctly**. The following are example configurations:
+Creating a bucket in AWS S3 is straightforward, so the steps are omitted here. Make sure **Permissions** are configured correctly. Use the following configurations:
 
-**Bucket Policy:**
+Bucket policy
 
 ```json
 {
@@ -100,7 +100,7 @@ Creating a bucket in AWS S3 is also straightforward, so details are omitted. Mak
 }
 ```
 
-**CORS Configuration:**
+CORS
 
 ```json
 [
@@ -114,49 +114,49 @@ Creating a bucket in AWS S3 is also straightforward, so details are omitted. Mak
 ]
 ```
 
-1. **Create a User**
+1. Create a user
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212902951.png)
 
-2. **Create a Role**
+2. Create a role
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212955359.png)
 
-3. **Create a Policy**
+3. Create a policy
 
-Make sure to strictly follow the permissions and resources shown in the example, and adapt them according to your own resource group.
+Match the permissions and resources exactly as shown, and adapt to your resource group.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010213045318.png)
 
-4. **Attach the Created Policy to the Role**
+4. Attach the policy to the role
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010213309793.png)
 
-5. **Grant the User Permission to Assume the Role**
+5. Grant the user permission to assume the role
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010213221173.png)
 
-#### Parameter Description for AWS S3 Storage System in Revornix
+#### AWS S3 storage parameters in Revornix
 
-| Parameter Name          | Type   | Description                                   |
-| ------------------------ | ------ | --------------------------------------------- |
-| role_arn                 | string | The ARN of the assumed role                   |
-| user_access_key_id       | string | The user’s AccessKeyID, viewable on the user detail page |
-| user_access_key_secret   | string | The user’s AccessKeySecret, viewable on the user detail page |
-| region_name              | string | The bucket’s region_name                      |
-| bucket                   | string | The bucket name                               |
-| url_prefix               | string | The external static access URL                |
+| Parameter              | Type   | Description |
+| ---------------------- | ------ | ----------- |
+| role_arn               | string | ARN of the assumed role |
+| user_access_key_id     | string | User AccessKeyID, see user details |
+| user_access_key_secret | string | User AccessKeySecret, see user details |
+| region_name            | string | Bucket region name |
+| bucket                 | string | Bucket name |
+| url_prefix             | string | Public access URL prefix |
 
-### Generic S3-Compatible Services
+### Generic S3-compatible services
 
-Any service that supports the S3 protocol can use this option.
+Any service that supports the S3 protocol can use this method.
 
-Note: In this mode, the corresponding user must have **full OSS operation permissions**, including upload, download, delete, and list. Since these permissions are overly broad, it is **not recommended** to use this method unless necessary. If you must use another platform that is not officially supported yet, you may temporarily use this generic mode as a workaround.
+Note: with this method, the user needs full OSS permissions, including upload, download, delete, and list. Because the permissions are broad, I do not recommend it. If you must use another platform that is not officially supported yet, you can use this method temporarily.
 
-| Parameter Name          | Type   | Description                                          |
-| ------------------------ | ------ | ---------------------------------------------------- |
-| user_access_key_id       | string | The user’s AccessKeyID, viewable in the corresponding third-party user management system |
-| user_access_key_secret   | string | The user’s AccessKeySecret, viewable in the corresponding third-party user management system |
-| region_name              | string | The bucket’s region_id                               |
-| endpoint_url             | string | The bucket’s endpoint_url                            |
-| url_prefix               | string | The external static access URL                       |
+| Parameter              | Type   | Description |
+| ---------------------- | ------ | ----------- |
+| user_access_key_id     | string | User AccessKeyID, see the third-party user management system |
+| user_access_key_secret | string | User AccessKeySecret, see the third-party user management system |
+| region_name            | string | Bucket region ID |
+| endpoint_url           | string | Bucket endpoint URL |
+| url_prefix             | string | Public access URL prefix |

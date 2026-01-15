@@ -2,86 +2,91 @@ import { Tabs, Callout } from 'nextra/components';
 
 # Document Management
 
-All documents collected in Revornix through various methods can be managed in a unified way.
+All documents collected into Revornix can be managed in one place.
 
 <Callout>
-	Currently, except for Quick Notes, the converted results of all other document sources are essentially markdown files.
+	Currently, except for quick notes, the converted result of other document sources is essentially a markdown file.
 </Callout>
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251117213057353.png)
 
-## Document Basic Information
+## Document basics
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224258922.png)
 
-After a document is collected and converted, its title, description, tags, and sections can all be modified. Any modification will automatically trigger an update of the associated section.
+After a document is collected and converted, you can modify its title, description, tags, and sections. This will trigger section updates again.
 
-## Document Status
+## Document status
 
-Each document has an independent status. You can freely switch between **read** and **unread** states. The system also supports **favorites** and **tagging**, making it easier to organize and view documents later.
+Each document has its own status. You can switch between read and unread, and you can favorite and tag documents for easier organization later.
 
-You can also view the processing progress of a document, including **embedding progress** and **knowledge graph construction progress**.
+You can also view conversion process status, including vectorization and knowledge graph construction.
 
-Document type and source information are also available.
+Document type and source are also available.
 
-By default, all new documents are marked as **Unread** (including self-edited Quick Notes).
+By default, new documents are marked as `unread` (including quick notes you create).
 
-Currently, Revornix supports the following ways to change document status:
+Currently, you can switch document status in the following ways:
 
-- Enter the document detail page  
-- Scroll to the bottom of the document detail page  
-- Manually mark the document  
+- Open the document detail page
+- Scroll to the bottom of the document detail page
+- Manually mark it
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224414001.png)
 
-## Document Viewing
+## Document viewing
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224517049.png)
 
-You can view documents by different states or view all documents together. Filtering by tags is also supported.
+You can view documents by status or view all documents. You can also filter by tags.
 
-Supports **exact search** by document title and content (based on Postgres queries), as well as **global fuzzy search** (based on Milvus).
+Supports exact search by document title and content (based on Postgres), and global fuzzy search (based on Milvus).
 
-Documents can be sorted in **ascending or descending order** by time.
+Supports sorting by time in ascending or descending order.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010224609258.png)
 
-## Document Storage
+## Document storage
 
-Document storage is divided into several components:
+Document storage is split across multiple parts.
 
-| Data Type                                             | Storage Location                        |
-| ----------------------------------------------------- | --------------------------------------- |
-| Document metadata                                     | Postgres                                |
-| Document files (e.g., original file / converted markdown) | [Custom File System](./custom-file-system) |
-| Document embeddings (after vectorization)             | Milvus                                  |
-| Document knowledge graph information                  | Neo4j                                   |
+| Data | Storage |
+| --- | --- |
+| Document metadata | Postgres |
+| Document files (original files / converted markdown) | [Custom File Service](./custom-file-system) |
+| Embedded document vectors | Milvus |
+| Document knowledge graph data | Neo4j |
+| Document podcast audio | [Custom File Service](./custom-file-system) |
+| Document illustrations | [Custom File Service](./custom-file-system) |
 
 <Callout>
-	For efficiency reasons, the default document embedding model is `Qwen/Qwen3-Embedding-0.6B`.  
-	If you need higher-quality embeddings, you can modify the source code accordingly.  
-	In future versions, this will be decoupled so users can freely choose their own model.
+	For cost-effectiveness, the embedding model configured in the code supports local `Qwen/Qwen3-Embedding-0.6B` and the cloud `text-embedding-v4` on Qwen. By default it uses local `Qwen/Qwen3-Embedding-0.6B`. If you need higher-quality embeddings, you can configure an Aliyun DashScope API key and enable cloud embeddings, or modify the source code. I will decouple this later to let users configure it themselves.
 </Callout>
 
-## AI Auto Summarization
+## AI summary
 
-You can configure a model (in the settings page) to allow the system to automatically summarize document content and replace the default website title and description.
+By configuring a model (in Settings), the system can automatically summarize document content and replace the default website title/description.
 
 <Callout type='warning'>
-	Note: If you enable auto summarization, the manually configured title and description of the document will be overwritten.  
-	This is the current default behavior of the AI summarization feature.
+	Note: if auto summary is enabled, the title and description you set for the document will be overwritten. This is the current default behavior of AI summaries.
 </Callout>
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/202507031531236.png)
 
-## Document Notes
+## Document notes
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010225530879.png)
 
-You can add supplemental notes to your documents to make it easier to review them later.
+You can add supplemental notes to a document for later reference.
 
-## Document Knowledge Graph
+## Document knowledge graph
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010225439549.png)
 
-You can use the document knowledge graph button at the bottom right to view the key knowledge points contained in the document and the relationships between them.
+Use the knowledge graph in the bottom-right to see the document's knowledge points and their relationships.
+
+## Document podcast audio
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115154038988.png)
+
+After enabling auto podcast generation, you can listen to the document's podcast audio via the bottom-right audio player.
