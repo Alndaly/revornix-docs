@@ -2,20 +2,20 @@ import { Callout } from 'nextra/components';
 
 # Document Parsing Engines
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115162300708.png)
+## Create Engine
 
-There are four official engines:
+Currently, we support the following engine types:
 
-| Engine | Supported Types |
-| --- | --- |
-| MinerU | Web / File |
-| MinerU API | Web / File |
-| Jina | Web |
-| Markitdown | Web / File |
+| Engine Type | Supported Engines | Use Case |
+| --- | --- | --- |
+| Markdown text conversion | Markitdown, Jina, MinerU, MinerU API | Convert websites/files to Markdown |
+| Text to speech | Doubao Podcast, OpenAI Audio models | Podcast generation |
+| Image generation | Gemini Banana model | Column illustrations |
+| Audio to text | Volcengine Jiyin Fast, Volcengine Speech-to-Text Standard | Audio transcription |
 
-**The official Jina engine currently only supports website documents, not file documents. For file documents, use one of the other three engines.**
+**The official Jina engine currently does not support file conversion, only website conversion. For file types, use one of the other three options.**
 
-The configuration fields appear in the dialog after you click Configure on an installed engine. Set the parameters according to the examples.
+The configuration fields appear at the bottom of the dialog after you click Configure on an installed engine. Set the parameters according to the examples.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004155307013.png)
 
@@ -34,3 +34,15 @@ Jina also requires an API key. See https://jina.ai for the application process.
 Install the engine, complete configuration, and then use it for document conversion.
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004155235662.png)
+
+## Share engines / use shared engiens
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260126134622653.png)
+
+Starting from `v0.6.1`, we support the engine community. You can make your engine public for others to use. Public engines display a yellow Public badge, and you can search other users' public engines in the community.
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260126135825621.png)
+
+<Callout>If you want to use someone else's engine, you must click the Fork button on the engine card, otherwise the system cannot retrieve it. If you no longer want to use it, we recommend un-forking it.</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260126140805444.png)

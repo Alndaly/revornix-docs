@@ -1,73 +1,65 @@
-# Overall Architecture
+# Revornix Architecture Overview
 
-```mermaid
-flowchart TD
-    A[User] -->|HTTP/WebSocket| B[Nginx Gateway]
-    B -->|UI| C[Next.js Frontend]
-    B -->|/api/*| D[FastAPI Backend]
-    C -->|REST/WS| D
-    D -->|Auth & DB Ops| E[(PostgreSQL)]
-    D -->|Queue Tasks| F[(Redis)]
-    D -->|File Ops| G[(Remote File Storage)]
-    F -->|Consume| H[Celery Worker]
-    H -->|Parse Documents| G
-    H -->|Update Metadata| E
-    H -->|Write Embeddings| I[(Milvus)]
-    H -->|Write Graph Entities| J[(Neo4j)]
-    D -->|Schedule Jobs| K[APScheduler]
-    K -->|RSS Sync & Notifications| D
-    D -->|WebSocket/Notifications| L[Clients]
-    D -->|Expose Data| C
-    C -->|Visualize Graph| J
-    C -->|Search/QA| I
-```
+This document is organized based on the current repository code and `docker-compose.yaml` plus each service's `.env.example` files.
 
-- Docker Compose orchestrates the gateway, frontend, main backend, async worker, and data infrastructure; see the service inventory and dependencies in `docker-compose.yaml:1`.
-- Nginx serves as the unified entry point, routing `/api/*` traffic to the main backend, file service, RSS service, etc.; configuration is in `nginx/nginx.conf:1`.
-- The FastAPI service exposes REST and WebSocket endpoints and mounts MCP sub-apps; startup lifecycle is defined in `api/main.py:1`.
-- The business flow spans "document ingestion → parsing → vectorization → knowledge graph → notification" coordinated across Celery, Milvus, Neo4j, and other components.
+---
 
-## Client & Gateway
+## 1. System Components and Responsibilities
 
-- The Next.js 19 frontend hosts the entire UI, with dependencies and scripts in `web/package.json:1`; it leverages the App Router, Tailwind, and multilingual support.
-- Frontend APIs read REST/WS prefixes from `.env`, mapped in `web/src/config/api.ts:1`.
-- The notification WebSocket authenticates via access_token and then streams events; backend routing is in `api/router/notification.py:1`.
-- Nginx proxies static assets and frontend routes to the `web` container; upstream definitions live in `nginx/nginx.conf:17`.
+- Web frontend (Next.js): UI and interaction layer; entry at `web`, build-time `NEXT_PUBLIC_*` injection.
+- API backend (FastAPI): core business and data orchestration; entry at `api/main.py`, provides docs, columns, AI, graph, notifications, and more.
+- Celery worker: async and heavy tasks; entry at `celery-worker/common/celery/app.py`, handles embedding, summaries, graphs, podcasts, notifications.
+- Hot News service (Node): aggregation service; entry at `hot-news/src/index.ts`, provides ranking APIs.
+- Nginx (optional): reverse proxy and unified entry; config at `nginx/nginx.conf`.
+- MCP (built-in): MCP client/server capability inside the API, routes at `api/mcp_router/*`.
 
-## Core Backend Services
+---
 
-- FastAPI registers user, document, AI, graph, file, and other routes in `api/main.py:1`, initializes Redis plus the scheduler, and mounts MCP HTTP endpoints.
-- Business routers operate through `crud`/`models` against PostgreSQL; document-centric REST APIs reside in `api/router/document.py:1`.
-- Graph queries connect directly to Neo4j, enforcing per-user isolation and returning node/edge data; see `api/router/graph.py:1`.
-- MCP server management handles STD and HTTP tooling, with logic in `api/router/mcp.py:1` alongside `api/mcp_router/common.py:1` and `api/mcp_router/document.py:1`.
-- Remote file system abstractions are defined in `api/protocol/remote_file_service.py:1`, supporting MinIO, OSS, S3, and more.
+## 2. Data and Infrastructure
 
-## Tasks & Intelligent Processing
+- PostgreSQL: primary business data store; ORM models in `api/models` and `celery-worker/models`.
+- Redis: cache and task queue (Celery broker/backend), config in `api/config/redis.py` and `celery-worker/config/redis.py`.
+- Milvus: vector search and similarity, config in `api/config/milvus.py`.
+- Neo4j: knowledge graph storage/query, config in `api/config/neo4j.py`.
+- MinIO (file-backend): default file system and object storage, controlled by `FILE_SYSTEM_*`.
+- Optional external object storage: AWS S3 / Aliyun OSS / generic S3; logic in `api/file/*` and `celery-worker/file/*`.
 
-- Celery worker setup and entrypoint live in `celery-worker/common/celery/app.py:1`, using Redis as broker/backend.
-- Document parsing invokes the configured engine to generate Markdown and persist it to remote storage; core flow is in `celery-worker/common/celery/app.py:40`.
-- Chunking, vectorization, and entity-relation extraction are encapsulated in `celery-worker/data/common.py:1`, supporting streaming chunking and LLM calls.
-- On the FastAPI side, APScheduler handles RSS ingestion and notification triggers; initialization and cron jobs are in `api/common/apscheduler/app.py:1`.
+---
 
-## Data & External Dependencies
+## 3. Core Requests and Data Flow
 
-- PostgreSQL is the primary relational store; SQLAlchemy engine/session init occurs in `api/common/sql.py:1`.
-- Redis provides caching and acts as the Celery broker; async connection setup is in `api/common/redis.py:1`.
-- Milvus stores document embeddings; schema/index creation is in `api/data/milvus/create.py:1`, and vector writes are handled in `api/data/milvus/insert.py:1`.
-- Neo4j persists entities and relations; upsert routines are in `api/data/neo4j/insert.py:1`.
-- MinIO acts as the default file service, declared in Compose at `docker-compose.yaml:55` and exposed through the remote file protocol layer.
-- Environment variables cover model access, OAuth, SMS, and other secrets; FastAPI loads them at startup via `api/main.py:23`.
+1. User request from Web -> API handles business logic -> reads/writes PostgreSQL/Redis/Milvus/Neo4j -> returns response.
+2. Document/column processing -> API enqueues Celery task -> worker parses/summarizes/embeds/builds graph/podcasts -> writes results and notifies.
+3. File upload/access -> API generates file URL -> MinIO or external storage read/write -> frontend accesses via public URL.
+4. Hot News ranking -> Web calls Hot News service -> service aggregates data and returns list.
 
-## Supporting Services & Integrations
+---
 
-- The Daily Hot aggregation service runs on Hono; application entry is `hot-news/src/app.tsx:1`, with dynamic routing setup in `hot-news/src/registry.ts:1`.
-- RSSHub and Browserless containers support RSS aggregation and web rendering; Nginx routes `/api/rss-service` to them (`nginx/nginx.conf:35`).
-- Celery workers share `common`/`crud` modules and mount `./volumes/temp` for temporary processing (`docker-compose.yaml:78`).
-- MCP tools expose time queries and document search through `api/mcp_router/common.py:1` and `api/mcp_router/document.py:1`, available to the built-in agent.
+## 4. Deployment Topology (Default Docker Compose)
 
-## Key Data Flow Example
+- `web`: frontend container, depends on `api` and `file-backend`.
+- `api`: main backend container, depends on `postgres`, `redis`, `neo4j`, `milvus`.
+- `celery-worker`: task worker, depends on `postgres`, `redis`, `neo4j`, `milvus`.
+- `hot-news`: aggregation service.
+- `file-backend`: MinIO file system.
+- `postgres`, `redis`, `neo4j`, `milvus`, `etcd`, `minio`: infrastructure components.
+- `nginx`: unified entry and routing.
+- `rsshub` + `browserless`: RSSHub crawler and browser dependencies.
 
-1. When a user uploads a file or submits a URL, the FastAPI document endpoint writes metadata and schedules a transform task (`api/router/document.py:120`).
-2. The Celery worker consumes the task, invokes the selected parsing engine, stores Markdown/cover via the remote file system, and updates the database (`celery-worker/common/celery/app.py:90`).
-3. Markdown content proceeds through vectorization and entity extraction (`celery-worker/data/common.py:40`), then persists to Milvus/Neo4j and updates task status.
-4. The frontend refreshes via React Query polling or WebSocket pushes; the notification pipeline is defined at `api/router/notification.py:38`.
+---
+
+## 5. Observability and Extension Points
+
+- Sentry: enable per API and worker via `API_SENTRY_*` and `WORKER_SENTRY_*`.
+- Langfuse: trace requests via `LANGFUSE_*`.
+- Model providers: multi-model/provider support; built-in initialization in `api/data/sql/create.py`.
+- Third-party login and SMS/email: Google/GitHub/WeChat/Tencent SMS/SMTP integrated at the API layer.
+
+---
+
+## 6. Initialization and Startup Flow (Brief)
+
+1. Prepare `.env` and each service `.env`.
+2. Start base services (Postgres/Redis/Neo4j/Milvus/MinIO).
+3. Run `api/data/milvus/create` and `api/data/sql/create` to initialize data.
+4. Start API, worker, web, and Hot News.

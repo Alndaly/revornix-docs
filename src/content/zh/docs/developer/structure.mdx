@@ -1,67 +1,65 @@
-# 整体架构
+# Revornix 项目整体架构概览
 
-```mermaid
-flowchart TD
-    A[User] -->|HTTP/WebSocket| B[Nginx Gateway]
-    B -->|UI| C[Next.js Frontend]
-    B -->|/api/*| D[FastAPI Backend]
-    C -->|REST/WS| D
-    D -->|Auth & DB Ops| E[(PostgreSQL)]
-    D -->|Queue Tasks| F[(Redis)]
-    D -->|File Ops| G[(Remote File Storage)]
-    F -->|Consume| H[Celery Worker]
-    H -->|Parse Documents| G
-    H -->|Update Metadata| E
-    H -->|Write Embeddings| I[(Milvus)]
-    H -->|Write Graph Entities| J[(Neo4j)]
-    D -->|Schedule Jobs| K[APScheduler]
-    K -->|RSS Sync & Notifications| D
-    D -->|WebSocket/Notifications| L[Clients]
-    D -->|Expose Data| C
-    C -->|Visualize Graph| J
-    C -->|Search/QA| I
-```
+本文依据当前仓库代码与 `docker-compose.yaml`、各服务 `.env.example` 配置整理。
 
-- Docker Compose 统一编排网关、前端、主后端、异步 worker 及数据基础设施，服务清单和依赖参见 `docker-compose.yaml:1`
-- Nginx 作为统一入口，将 `/api/*` 请求分别代理到主后端、文件服务、RSS 等微服务，配置见 `nginx/nginx.conf:1`
-- FastAPI 主服务暴露 REST 与 WebSocket 接口，并挂载 MCP 子应用，初始化流程在 `api/main.py:1`
-- 业务围绕“文档采集 → 解析 → 向量化 → 图谱 → 通知”的链路，借助 Celery、Milvus、Neo4j 等组件协作完成
+---
 
-## 客户端与网关
-- Next.js 19 前端承载所有 UI，依赖与脚本声明在 `web/package.json:1`，采用 App Router、Tailwind 与多语言方案
-- 前端通过 `.env` 注入的 REST/WS 前缀访问各后端常量，定义在 `web/src/config/api.ts:1`
-- 通知 WebSocket 以 access_token 鉴权后推送事件，服务端路由位于 `api/router/notification.py:1`
-- Nginx 将静态资源与前端路由代理至 `web` 容器，upstream 配置见 `nginx/nginx.conf:17`
+## 1. 系统组件与职责
 
-## 核心后端服务
-- FastAPI 在 `api/main.py:1` 中注册用户、文档、AI、图谱、文件等路由，生命周期内初始化 Redis 连接与调度器，并挂载 MCP HTTP 端点
-- 各业务路由通过 `crud`/`models` 操作 PostgreSQL；文档流程的 REST 接口集中在 `api/router/document.py:1`
-- 图谱查询服务直接连接 Neo4j，按用户隔离数据并返回节点/边结构，见 `api/router/graph.py:1`
-- MCP Server 管理接口支持 STD 与 HTTP 两类工具，逻辑在 `api/router/mcp.py:1` 搭配 `api/mcp_router/common.py:1`、`api/mcp_router/document.py:1`
-- 远程文件系统抽象封装在 `api/protocol/remote_file_service.py:1`，对接 MinIO、OSS、S3 等实现
+- Web 前端（Next.js）：用户界面与交互层，入口在 `web`，构建期注入 `NEXT_PUBLIC_*` 变量。  
+- API 主后端（FastAPI）：核心业务与数据编排，入口在 `api/main.py`，提供文档、专栏、AI、图谱、通知等接口。  
+- Celery Worker：异步与重计算任务处理，入口在 `celery-worker/common/celery/app.py`，负责 embedding、摘要、图谱、播客、通知等。  
+- Hot News 服务（Node）：热搜聚合服务，入口在 `hot-news/src/index.ts`，对外提供榜单 API。  
+- Nginx（可选）：反向代理与统一入口，配置在 `nginx/nginx.conf`。  
+- MCP（内置）：API 内含 MCP 客户端与服务端能力，路由在 `api/mcp_router/*`。  
 
-## 任务与智能处理
-- Celery Worker 配置与入口位于 `celery-worker/common/celery/app.py:1`，通过 Redis broker 分派任务
-- 文档解析根据用户选择的引擎生成 Markdown 并写入远程存储，核心流程在 `celery-worker/common/celery/app.py:40`
-- 文档切片、向量化与实体关系抽取封装在 `celery-worker/data/common.py:1`，支持流式 chunking 与 LLM 调用
-- FastAPI 端 APScheduler 负责 RSS 同步与通知触发，初始化与定时任务注册在 `api/common/apscheduler/app.py:1`
+---
 
-## 数据与外部依赖
-- PostgreSQL 作为主关系库，SQLAlchemy Engine/Session 初始化于 `api/common/sql.py:1`
-- Redis 既做缓存又充当 Celery broker，异步连接封装见 `api/common/redis.py:1`
-- Milvus 存储文档向量，集合 schema 与索引创建在 `api/data/milvus/create.py:1`，向量写入在 `api/data/milvus/insert.py:1`
-- Neo4j 保存实体与关系，upsert 逻辑位于 `api/data/neo4j/insert.py:1`
-- MinIO 作为默认文件服务，在 Compose 中声明（`docker-compose.yaml:55`）并通过远程文件协议暴露给业务
-- 环境变量涵盖外部模型、OAuth、短信等密钥，FastAPI 启动时在 `api/main.py:23` 读取后注入依赖
+## 2. 数据与基础设施
 
-## 辅助服务与集成
-- Daily Hot 聚合服务基于 Hono，应用入口 `hot-news/src/app.tsx:1`，路由动态注册见 `hot-news/src/registry.ts:1`
-- RSSHub 与 Browserless 容器提供 RSS/网页抓取能力，Nginx 将 `/api/rss-service` 代理至该服务（`nginx/nginx.conf:35`）
-- Celery Worker 共享 `common`/`crud` 模块，并挂载卷 `./volumes/temp` 处理临时文件（`docker-compose.yaml:78`）
-- MCP 工具通过 `api/mcp_router/common.py:1`、`api/mcp_router/document.py:1` 暴露时间查询与文档检索供内置 Agent 使用
+- PostgreSQL：主业务数据存储，ORM 模型位于 `api/models` 与 `celery-worker/models`。  
+- Redis：缓存与任务队列（Celery broker/backend），配置在 `api/config/redis.py` 与 `celery-worker/config/redis.py`。  
+- Milvus：向量检索与相似度搜索，配置在 `api/config/milvus.py`。  
+- Neo4j：知识图谱存储与查询，配置在 `api/config/neo4j.py`。  
+- MinIO（file-backend）：默认文件系统与对象存储，配置由 `FILE_SYSTEM_*` 控制。  
+- 可选外部对象存储：支持 AWS S3 / Aliyun OSS / Generic S3，逻辑在 `api/file/*` 与 `celery-worker/file/*`。  
 
-## 关键数据流示例
-1. 用户上传文件或提交网址时，FastAPI 文档接口写入元数据并创建转化任务，入口在 `api/router/document.py:120`
-2. Celery Worker 消费任务，调用选定解析引擎与远程文件系统生成 Markdown/封面并回写数据库 `celery-worker/common/celery/app.py:90`
-3. Markdown 进入向量化与实体抽取流程（`celery-worker/data/common.py:40`），再写入 Milvus/Neo4j 并更新任务状态
-4. 前端通过 React Query 轮询或等待 WebSocket 推送更新，通知管道定义在 `api/router/notification.py:38`
+---
+
+## 3. 核心请求与数据流
+
+1. 用户在 Web 发起请求 → API 处理业务逻辑 → 读写 PostgreSQL/Redis/Milvus/Neo4j → 返回响应。  
+2. 文档/专栏处理请求 → API 投递任务到 Celery → Worker 执行解析/摘要/向量化/图谱/播客 → 结果入库并通知。  
+3. 文件上传/访问 → API 生成文件系统 URL → MinIO 或外部存储读写 → 前端通过公开 URL 访问。  
+4. 热搜榜单 → Web 调用 Hot News 服务 → 服务聚合数据并返回列表。  
+
+---
+
+## 4. 部署拓扑（Docker Compose 默认）
+
+- `web`：前端容器，依赖 `api` 与 `file-backend`。  
+- `api`：主后端容器，依赖 `postgres`、`redis`、`neo4j`、`milvus`。  
+- `celery-worker`：任务处理容器，依赖 `postgres`、`redis`、`neo4j`、`milvus`。  
+- `hot-news`：热搜聚合服务。  
+- `file-backend`：MinIO 文件系统。  
+- `postgres`、`redis`、`neo4j`、`milvus`、`etcd`、`minio`：基础设施组件。  
+- `nginx`：统一入口与路由。  
+- `rsshub` + `browserless`：RSSHub 抓取与浏览器依赖。  
+
+---
+
+## 5. 可观测与扩展点
+
+- Sentry：API 与 Worker 分别可通过 `API_SENTRY_*`、`WORKER_SENTRY_*` 启用。  
+- Langfuse：通过 `LANGFUSE_*` 配置调用链路追踪。  
+- 模型提供商扩展：支持多模型与 provider 配置，内置模型能力初始化在 `api/data/sql/create.py`。  
+- 第三方登录与短信/邮件：Google/GitHub/WeChat/Tencent SMS/SMTP 均在 API 层集成。  
+
+---
+
+## 6. 初始化与启动流程（简要）
+
+1. 准备 `.env` 与各服务 `.env`。  
+2. 启动基础服务（Postgres/Redis/Neo4j/Milvus/MinIO）。  
+3. 执行 `api/data/milvus/create` 与 `api/data/sql/create` 初始化数据。  
+4. 启动 API、Worker、Web、Hot News。  

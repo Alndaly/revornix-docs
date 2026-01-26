@@ -8,7 +8,7 @@ const meta: MetaRecord = {
 	'document-collect': 'Document Collection',
 	'document-manage': 'Document Management',
 	podcast: 'Podcast Generation',
-	engine: 'Document Parsing',
+	engine: 'Parsing Engine',
 	'section-info': 'Section Overview',
 	'day-section': 'Daily Section',
 	'section-share': 'Section Sharing and Co-creation',

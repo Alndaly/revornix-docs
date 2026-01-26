@@ -1,17 +1,18 @@
 import { Callout } from 'nextra/components';
 
-# 文档解析引擎
+# 解析引擎
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115162300708.png)
 
-目前官方所提供的包含四种引擎，分别是
+## 创建引擎
 
-| 引擎名称   | 支持解析类型 |
-| ---------- | ------------ |
-| MinerU     | 网页/文件    |
-| MinerU API | 网页/文件    |
-| Jina       | 网页         |
-| Markitdown | 网页/文件    |
+目前基于系统需求，我们支持如下引擎类型
+
+| 引擎类型         | 支持的引擎                                         | 用处                  |
+| ---------------- | -------------------------------------------------- | --------------------- |
+| markdown文本转化 | Markitdown、Jina、MinerU、MinerU API               | 网站/文件转为markdown |
+| 语音合成         | 豆包播客、OpenAI Audio模型                         | 播客生成              |
+| 图片生成         | Gemini的Banana模型                                 | 专栏插图              |
+| 音频转文字       | 火山引擎极音转文字速版语、火山引擎语音转文字标准版 | 音频文档转写          |
 
 **当前官方提供的 Jina 引擎解析文档的方式还不支持文件文档转化，仅支持网站文档转化，所以如果是文件类型的请设置为其他三种方式。**
 
@@ -34,3 +35,15 @@ Jina 方式也需要自行申请 API Key，申请流程详情见官网：https:/
 点击对应引擎安装后即可进行对应配置，配置完成后即可使用对应引擎进行文档转化。
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251004155235662.png)
+
+## 分享引擎/使用他人分享的引擎
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260126134622653.png)
+
+自`v0.6.1`版本开始，系统支持引擎社区，用户可以通过将自己的引擎设置为公开以供他人使用。已设置为公开的引擎会有黄色的Public标识，同时用户也可以在引擎社区中搜索其他用户公开的引擎。
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260126135825621.png)
+
+<Callout>如果你想使用他人的引擎，必须先点击引擎卡片上的复刻/Fork按钮，否则系统无法检索到。同时，如果你不想再使用这个引擎了，建议将其取消复刻。</Callout>
+
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260126140805444.png)
