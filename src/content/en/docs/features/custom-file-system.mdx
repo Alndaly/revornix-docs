@@ -3,7 +3,12 @@ import { Callout } from 'nextra/components';
 # Custom File System
 
 <Callout type='warning'>
-	Note: when you update the file system, existing files in the system (including original files for all sections/documents, converted markdown files, and all static assets) will not be migrated to the new file system automatically. You must migrate them manually. Switching file systems is a high-impact operation, so it is recommended to set this after account creation and avoid switching later.
+	Note: when you update the file system, existing files in the system (including
+	original files for all sections/documents, converted markdown files, and all
+	static assets) will not be migrated to the new file system automatically. You
+	must migrate them manually. Switching file systems is a high-impact operation,
+	so it is recommended to set this after account creation and avoid switching
+	later.
 </Callout>
 
 Revornix supports custom storage locations. The following options are currently supported:
@@ -30,7 +35,9 @@ This is the default Revornix storage behavior and requires no configuration.
 ### Aliyun OSS
 
 <Callout>
-	This storage method uses STS authorization to ensure least privilege. For Aliyun STS details, see the official docs: https://help.aliyun.com/zh/oss/developer-reference/use-temporary-access-credentials-provided-by-sts-to-access-oss
+	This storage method uses STS authorization to ensure least privilege. For
+	Aliyun STS details, see the official docs:
+	https://help.aliyun.com/zh/oss/developer-reference/use-temporary-access-credentials-provided-by-sts-to-access-oss
 </Callout>
 
 #### Steps
@@ -61,20 +68,22 @@ Match the permissions and resource group in the image to your own bucket and use
 
 #### Aliyun storage parameters in Revornix
 
-| Parameter              | Type   | Description |
-| ---------------------- | ------ | ----------- |
-| user_access_key_id     | string | Aliyun AccessKeyID, available in the Aliyun console |
-| user_access_key_secret | string | Aliyun AccessKeySecret, available in the Aliyun console |
-| role_arn               | string | ARN of the assumed role |
-| region_id              | string | OSS bucket region ID |
-| endpoint_url           | string | OSS bucket endpoint URL |
-| bucket                 | string | OSS bucket name, see bucket details at https://oss.console.aliyun.com/bucket |
+| Parameter              | Type   | Description                                                                           |
+| ---------------------- | ------ | ------------------------------------------------------------------------------------- |
+| user_access_key_id     | string | Aliyun AccessKeyID, available in the Aliyun console                                   |
+| user_access_key_secret | string | Aliyun AccessKeySecret, available in the Aliyun console                               |
+| role_arn               | string | ARN of the assumed role                                                               |
+| region_id              | string | OSS bucket region ID                                                                  |
+| endpoint_url           | string | OSS bucket endpoint URL                                                               |
+| bucket                 | string | OSS bucket name, see bucket details at https://oss.console.aliyun.com/bucket          |
 | url_prefix             | string | Public access URL prefix, see bucket details at https://oss.console.aliyun.com/bucket |
 
 ### Amazon S3
 
 <Callout>
-	This storage method uses STS authorization to ensure least privilege. For AWS S3 setup, see this Medium article: https://bharat-singh-06.medium.com/access-s3-bucket-through-sts-security-token-service-f6c613b5db5f
+	This storage method uses STS authorization to ensure least privilege. For AWS
+	S3 setup, see this Medium article:
+	https://bharat-singh-06.medium.com/access-s3-bucket-through-sts-security-token-service-f6c613b5db5f
 </Callout>
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251010212621095.png)
@@ -138,14 +147,14 @@ Match the permissions and resources exactly as shown, and adapt to your resource
 
 #### AWS S3 storage parameters in Revornix
 
-| Parameter              | Type   | Description |
-| ---------------------- | ------ | ----------- |
-| role_arn               | string | ARN of the assumed role |
-| user_access_key_id     | string | User AccessKeyID, see user details |
+| Parameter              | Type   | Description                            |
+| ---------------------- | ------ | -------------------------------------- |
+| role_arn               | string | ARN of the assumed role                |
+| user_access_key_id     | string | User AccessKeyID, see user details     |
 | user_access_key_secret | string | User AccessKeySecret, see user details |
-| region_name            | string | Bucket region name |
-| bucket                 | string | Bucket name |
-| url_prefix             | string | Public access URL prefix |
+| region_name            | string | Bucket region name                     |
+| bucket                 | string | Bucket name                            |
+| url_prefix             | string | Public access URL prefix               |
 
 ### Generic S3-compatible services
 
@@ -153,10 +162,9 @@ Any service that supports the S3 protocol can use this method.
 
 Note: with this method, the user needs full OSS permissions, including upload, download, delete, and list. Because the permissions are broad, I do not recommend it. If you must use another platform that is not officially supported yet, you can use this method temporarily.
 
-| Parameter              | Type   | Description |
-| ---------------------- | ------ | ----------- |
-| user_access_key_id     | string | User AccessKeyID, see the third-party user management system |
-| user_access_key_secret | string | User AccessKeySecret, see the third-party user management system |
-| region_name            | string | Bucket region ID |
-| endpoint_url           | string | Bucket endpoint URL |
-| url_prefix             | string | Public access URL prefix |
+| Parameter              | Type   | Description                                                                     |
+| ---------------------- | ------ | ------------------------------------------------------------------------------- |
+| user_access_key_id     | string | User AccessKeyID, see the third-party user management system                    |
+| user_access_key_secret | string | User AccessKeySecret, see the third-party user management system                |
+| region_name            | string | Bucket region ID, if it’s Alibaba Cloud, it would be something like cn-beijing. |
+| endpoint_url           | string | The endpoint_url of the bucket, note that the https:// prefix is required here. |

@@ -154,10 +154,9 @@ CORS 配置
 
 注意该方式下，对应的用户需要具备完整的 OSS 操作权限，包括上传、下载、删除、列表等。由于该权限过大，所以主观来讲我不太推荐使用这种方式，如果你必须使用一些其他平台，我这里又暂时没有做官方的支持，你可以暂时选择用这个通用方式来做临时处理。
 
-| 参数名                 | 类型   | 描述                                                 |
-| ---------------------- | ------ | ---------------------------------------------------- |
-| user_access_key_id     | string | 用户的 AccessKeyID，详见对应第三方的用户管理系统     |
-| user_access_key_secret | string | 用户的 AccessKeySecret，详见对应第三方的用户管理系统 |
-| region_name            | string | bucket 的 region_id                                  |
-| endpoint_url           | string | bucket 的 endpoint_url                               |
-| url_prefix             | string | 外网静态访问地址                                     |
+| 参数名                 | 类型   | 描述                                                              |
+| ---------------------- | ------ | ----------------------------------------------------------------- |
+| user_access_key_id     | string | 用户的 AccessKeyID，详见对应第三方的用户管理系统                  |
+| user_access_key_secret | string | 用户的 AccessKeySecret，详见对应第三方的用户管理系统              |
+| region_name            | string | bucket 的 region_id，如果是阿里云，那么就是类似于`cn-beijing`这种 |
+| endpoint_url           | string | bucket 的 endpoint_url，注意此处需要`https://`前缀                |
