@@ -5,7 +5,8 @@ import { Callout } from 'nextra/components';
 This document is organized based on the current repo's `.env.example`, `api/.env.example`, `celery-worker/.env.example`, `web/.env.example`, and `hot-news/src/config.ts`. Unless stated otherwise, example values come from these files.
 
 <Callout type='warning'>
-  Store all secret variables in a secure secret manager. Do not commit them to version control.
+	Store all secret variables in a secure secret manager. Do not commit them to
+	version control.
 </Callout>
 
 > Common placement: root `.env` for Docker Compose; `api/.env`, `celery-worker/.env`, `web/.env`, `hot-news/.env` for running services locally.
@@ -14,52 +15,54 @@ This document is organized based on the current repo's `.env.example`, `api/.env
 
 ## 1. Core Security and Initialization
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `OAUTH_SECRET_KEY` | `openssl rand -hex 32` | Login session/JWT encryption key; must match in API and worker | `api`, `celery-worker`, `docker-compose` |
-| `APIKEY_ENCRYPT_KEY` | `base64-32bytes` | Base64-encoded 32-byte master key to encrypt third-party API keys | `api`, `celery-worker` |
-| `ROOT_USER_NAME` | `admin` | Root user name for initialization (required by init script) | `api` |
-| `ROOT_USER_PASSWORD` | `change_me` | Root user password for initialization | `api` |
-| `ENV` (optional) | `development` | Database initialization safety mode | `api` |
-| `ALLOW_DB_RESET` (optional) | `0` / `1` | Allow running init scripts outside development | `api` |
+| Variable                         | Example                | Description                                                            | Primary scope                            |
+| -------------------------------- | ---------------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
+| `OAUTH_SECRET_KEY`               | `openssl rand -hex 32` | Login session/JWT encryption key; must match in API and worker         | `api`, `celery-worker`, `docker-compose` |
+| `APIKEY_ENCRYPT_KEY`             | `base64-32bytes`       | Base64-encoded 32-byte master key to encrypt third-party API keys      | `api`, `celery-worker`                   |
+| `ENGINE_CONFIG_ENCRYPT_KEY`      | `base64-32bytes`       | Base64-encoded 32-byte master key to encrypt engine configuration      | `api`, `celery-worker`                   |
+| `FILE_SYSTEM_CONFIG_ENCRYPT_KEY` | `base64-32bytes`       | Base64-encoded 32-byte master key to encrypt file system configuration | `api`, `celery-worker`                   |
+| `ROOT_USER_NAME`                 | `admin`                | Root user name for initialization (required by init script)            | `api`                                    |
+| `ROOT_USER_PASSWORD`             | `change_me`            | Root user password for initialization                                  | `api`                                    |
+| `ENV` (optional)                 | `development`          | Database initialization safety mode                                    | `api`                                    |
+| `ALLOW_DB_RESET` (optional)      | `0` / `1`              | Allow running init scripts outside development                         | `api`                                    |
 
 ---
 
 ## 2. Deployment and Access Control
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | Allowed host whitelist (comma-separated) | `api`, `celery-worker` |
-| `OFFICIAL` | `False` | Official deployment mode switch (`True`/`False` string) | `api`, `celery-worker` |
+| Variable       | Example                            | Description                                             | Primary scope          |
+| -------------- | ---------------------------------- | ------------------------------------------------------- | ---------------------- |
+| `DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | Allowed host whitelist (comma-separated)                | `api`, `celery-worker` |
+| `OFFICIAL`     | `False`                            | Official deployment mode switch (`True`/`False` string) | `api`, `celery-worker` |
 
 ---
 
 ## 3. Data and Queue Services
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `POSTGRES_USER` | `revornix` | PostgreSQL username | `api`, `celery-worker`, `docker-compose` |
-| `POSTGRES_PASSWORD` | `12345678` | PostgreSQL password | Same as above |
-| `POSTGRES_DB` | `revornix` | Database name | Same as above |
-| `POSTGRES_DB_URL` | `postgres` | Database host (Docker) or `localhost` | `api`, `celery-worker`, `alembic` |
-| `REDIS_URL` | `redis` | Redis host | `api`, `celery-worker`, `docker-compose` |
-| `REDIS_PORT` | `6379` | Redis port | Same as above |
-| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus endpoint | `api`, `celery-worker` |
-| `MILVUS_TOKEN` | `root:Milvus` | Milvus credentials | Same as above |
-| `NEO4J_URI` | `bolt://localhost:7687` | Neo4j endpoint | `api`, `celery-worker` |
-| `NEO4J_USER` | `neo4j` | Neo4j username | Same as above |
-| `NEO4J_PASS` | `12345678` | Neo4j password | Same as above |
-| `HF_ENDPOINT` | `https://hf-mirror.com` | HuggingFace Hub mirror entry (optional) | `docker-compose` |
+| Variable                  | Example                          | Description                             | Primary scope                            |
+| ------------------------- | -------------------------------- | --------------------------------------- | ---------------------------------------- |
+| `POSTGRES_USER`           | `revornix`                       | PostgreSQL username                     | `api`, `celery-worker`, `docker-compose` |
+| `POSTGRES_PASSWORD`       | `12345678`                       | PostgreSQL password                     | Same as above                            |
+| `POSTGRES_DB`             | `revornix`                       | Database name                           | Same as above                            |
+| `POSTGRES_DB_URL`         | `postgres`                       | Database host (Docker) or `localhost`   | `api`, `celery-worker`, `alembic`        |
+| `REDIS_URL`               | `redis`                          | Redis host                              | `api`, `celery-worker`, `docker-compose` |
+| `REDIS_PORT`              | `6379`                           | Redis port                              | Same as above                            |
+| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus endpoint                         | `api`, `celery-worker`                   |
+| `MILVUS_TOKEN`            | `root:Milvus`                    | Milvus credentials                      | Same as above                            |
+| `NEO4J_URI`               | `bolt://localhost:7687`          | Neo4j endpoint                          | `api`, `celery-worker`                   |
+| `NEO4J_USER`              | `neo4j`                          | Neo4j username                          | Same as above                            |
+| `NEO4J_PASS`              | `12345678`                       | Neo4j password                          | Same as above                            |
+| `HF_ENDPOINT`             | `https://hf-mirror.com`          | HuggingFace Hub mirror entry (optional) | `docker-compose`                         |
 
 ---
 
 ## 4. File System and Object Storage
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `FILE_SYSTEM_USER_NAME` | `revornix` | Built-in/MinIO file system account | `api`, `celery-worker`, `docker-compose` |
-| `FILE_SYSTEM_PASSWORD` | `12345678` | Built-in/MinIO file system password | Same as above |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL` | `http://localhost/api/file-service` | Public entry for frontend file access (via Nginx) | `api`, `celery-worker`, `nginx` |
+| Variable                        | Example                             | Description                                       | Primary scope                            |
+| ------------------------------- | ----------------------------------- | ------------------------------------------------- | ---------------------------------------- |
+| `FILE_SYSTEM_USER_NAME`         | `revornix`                          | Built-in/MinIO file system account                | `api`, `celery-worker`, `docker-compose` |
+| `FILE_SYSTEM_PASSWORD`          | `12345678`                          | Built-in/MinIO file system password               | Same as above                            |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL` | `http://localhost/api/file-service` | Public entry for frontend file access (via Nginx) | `api`, `celery-worker`, `nginx`          |
 
 ---
 
@@ -67,65 +70,65 @@ This document is organized based on the current repo's `.env.example`, `api/.env
 
 Only required when deploying Milvus via Docker Compose:
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `ETCD_ENDPOINTS` | `http://etcd:2379` | Etcd service endpoint | `docker-compose` |
-| `ETCD_AUTO_COMPACTION_MODE` | `revision` | Etcd auto-compaction mode | Same as above |
-| `ETCD_AUTO_COMPACTION_RETENTION` | `1000` | Etcd revision retention count | Same as above |
-| `ETCD_QUOTA_BACKEND_BYTES` | `4294967296` | Etcd storage quota | Same as above |
-| `ETCD_SNAPSHOT_COUNT` | `50000` | Etcd snapshot threshold | Same as above |
-| `MILVUS_MINIO_USER_NAME` | `minioadmin` | Milvus internal MinIO user | Same as above |
-| `MILVUS_MINIO_PASSWORD` | `minioadmin` | Milvus internal MinIO password | Same as above |
+| Variable                         | Example            | Description                    | Primary scope    |
+| -------------------------------- | ------------------ | ------------------------------ | ---------------- |
+| `ETCD_ENDPOINTS`                 | `http://etcd:2379` | Etcd service endpoint          | `docker-compose` |
+| `ETCD_AUTO_COMPACTION_MODE`      | `revision`         | Etcd auto-compaction mode      | Same as above    |
+| `ETCD_AUTO_COMPACTION_RETENTION` | `1000`             | Etcd revision retention count  | Same as above    |
+| `ETCD_QUOTA_BACKEND_BYTES`       | `4294967296`       | Etcd storage quota             | Same as above    |
+| `ETCD_SNAPSHOT_COUNT`            | `50000`            | Etcd snapshot threshold        | Same as above    |
+| `MILVUS_MINIO_USER_NAME`         | `minioadmin`       | Milvus internal MinIO user     | Same as above    |
+| `MILVUS_MINIO_PASSWORD`          | `minioadmin`       | Milvus internal MinIO password | Same as above    |
 
 ---
 
 ## 6. Third-Party Login, SMS, and Email
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `GOOGLE_CLIENT_ID` | `...apps.googleusercontent.com` | Google OAuth client ID | `api` |
-| `GOOGLE_CLIENT_SECRET` | `...` | Google OAuth client secret | `api` |
-| `GITHUB_CLIENT_ID` | `...` | GitHub OAuth client ID | `api` |
-| `GITHUB_CLIENT_SECRET` | `...` | GitHub OAuth client secret | `api` |
-| `WECHAT_WEB_APP_ID` | `wx...` | WeChat web app ID | `api` |
-| `WECHAT_WEB_APP_SECRET` | `...` | WeChat web app secret | `api` |
-| `WECHAT_MINI_APP_ID` | `wx...` | WeChat mini app ID | `api` |
-| `WECHAT_MINI_APP_SECRET` | `...` | WeChat mini app secret | `api` |
-| `TENCENT_SECRET_ID` | `...` | Tencent Cloud SMS SecretId | `api`, `celery-worker` |
-| `TENCENT_SECRET_KEY` | `...` | Tencent Cloud SMS SecretKey | Same as above |
-| `TENCENT_SMS_SDK_APP_ID` | `...` | Tencent SMS SDK AppID | Same as above |
-| `TENCENT_SMS_APP_KEY` | `...` | Tencent SMS AppKey | Same as above |
-| `TENCENT_SMS_SIGN` | `SIGNATURE` | SMS signature | Same as above |
-| `SMTP_HOST` | `smtp.example.com` | SMTP server | `api`, `celery-worker` |
-| `SMTP_PORT` | `465` | SMTP port | Same as above |
-| `SMTP_USERNAME` | `noreply@example.com` | SMTP username | Same as above |
-| `SMTP_PASSWORD` | `...` | SMTP password/app token | Same as above |
+| Variable                 | Example                         | Description                 | Primary scope          |
+| ------------------------ | ------------------------------- | --------------------------- | ---------------------- |
+| `GOOGLE_CLIENT_ID`       | `...apps.googleusercontent.com` | Google OAuth client ID      | `api`                  |
+| `GOOGLE_CLIENT_SECRET`   | `...`                           | Google OAuth client secret  | `api`                  |
+| `GITHUB_CLIENT_ID`       | `...`                           | GitHub OAuth client ID      | `api`                  |
+| `GITHUB_CLIENT_SECRET`   | `...`                           | GitHub OAuth client secret  | `api`                  |
+| `WECHAT_WEB_APP_ID`      | `wx...`                         | WeChat web app ID           | `api`                  |
+| `WECHAT_WEB_APP_SECRET`  | `...`                           | WeChat web app secret       | `api`                  |
+| `WECHAT_MINI_APP_ID`     | `wx...`                         | WeChat mini app ID          | `api`                  |
+| `WECHAT_MINI_APP_SECRET` | `...`                           | WeChat mini app secret      | `api`                  |
+| `TENCENT_SECRET_ID`      | `...`                           | Tencent Cloud SMS SecretId  | `api`, `celery-worker` |
+| `TENCENT_SECRET_KEY`     | `...`                           | Tencent Cloud SMS SecretKey | Same as above          |
+| `TENCENT_SMS_SDK_APP_ID` | `...`                           | Tencent SMS SDK AppID       | Same as above          |
+| `TENCENT_SMS_APP_KEY`    | `...`                           | Tencent SMS AppKey          | Same as above          |
+| `TENCENT_SMS_SIGN`       | `SIGNATURE`                     | SMS signature               | Same as above          |
+| `SMTP_HOST`              | `smtp.example.com`              | SMTP server                 | `api`, `celery-worker` |
+| `SMTP_PORT`              | `465`                           | SMTP port                   | Same as above          |
+| `SMTP_USERNAME`          | `noreply@example.com`           | SMTP username               | Same as above          |
+| `SMTP_PASSWORD`          | `...`                           | SMTP password/app token     | Same as above          |
 
 ---
 
 ## 7. Observability and Tracing
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `LANGFUSE_BASE_URL` | `https://langfuse.example.com` | Langfuse base URL | `api`, `celery-worker` |
-| `LANGFUSE_PUBLIC_KEY` | `...` | Langfuse public key | Same as above |
-| `LANGFUSE_SECRET_KEY` | `...` | Langfuse secret key | Same as above |
-| `API_SENTRY_ENABLE` | `True` | API Sentry toggle (`True`/`False`) | `api` |
-| `API_SENTRY_DSN` | `https://...` | API Sentry DSN | `api` |
-| `WORKER_SENTRY_ENABLE` | `True` | Worker Sentry toggle | `celery-worker` |
-| `WORKER_SENTRY_DSN` | `https://...` | Worker Sentry DSN | `celery-worker` |
+| Variable               | Example                        | Description                        | Primary scope          |
+| ---------------------- | ------------------------------ | ---------------------------------- | ---------------------- |
+| `LANGFUSE_BASE_URL`    | `https://langfuse.example.com` | Langfuse base URL                  | `api`, `celery-worker` |
+| `LANGFUSE_PUBLIC_KEY`  | `...`                          | Langfuse public key                | Same as above          |
+| `LANGFUSE_SECRET_KEY`  | `...`                          | Langfuse secret key                | Same as above          |
+| `API_SENTRY_ENABLE`    | `True`                         | API Sentry toggle (`True`/`False`) | `api`                  |
+| `API_SENTRY_DSN`       | `https://...`                  | API Sentry DSN                     | `api`                  |
+| `WORKER_SENTRY_ENABLE` | `True`                         | Worker Sentry toggle               | `celery-worker`        |
+| `WORKER_SENTRY_DSN`    | `https://...`                  | Worker Sentry DSN                  | `celery-worker`        |
 
 ---
 
 ## 8. Models and Capability Extensions
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `ALI_DASHSCOPE_EMBEDDING_API_KEY` | `...` | Aliyun DashScope embedding API key | `api`, `celery-worker` |
-| `ALI_DASHSCOPE_EMBEDDING_ON` | `False` | Enable DashScope embedding (`True`/`False`) | Same as above |
-| `OFFICIAL_MODEL_PROVIDER_API_KEY` | `...` | API key for initializing the official model provider | `api`, `celery-worker` |
-| `OFFICIAL_MODEL_PROVIDER_BASE_URL` | `https://...` | Base URL for initializing the official model provider | Same as above |
-| `MINERU_MODEL_SOURCE` (optional) | `modelscope` | MinerU model download source | `api`, `celery-worker` |
+| Variable                           | Example       | Description                                           | Primary scope          |
+| ---------------------------------- | ------------- | ----------------------------------------------------- | ---------------------- |
+| `ALI_DASHSCOPE_EMBEDDING_API_KEY`  | `...`         | Aliyun DashScope embedding API key                    | `api`, `celery-worker` |
+| `ALI_DASHSCOPE_EMBEDDING_ON`       | `False`       | Enable DashScope embedding (`True`/`False`)           | Same as above          |
+| `OFFICIAL_MODEL_PROVIDER_API_KEY`  | `...`         | API key for initializing the official model provider  | `api`, `celery-worker` |
+| `OFFICIAL_MODEL_PROVIDER_BASE_URL` | `https://...` | Base URL for initializing the official model provider | Same as above          |
+| `MINERU_MODEL_SOURCE` (optional)   | `modelscope`  | MinerU model download source                          | `api`, `celery-worker` |
 
 ---
 
@@ -133,46 +136,46 @@ Only required when deploying Milvus via Docker Compose:
 
 These variables are injected into the browser or Next build output. Do not place sensitive information here.
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `NEXT_PUBLIC_API_PREFIX` | `http://localhost:8001` | Base URL for the core backend | `web` |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost:8001/notification/ws` | WebSocket notification URL | `web` |
-| `NEXT_PUBLIC_HOT_NEWS_API_PREFIX` | `http://localhost:6688` | Hot News service URL | `web` |
-| `NEXT_PUBLIC_WECHAT_APP_ID` | `wx...` | Used to generate WeChat QR login | `web` |
-| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH` | `true`/`false` | Toggle third-party login entry | `web` |
-| `NEXT_PUBLIC_HOST` | `http://localhost:3000` | Public site URL (for share links) | `web` |
-| `NEXT_PUBLIC_DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | Allowed domain list | `web` |
-| `NEXT_PUBLIC_GA_ID` | `G-XXXXXXX` | Google Analytics ID | `web` |
-| `UNION_PAY_API_PREFIX` (optional) | `https://pay.example.com` | Payment API prefix (Next build-time injection) | `web` |
-| `NEXT_PUBLIC_PAYPAL_CLIENT_ID` (optional) | `...` | PayPal client ID | `web` |
+| Variable                                  | Example                               | Description                                    | Primary scope |
+| ----------------------------------------- | ------------------------------------- | ---------------------------------------------- | ------------- |
+| `NEXT_PUBLIC_API_PREFIX`                  | `http://localhost:8001`               | Base URL for the core backend                  | `web`         |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX`  | `ws://localhost:8001/notification/ws` | WebSocket notification URL                     | `web`         |
+| `NEXT_PUBLIC_HOT_NEWS_API_PREFIX`         | `http://localhost:6688`               | Hot News service URL                           | `web`         |
+| `NEXT_PUBLIC_WECHAT_APP_ID`               | `wx...`                               | Used to generate WeChat QR login               | `web`         |
+| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`      | `true`/`false`                        | Toggle third-party login entry                 | `web`         |
+| `NEXT_PUBLIC_HOST`                        | `http://localhost:3000`               | Public site URL (for share links)              | `web`         |
+| `NEXT_PUBLIC_DEPLOY_HOSTS`                | `app.revornix.com,app.revornix.cn`    | Allowed domain list                            | `web`         |
+| `NEXT_PUBLIC_GA_ID`                       | `G-XXXXXXX`                           | Google Analytics ID                            | `web`         |
+| `UNION_PAY_API_PREFIX` (optional)         | `https://pay.example.com`             | Payment API prefix (Next build-time injection) | `web`         |
+| `NEXT_PUBLIC_PAYPAL_CLIENT_ID` (optional) | `...`                                 | PayPal client ID                               | `web`         |
 
 ---
 
 ## 10. Payments (Optional)
 
-| Variable | Example | Description | Primary scope |
-| --- | --- | --- | --- |
-| `UNION_PAY_URL_PREFIX` | `https://pay.example.com` | Base URL for backend payment calls | `api`, `celery-worker` |
-| `PAYPAL_API_URL` | `https://api-m.sandbox.paypal.com` | PayPal API URL (sandbox by default) | `web` |
-| `PAYPAL_CLIENT_SECRET` | `...` | PayPal client secret | `web` |
+| Variable               | Example                            | Description                         | Primary scope          |
+| ---------------------- | ---------------------------------- | ----------------------------------- | ---------------------- |
+| `UNION_PAY_URL_PREFIX` | `https://pay.example.com`          | Base URL for backend payment calls  | `api`, `celery-worker` |
+| `PAYPAL_API_URL`       | `https://api-m.sandbox.paypal.com` | PayPal API URL (sandbox by default) | `web`                  |
+| `PAYPAL_CLIENT_SECRET` | `...`                              | PayPal client secret                | `web`                  |
 
 ---
 
 ## 11. Daily Hot Aggregation Service (hot-news)
 
-| Variable | Default | Description | Primary scope |
-| --- | --- | --- | --- |
-| `PORT` | `6688` | Service port | `hot-news` |
-| `DISALLOW_ROBOT` | `true` | Block crawlers | `hot-news` |
-| `CACHE_TTL` | `3600` | Ranking cache TTL (seconds) | `hot-news` |
-| `REQUEST_TIMEOUT` | `6000` | Upstream request timeout (ms) | `hot-news` |
-| `ALLOWED_DOMAIN` | `*` | Allowed domain wildcard | `hot-news` |
-| `ALLOWED_HOST` | `imsyy.top` | Allowed top-level host | `hot-news` |
-| `USE_LOG_FILE` | `true` | Write log file | `hot-news` |
-| `RSS_MODE` | `false` | Output RSS by default | `hot-news` |
-| `REDIS_HOST` | `127.0.0.1` | Redis host used by Hot News | `hot-news` |
-| `REDIS_PORT` | `6379` | Hot News Redis port | `hot-news` |
-| `REDIS_PASSWORD` | `""` | Hot News Redis password (if required) | `hot-news` |
+| Variable          | Default     | Description                           | Primary scope |
+| ----------------- | ----------- | ------------------------------------- | ------------- |
+| `PORT`            | `6688`      | Service port                          | `hot-news`    |
+| `DISALLOW_ROBOT`  | `true`      | Block crawlers                        | `hot-news`    |
+| `CACHE_TTL`       | `3600`      | Ranking cache TTL (seconds)           | `hot-news`    |
+| `REQUEST_TIMEOUT` | `6000`      | Upstream request timeout (ms)         | `hot-news`    |
+| `ALLOWED_DOMAIN`  | `*`         | Allowed domain wildcard               | `hot-news`    |
+| `ALLOWED_HOST`    | `imsyy.top` | Allowed top-level host                | `hot-news`    |
+| `USE_LOG_FILE`    | `true`      | Write log file                        | `hot-news`    |
+| `RSS_MODE`        | `false`     | Output RSS by default                 | `hot-news`    |
+| `REDIS_HOST`      | `127.0.0.1` | Redis host used by Hot News           | `hot-news`    |
+| `REDIS_PORT`      | `6379`      | Hot News Redis port                   | `hot-news`    |
+| `REDIS_PASSWORD`  | `""`        | Hot News Redis password (if required) | `hot-news`    |
 
 ---
 

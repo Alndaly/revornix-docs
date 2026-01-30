@@ -5,7 +5,7 @@ import { Callout } from 'nextra/components';
 本文基于当前仓库的 `.env.example`、`api/.env.example`、`celery-worker/.env.example`、`web/.env.example` 与 `hot-news/src/config.ts` 整理。除非特别说明，示例值来自这些文件。
 
 <Callout type='warning'>
-  所有密钥类变量请存放在安全的密钥管理工具中，不要提交到版本库。
+	所有密钥类变量请存放在安全的密钥管理工具中，不要提交到版本库。
 </Callout>
 
 > 🧭 常见放置位置：根目录 `.env` 供 Docker Compose 使用；`api/.env`、`celery-worker/.env`、`web/.env`、`hot-news/.env` 便于本地单独运行各服务。
@@ -14,52 +14,54 @@ import { Callout } from 'nextra/components';
 
 ## 1. 核心安全与初始化
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `OAUTH_SECRET_KEY` | `openssl rand -hex 32` | 登录态/JWT 加密密钥，API 与 Worker 必须一致 | `api`, `celery-worker`, `docker-compose` |
-| `APIKEY_ENCRYPT_KEY` | `base64-32bytes` | Base64 编码 32 字节主密钥，用于加密存储第三方 API Key | `api`, `celery-worker` |
-| `ROOT_USER_NAME` | `admin` | 初始化根用户账号（初始化脚本必填） | `api` |
-| `ROOT_USER_PASSWORD` | `change_me` | 初始化根用户密码 | `api` |
-| `ENV`（可选） | `development` | 数据库初始化安全模式 | `api` |
-| `ALLOW_DB_RESET`（可选） | `0` / `1` | 允许在非开发环境执行初始化脚本 | `api` |
+| 变量                             | 示例值                 | 说明                                                  | 主要作用范围                             |
+| -------------------------------- | ---------------------- | ----------------------------------------------------- | ---------------------------------------- |
+| `OAUTH_SECRET_KEY`               | `openssl rand -hex 32` | 登录态/JWT 加密密钥，API 与 Worker 必须一致           | `api`, `celery-worker`, `docker-compose` |
+| `APIKEY_ENCRYPT_KEY`             | `base64-32bytes`       | Base64 编码 32 字节主密钥，用于加密存储第三方 API Key | `api`, `celery-worker`                   |
+| `ENGINE_CONFIG_ENCRYPT_KEY`      | `base64-32bytes`       | Base64 编码 32 字节主密钥，用于加密存储引擎配置       | `api`, `celery-worker`                   |
+| `FILE_SYSTEM_CONFIG_ENCRYPT_KEY` | `base64-32bytes`       | Base64 编码 32 字节主密钥，用于加密存储文件系统配置   | `api`, `celery-worker`                   |
+| `ROOT_USER_NAME`                 | `admin`                | 初始化根用户账号（初始化脚本必填）                    | `api`                                    |
+| `ROOT_USER_PASSWORD`             | `change_me`            | 初始化根用户密码                                      | `api`                                    |
+| `ENV`（可选）                    | `development`          | 数据库初始化安全模式                                  | `api`                                    |
+| `ALLOW_DB_RESET`（可选）         | `0` / `1`              | 允许在非开发环境执行初始化脚本                        | `api`                                    |
 
 ---
 
 ## 2. 部署与访问控制
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | 允许的 Host 白名单（逗号分隔） | `api`, `celery-worker` |
-| `OFFICIAL` | `False` | 官方部署模式开关（`True`/`False` 字符串） | `api`, `celery-worker` |
+| 变量           | 示例值                             | 说明                                      | 主要作用范围           |
+| -------------- | ---------------------------------- | ----------------------------------------- | ---------------------- |
+| `DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | 允许的 Host 白名单（逗号分隔）            | `api`, `celery-worker` |
+| `OFFICIAL`     | `False`                            | 官方部署模式开关（`True`/`False` 字符串） | `api`, `celery-worker` |
 
 ---
 
 ## 3. 数据与队列服务
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `POSTGRES_USER` | `revornix` | PostgreSQL 用户名 | `api`, `celery-worker`, `docker-compose` |
-| `POSTGRES_PASSWORD` | `12345678` | PostgreSQL 密码 | 同上 |
-| `POSTGRES_DB` | `revornix` | 数据库名 | 同上 |
-| `POSTGRES_DB_URL` | `postgres` | 数据库主机（Docker）或 `localhost` | `api`, `celery-worker`, `alembic` |
-| `REDIS_URL` | `redis` | Redis 主机地址 | `api`, `celery-worker`, `docker-compose` |
-| `REDIS_PORT` | `6379` | Redis 端口 | 同上 |
-| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus 访问地址 | `api`, `celery-worker` |
-| `MILVUS_TOKEN` | `root:Milvus` | Milvus 访问凭证 | 同上 |
-| `NEO4J_URI` | `bolt://localhost:7687` | Neo4j 访问地址 | `api`, `celery-worker` |
-| `NEO4J_USER` | `neo4j` | Neo4j 用户 | 同上 |
-| `NEO4J_PASS` | `12345678` | Neo4j 密码 | 同上 |
-| `HF_ENDPOINT` | `https://hf-mirror.com` | HuggingFace Hub 镜像入口（可选） | `docker-compose` |
+| 变量                      | 示例值                           | 说明                               | 主要作用范围                             |
+| ------------------------- | -------------------------------- | ---------------------------------- | ---------------------------------------- |
+| `POSTGRES_USER`           | `revornix`                       | PostgreSQL 用户名                  | `api`, `celery-worker`, `docker-compose` |
+| `POSTGRES_PASSWORD`       | `12345678`                       | PostgreSQL 密码                    | 同上                                     |
+| `POSTGRES_DB`             | `revornix`                       | 数据库名                           | 同上                                     |
+| `POSTGRES_DB_URL`         | `postgres`                       | 数据库主机（Docker）或 `localhost` | `api`, `celery-worker`, `alembic`        |
+| `REDIS_URL`               | `redis`                          | Redis 主机地址                     | `api`, `celery-worker`, `docker-compose` |
+| `REDIS_PORT`              | `6379`                           | Redis 端口                         | 同上                                     |
+| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus 访问地址                    | `api`, `celery-worker`                   |
+| `MILVUS_TOKEN`            | `root:Milvus`                    | Milvus 访问凭证                    | 同上                                     |
+| `NEO4J_URI`               | `bolt://localhost:7687`          | Neo4j 访问地址                     | `api`, `celery-worker`                   |
+| `NEO4J_USER`              | `neo4j`                          | Neo4j 用户                         | 同上                                     |
+| `NEO4J_PASS`              | `12345678`                       | Neo4j 密码                         | 同上                                     |
+| `HF_ENDPOINT`             | `https://hf-mirror.com`          | HuggingFace Hub 镜像入口（可选）   | `docker-compose`                         |
 
 ---
 
 ## 4. 文件系统与对象存储
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `FILE_SYSTEM_USER_NAME` | `revornix` | Built-in/MinIO 文件系统账号 | `api`, `celery-worker`, `docker-compose` |
-| `FILE_SYSTEM_PASSWORD` | `12345678` | Built-in/MinIO 文件系统密码 | 同上 |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL` | `http://localhost/api/file-service` | 前端访问文件的公网入口（可走 Nginx） | `api`, `celery-worker`, `nginx` |
+| 变量                            | 示例值                              | 说明                                 | 主要作用范围                             |
+| ------------------------------- | ----------------------------------- | ------------------------------------ | ---------------------------------------- |
+| `FILE_SYSTEM_USER_NAME`         | `revornix`                          | Built-in/MinIO 文件系统账号          | `api`, `celery-worker`, `docker-compose` |
+| `FILE_SYSTEM_PASSWORD`          | `12345678`                          | Built-in/MinIO 文件系统密码          | 同上                                     |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL` | `http://localhost/api/file-service` | 前端访问文件的公网入口（可走 Nginx） | `api`, `celery-worker`, `nginx`          |
 
 ---
 
@@ -67,65 +69,65 @@ import { Callout } from 'nextra/components';
 
 仅在 Docker Compose 部署 Milvus 时需要：
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `ETCD_ENDPOINTS` | `http://etcd:2379` | Etcd 服务地址 | `docker-compose` |
-| `ETCD_AUTO_COMPACTION_MODE` | `revision` | Etcd 自动压缩模式 | 同上 |
-| `ETCD_AUTO_COMPACTION_RETENTION` | `1000` | Etcd 保留修订数 | 同上 |
-| `ETCD_QUOTA_BACKEND_BYTES` | `4294967296` | Etcd 存储配额 | 同上 |
-| `ETCD_SNAPSHOT_COUNT` | `50000` | Etcd 快照阈值 | 同上 |
-| `MILVUS_MINIO_USER_NAME` | `minioadmin` | Milvus 内部 MinIO 账号 | 同上 |
-| `MILVUS_MINIO_PASSWORD` | `minioadmin` | Milvus 内部 MinIO 密码 | 同上 |
+| 变量                             | 示例值             | 说明                   | 主要作用范围     |
+| -------------------------------- | ------------------ | ---------------------- | ---------------- |
+| `ETCD_ENDPOINTS`                 | `http://etcd:2379` | Etcd 服务地址          | `docker-compose` |
+| `ETCD_AUTO_COMPACTION_MODE`      | `revision`         | Etcd 自动压缩模式      | 同上             |
+| `ETCD_AUTO_COMPACTION_RETENTION` | `1000`             | Etcd 保留修订数        | 同上             |
+| `ETCD_QUOTA_BACKEND_BYTES`       | `4294967296`       | Etcd 存储配额          | 同上             |
+| `ETCD_SNAPSHOT_COUNT`            | `50000`            | Etcd 快照阈值          | 同上             |
+| `MILVUS_MINIO_USER_NAME`         | `minioadmin`       | Milvus 内部 MinIO 账号 | 同上             |
+| `MILVUS_MINIO_PASSWORD`          | `minioadmin`       | Milvus 内部 MinIO 密码 | 同上             |
 
 ---
 
 ## 6. 第三方登录、短信与邮件
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `GOOGLE_CLIENT_ID` | `...apps.googleusercontent.com` | Google OAuth Client ID | `api` |
-| `GOOGLE_CLIENT_SECRET` | `...` | Google OAuth 密钥 | `api` |
-| `GITHUB_CLIENT_ID` | `...` | GitHub OAuth Client ID | `api` |
-| `GITHUB_CLIENT_SECRET` | `...` | GitHub OAuth 密钥 | `api` |
-| `WECHAT_WEB_APP_ID` | `wx...` | 微信网页应用 AppID | `api` |
-| `WECHAT_WEB_APP_SECRET` | `...` | 微信网页应用密钥 | `api` |
-| `WECHAT_MINI_APP_ID` | `wx...` | 微信小程序 AppID | `api` |
-| `WECHAT_MINI_APP_SECRET` | `...` | 微信小程序密钥 | `api` |
-| `TENCENT_SECRET_ID` | `...` | 腾讯云短信 SecretId | `api`, `celery-worker` |
-| `TENCENT_SECRET_KEY` | `...` | 腾讯云短信 SecretKey | 同上 |
-| `TENCENT_SMS_SDK_APP_ID` | `...` | 腾讯短信 SDK AppID | 同上 |
-| `TENCENT_SMS_APP_KEY` | `...` | 腾讯短信 AppKey | 同上 |
-| `TENCENT_SMS_SIGN` | `SIGNATURE` | 短信签名 | 同上 |
-| `SMTP_HOST` | `smtp.example.com` | SMTP 服务地址 | `api`, `celery-worker` |
-| `SMTP_PORT` | `465` | SMTP 端口 | 同上 |
-| `SMTP_USERNAME` | `noreply@example.com` | SMTP 用户名 | 同上 |
-| `SMTP_PASSWORD` | `...` | SMTP 密码/授权码 | 同上 |
+| 变量                     | 示例值                          | 说明                   | 主要作用范围           |
+| ------------------------ | ------------------------------- | ---------------------- | ---------------------- |
+| `GOOGLE_CLIENT_ID`       | `...apps.googleusercontent.com` | Google OAuth Client ID | `api`                  |
+| `GOOGLE_CLIENT_SECRET`   | `...`                           | Google OAuth 密钥      | `api`                  |
+| `GITHUB_CLIENT_ID`       | `...`                           | GitHub OAuth Client ID | `api`                  |
+| `GITHUB_CLIENT_SECRET`   | `...`                           | GitHub OAuth 密钥      | `api`                  |
+| `WECHAT_WEB_APP_ID`      | `wx...`                         | 微信网页应用 AppID     | `api`                  |
+| `WECHAT_WEB_APP_SECRET`  | `...`                           | 微信网页应用密钥       | `api`                  |
+| `WECHAT_MINI_APP_ID`     | `wx...`                         | 微信小程序 AppID       | `api`                  |
+| `WECHAT_MINI_APP_SECRET` | `...`                           | 微信小程序密钥         | `api`                  |
+| `TENCENT_SECRET_ID`      | `...`                           | 腾讯云短信 SecretId    | `api`, `celery-worker` |
+| `TENCENT_SECRET_KEY`     | `...`                           | 腾讯云短信 SecretKey   | 同上                   |
+| `TENCENT_SMS_SDK_APP_ID` | `...`                           | 腾讯短信 SDK AppID     | 同上                   |
+| `TENCENT_SMS_APP_KEY`    | `...`                           | 腾讯短信 AppKey        | 同上                   |
+| `TENCENT_SMS_SIGN`       | `SIGNATURE`                     | 短信签名               | 同上                   |
+| `SMTP_HOST`              | `smtp.example.com`              | SMTP 服务地址          | `api`, `celery-worker` |
+| `SMTP_PORT`              | `465`                           | SMTP 端口              | 同上                   |
+| `SMTP_USERNAME`          | `noreply@example.com`           | SMTP 用户名            | 同上                   |
+| `SMTP_PASSWORD`          | `...`                           | SMTP 密码/授权码       | 同上                   |
 
 ---
 
 ## 7. 观测与追踪
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `LANGFUSE_BASE_URL` | `https://langfuse.example.com` | Langfuse 服务地址 | `api`, `celery-worker` |
-| `LANGFUSE_PUBLIC_KEY` | `...` | Langfuse 公钥 | 同上 |
-| `LANGFUSE_SECRET_KEY` | `...` | Langfuse 密钥 | 同上 |
-| `API_SENTRY_ENABLE` | `True` | API Sentry 开关（`True`/`False`） | `api` |
-| `API_SENTRY_DSN` | `https://...` | API Sentry DSN | `api` |
-| `WORKER_SENTRY_ENABLE` | `True` | Worker Sentry 开关 | `celery-worker` |
-| `WORKER_SENTRY_DSN` | `https://...` | Worker Sentry DSN | `celery-worker` |
+| 变量                   | 示例值                         | 说明                              | 主要作用范围           |
+| ---------------------- | ------------------------------ | --------------------------------- | ---------------------- |
+| `LANGFUSE_BASE_URL`    | `https://langfuse.example.com` | Langfuse 服务地址                 | `api`, `celery-worker` |
+| `LANGFUSE_PUBLIC_KEY`  | `...`                          | Langfuse 公钥                     | 同上                   |
+| `LANGFUSE_SECRET_KEY`  | `...`                          | Langfuse 密钥                     | 同上                   |
+| `API_SENTRY_ENABLE`    | `True`                         | API Sentry 开关（`True`/`False`） | `api`                  |
+| `API_SENTRY_DSN`       | `https://...`                  | API Sentry DSN                    | `api`                  |
+| `WORKER_SENTRY_ENABLE` | `True`                         | Worker Sentry 开关                | `celery-worker`        |
+| `WORKER_SENTRY_DSN`    | `https://...`                  | Worker Sentry DSN                 | `celery-worker`        |
 
 ---
 
 ## 8. 模型与能力扩展
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `ALI_DASHSCOPE_EMBEDDING_API_KEY` | `...` | 阿里云百炼嵌入模型 API Key | `api`, `celery-worker` |
-| `ALI_DASHSCOPE_EMBEDDING_ON` | `False` | 是否启用 DashScope Embedding（`True`/`False`） | 同上 |
-| `OFFICIAL_MODEL_PROVIDER_API_KEY` | `...` | 初始化官方模型提供商 API Key | `api`, `celery-worker` |
-| `OFFICIAL_MODEL_PROVIDER_BASE_URL` | `https://...` | 初始化官方模型提供商 Base URL | 同上 |
-| `MINERU_MODEL_SOURCE`（可选） | `modelscope` | MinerU 模型下载源切换 | `api`, `celery-worker` |
+| 变量                               | 示例值        | 说明                                           | 主要作用范围           |
+| ---------------------------------- | ------------- | ---------------------------------------------- | ---------------------- |
+| `ALI_DASHSCOPE_EMBEDDING_API_KEY`  | `...`         | 阿里云百炼嵌入模型 API Key                     | `api`, `celery-worker` |
+| `ALI_DASHSCOPE_EMBEDDING_ON`       | `False`       | 是否启用 DashScope Embedding（`True`/`False`） | 同上                   |
+| `OFFICIAL_MODEL_PROVIDER_API_KEY`  | `...`         | 初始化官方模型提供商 API Key                   | `api`, `celery-worker` |
+| `OFFICIAL_MODEL_PROVIDER_BASE_URL` | `https://...` | 初始化官方模型提供商 Base URL                  | 同上                   |
+| `MINERU_MODEL_SOURCE`（可选）      | `modelscope`  | MinerU 模型下载源切换                          | `api`, `celery-worker` |
 
 ---
 
@@ -133,46 +135,46 @@ import { Callout } from 'nextra/components';
 
 这些变量会进入浏览器或 Next 构建产物，请勿放敏感信息。
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `NEXT_PUBLIC_API_PREFIX` | `http://localhost:8001` | 前端调用主后端的基础 URL | `web` |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost:8001/notification/ws` | WebSocket 通知地址 | `web` |
-| `NEXT_PUBLIC_HOT_NEWS_API_PREFIX` | `http://localhost:6688` | Hot News 服务地址 | `web` |
-| `NEXT_PUBLIC_WECHAT_APP_ID` | `wx...` | 前端生成微信二维码登录用 | `web` |
-| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH` | `true`/`false` | 控制是否显示第三方登录入口 | `web` |
-| `NEXT_PUBLIC_HOST` | `http://localhost:3000` | 前端站点公网地址（用于分享链接等） | `web` |
-| `NEXT_PUBLIC_DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | 前端允许访问的域名列表 | `web` |
-| `NEXT_PUBLIC_GA_ID` | `G-XXXXXXX` | Google Analytics ID | `web` |
-| `UNION_PAY_API_PREFIX`（可选） | `https://pay.example.com` | 支付系统 API 前缀（Next 构建期注入） | `web` |
-| `NEXT_PUBLIC_PAYPAL_CLIENT_ID`（可选） | `...` | PayPal Client ID | `web` |
+| 变量                                     | 示例值                                | 说明                                 | 主要作用范围 |
+| ---------------------------------------- | ------------------------------------- | ------------------------------------ | ------------ |
+| `NEXT_PUBLIC_API_PREFIX`                 | `http://localhost:8001`               | 前端调用主后端的基础 URL             | `web`        |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | `ws://localhost:8001/notification/ws` | WebSocket 通知地址                   | `web`        |
+| `NEXT_PUBLIC_HOT_NEWS_API_PREFIX`        | `http://localhost:6688`               | Hot News 服务地址                    | `web`        |
+| `NEXT_PUBLIC_WECHAT_APP_ID`              | `wx...`                               | 前端生成微信二维码登录用             | `web`        |
+| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`     | `true`/`false`                        | 控制是否显示第三方登录入口           | `web`        |
+| `NEXT_PUBLIC_HOST`                       | `http://localhost:3000`               | 前端站点公网地址（用于分享链接等）   | `web`        |
+| `NEXT_PUBLIC_DEPLOY_HOSTS`               | `app.revornix.com,app.revornix.cn`    | 前端允许访问的域名列表               | `web`        |
+| `NEXT_PUBLIC_GA_ID`                      | `G-XXXXXXX`                           | Google Analytics ID                  | `web`        |
+| `UNION_PAY_API_PREFIX`（可选）           | `https://pay.example.com`             | 支付系统 API 前缀（Next 构建期注入） | `web`        |
+| `NEXT_PUBLIC_PAYPAL_CLIENT_ID`（可选）   | `...`                                 | PayPal Client ID                     | `web`        |
 
 ---
 
 ## 10. 支付相关（可选）
 
-| 变量 | 示例值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `UNION_PAY_URL_PREFIX` | `https://pay.example.com` | 后端调用支付系统的基础 URL | `api`, `celery-worker` |
-| `PAYPAL_API_URL` | `https://api-m.sandbox.paypal.com` | PayPal API 地址（默认沙箱） | `web` |
-| `PAYPAL_CLIENT_SECRET` | `...` | PayPal Client Secret | `web` |
+| 变量                   | 示例值                             | 说明                        | 主要作用范围           |
+| ---------------------- | ---------------------------------- | --------------------------- | ---------------------- |
+| `UNION_PAY_URL_PREFIX` | `https://pay.example.com`          | 后端调用支付系统的基础 URL  | `api`, `celery-worker` |
+| `PAYPAL_API_URL`       | `https://api-m.sandbox.paypal.com` | PayPal API 地址（默认沙箱） | `web`                  |
+| `PAYPAL_CLIENT_SECRET` | `...`                              | PayPal Client Secret        | `web`                  |
 
 ---
 
 ## 11. Daily Hot 聚合服务（hot-news）
 
-| 变量 | 默认值 | 说明 | 主要作用范围 |
-| --- | --- | --- | --- |
-| `PORT` | `6688` | 服务监听端口 | `hot-news` |
-| `DISALLOW_ROBOT` | `true` | 是否禁止爬虫抓取 | `hot-news` |
-| `CACHE_TTL` | `3600` | 榜单缓存时间（秒） | `hot-news` |
-| `REQUEST_TIMEOUT` | `6000` | Upstream 请求超时（毫秒） | `hot-news` |
-| `ALLOWED_DOMAIN` | `*` | 允许访问的域名通配 | `hot-news` |
-| `ALLOWED_HOST` | `imsyy.top` | 校验请求来源顶级域 | `hot-news` |
-| `USE_LOG_FILE` | `true` | 是否写入日志文件 | `hot-news` |
-| `RSS_MODE` | `false` | 是否默认输出 RSS | `hot-news` |
-| `REDIS_HOST` | `127.0.0.1` | Hot News 使用的 Redis 主机 | `hot-news` |
-| `REDIS_PORT` | `6379` | Hot News Redis 端口 | `hot-news` |
-| `REDIS_PASSWORD` | `""` | Hot News Redis 密码（若需要） | `hot-news` |
+| 变量              | 默认值      | 说明                          | 主要作用范围 |
+| ----------------- | ----------- | ----------------------------- | ------------ |
+| `PORT`            | `6688`      | 服务监听端口                  | `hot-news`   |
+| `DISALLOW_ROBOT`  | `true`      | 是否禁止爬虫抓取              | `hot-news`   |
+| `CACHE_TTL`       | `3600`      | 榜单缓存时间（秒）            | `hot-news`   |
+| `REQUEST_TIMEOUT` | `6000`      | Upstream 请求超时（毫秒）     | `hot-news`   |
+| `ALLOWED_DOMAIN`  | `*`         | 允许访问的域名通配            | `hot-news`   |
+| `ALLOWED_HOST`    | `imsyy.top` | 校验请求来源顶级域            | `hot-news`   |
+| `USE_LOG_FILE`    | `true`      | 是否写入日志文件              | `hot-news`   |
+| `RSS_MODE`        | `false`     | 是否默认输出 RSS              | `hot-news`   |
+| `REDIS_HOST`      | `127.0.0.1` | Hot News 使用的 Redis 主机    | `hot-news`   |
+| `REDIS_PORT`      | `6379`      | Hot News Redis 端口           | `hot-news`   |
+| `REDIS_PASSWORD`  | `""`        | Hot News Redis 密码（若需要） | `hot-news`   |
 
 ---
 
