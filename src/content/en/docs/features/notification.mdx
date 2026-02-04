@@ -7,7 +7,7 @@ import { ImageZoom } from 'nextra/components';
 
 Notifications are a high-touch feature. Unlike low-visibility background tasks such as model runs and training, notifications are more about user interactions. Each user has different frequency preferences.
 
-Based on this, since `v0.2.5` I separated notifications from the core logic to avoid over-notifying some users.
+Therefore, I separated notifications from the core logic to avoid over-notifying some users.
 
 Now you can integrate notifications into your system with simple settings.
 
@@ -18,7 +18,7 @@ The flow has two main steps:
 
 ## Notification source management
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124135251469.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260204183820951.png)
 
 The following sources are supported:
 
@@ -69,7 +69,10 @@ This source is more complex. See the Apple developer docs: https://developer.app
 
 ```json
 {
-    "team_id": "your team_id"
+	"team_id": "your team_id",
+    "key_id": "your_key_id",
+    "private_key": "your_private_key",
+    "apns_topic": "your_apns_topic"
 }
 ```
 
