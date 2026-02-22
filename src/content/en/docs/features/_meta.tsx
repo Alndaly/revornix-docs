@@ -22,14 +22,6 @@ const meta: MetaRecord = {
 		),
 	},
 	'hot-search': 'Hot Search',
-	rss: {
-		title: (
-			<div className='flex items-center gap-2'>
-				RSS
-				<BetaBadge />
-			</div>
-		),
-	},
 	mcp: {
 		title: (
 			<div className='flex items-center gap-2'>
