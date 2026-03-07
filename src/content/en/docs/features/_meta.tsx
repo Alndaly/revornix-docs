@@ -13,14 +13,7 @@ const meta: MetaRecord = {
 	'day-section': 'Daily Section',
 	'section-share': 'Section Sharing and Co-creation',
 	'section-create': 'Section Creation',
-	graphrag: {
-		title: (
-			<div className='flex items-center gap-2'>
-				Knowledge Graph
-				<BetaBadge />
-			</div>
-		),
-	},
+	graphrag: 'Knowledge Graph',
 	'hot-search': 'Hot Search',
 	mcp: {
 		title: (

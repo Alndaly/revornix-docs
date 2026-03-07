@@ -13,14 +13,7 @@ const meta: MetaRecord = {
 	'day-section': '今日专栏',
 	'section-share': '专栏分享与共创',
 	'section-create': '专栏创建',
-	graphrag: {
-		title: (
-			<div className='flex items-center gap-2'>
-				知识图谱
-				<BetaBadge />
-			</div>
-		),
-	},
+	graphrag: '知识图谱',
 	'hot-search': '热搜面板',
 	mcp: {
 		title: (

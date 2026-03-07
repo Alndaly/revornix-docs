@@ -18,24 +18,22 @@ import { ImageZoom } from 'nextra/components';
 
 ## 通知源管理
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260204183820951.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260307142521891.png)
 
 目前支持如下几种通知源
 
 ### 邮件
 
-该源需要配置，其中的host和port根据你的邮箱服务商进行配置，username和password需要填写你的邮箱账号和密码。
+该源需要配置，其中的`host`和`port`根据你的邮箱服务商进行配置，`username`和`password`需要填写你的邮箱账号和密码。
 
-```json
-{
-	"host": "smtp.example.com",
-	"port": 587,
-	"username": "your_email@example.com",
-	"password": "your_password"
-}
-```
+| 参数名     | 说明               |
+| ---------- | ------------------ |
+| `host`     | 邮箱smtp服务器地址 |
+| `port`     | 邮箱smtp服务器端口 |
+| `username` | 邮箱账号           |
+| `password` | 邮箱密码           |
 
-注意，该配置的密码并非是你邮箱的密码，而是smtp的授权码，具体如何获取授权码，请参考你的邮箱服务商的文档。
+**注意，该配置的密码并非是你邮箱的密码，而是smtp的授权码，具体如何获取授权码，请参考你的邮箱服务商的文档。**
 
 举例163邮箱，其smtp服务授权码即可通过如下方式获取，当开启smtp服务之后会有弹窗，其中的一串字符即为smtp的授权码，注意想要使用这种源，你必须开启smtp服务。
 
@@ -43,16 +41,16 @@ import { ImageZoom } from 'nextra/components';
 
 ### 飞书
 
-该源需要配置参数app_id和app_secret
+该源需要配置参数`app_id`和`app_secret`
 
-```json
-{
-	"app_id": "cli_a3f3d6a3a3f3d6a3a",
-	"app_secret": "dkamsklmlksamkl"
-}
-```
+| 参数名       | 说明                       |
+| ------------ | -------------------------- |
+| `app_id`     | 飞书自建应用的`app id`     |
+| `app_secret` | 飞书自建应用的`app secret` |
 
-由于飞书不支持在通知中直接链接外网文件和图片，所以此处需要配置一个具备向飞书上传文件/图片能力的机器人，具体参考如下
+由于飞书不支持在通知中直接链接外网文件和图片，所以此处需要配置一个具备向飞书上传文件/图片能力的机器人，同时，作为自建应用的机器人在后期也能更加方便的增加更多的能力。
+
+飞书一侧具体操作步骤参考如下
 
 1. 进入[飞书开发者后台](https://open.feishu.cn/app?lang=zh-CN)并创建企业自建应用，创建完成后即可进入应用详情页面内，可以看到app id和app secret，将其填入配置中即可。
    ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124141138428.png)
@@ -67,14 +65,12 @@ import { ImageZoom } from 'nextra/components';
 
 该源配置较为复杂，详情参考Apple开发者文档https://developer.apple.com/documentation/usernotifications/sending-notification-requests-to-apns
 
-```json
-{
-	"team_id": "your team_id",
-    "key_id": "your_key_id",
-    "private_key": "your_private_key",
-    "apns_topic": "your_apns_topic"
-}
-```
+| 参数名        | 说明                                      |
+| ------------- | ----------------------------------------- |
+| `team_id`     | Apple开发者账号的`Team ID`                |
+| `key_id`      | APNS Key的`Key ID`                        |
+| `private_key` | APNS Key的`Private Key`，下载的p8文件内容 |
+| `apns_topic`  | APNS的Topic，即你的APP的`Bundle ID`       |
 
 1. 进入[Apple Developer官网](https://developer.apple.com/account)，登录你的Apple开发者账号
 2. 找到其中的`Membership details`，可以看到你的`Team ID`
@@ -91,13 +87,11 @@ import { ImageZoom } from 'nextra/components';
 
 ### Telegram
 
-该源需要配置参数
+该源需要配置参数`bot_token`
 
-```json
-{
-	"bot_token": "your_bot_token"
-}
-```
+| 参数名      | 说明                  |
+| ----------- | --------------------- |
+| `bot_token` | Telegram机器人的token |
 
 1. 进入Telegram，搜索`@BotFather`找到机器人创建助手
    ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124154333723.png)
@@ -113,7 +107,9 @@ import { ImageZoom } from 'nextra/components';
 
 ## 通知目标管理
 
-![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260204184702812.png)
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260307143039460.png)
+
+**为了防止通知泛滥，该功能需要你验证通知目标是否为你所有。**
 
 目前支持如下几种通知目标
 
@@ -121,24 +117,18 @@ import { ImageZoom } from 'nextra/components';
 
 该目标需要配置参数
 
-```json
-{
-	"email": "your_email@example.com"
-}
-```
-
-`email`就是你想发送邮件的邮箱地址
+| 参数名  | 说明                   |
+| ------- | ---------------------- |
+| `email` | 你想发送邮件的邮箱地址 |
 
 ### 飞书
 
 该通知目标需要配置参数
 
-```json
-{
-	"webhook_url": "https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxxxxxxxxxxxxxxx",
-	"sign": "xxxxxxxxx"
-}
-```
+| 参数名        | 说明            |
+| ------------- | --------------- |
+| `webhook_url` | 飞书webhook地址 |
+| `sign`        | 飞书webhook签名 |
 
 1. 在群内创建自定义webhook机器人
    ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20251124140746854.png)
@@ -152,43 +142,13 @@ import { ImageZoom } from 'nextra/components';
 
 ### Apple APNS
 
-```json
-{
-	"device_token": "your_device_token"
-}
-```
+![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260307143337519.png)
 
 <Callout>
-	这种方式适合开发者使用，即你必须要具备该设备在你应用下的唯一ID
+	该通知终端必须配合ios/ipad端Revornix
+	APP使用，通过手机端APP我的页面右上方的扫码按钮扫码绑定设备。~~如果你还没有下载，请移步APP
+	Store下载~~。（目前还没有正式发布手机端APP，请稍作等待）
 </Callout>
-
-具体获取方式需要在应用开发的时候进行代码配置，具体参考如下
-
-```swift {15}
-class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-    var window: UIWindow?
-
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        registerForRemoteNotifications()
-        UNUserNotificationCenter.current().delegate = self
-        return true
-    }
-
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        // 如果注册成功，那么会调用此处函数
-        // 存储到 UserDefaults
-        UserDefaults(suiteName: "group.com.qingyon.Revornix")!.set(deviceToken.hexString, forKey: "device_token")
-        print("deviceToken:", deviceToken.hexString)
-    }
-
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Failed to register for remote notifications: \(error)")
-    }
-
-    ...
-}
-```
 
 ### Apple APNS (SandBox)
 
@@ -196,13 +156,9 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
 ### Telegram
 
-该通知目标需要配置
-
-```json
-{
-	"chat_id": "your_chat_id"
-}
-```
+| 参数名    | 说明             |
+| --------- | ---------------- |
+| `chat_id` | Telegram群聊的id |
 
 1. 新建一个Telegram群
 2. 将你创建的Telegram机器人邀请到这个群里
