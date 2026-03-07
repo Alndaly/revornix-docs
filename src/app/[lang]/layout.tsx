@@ -1,5 +1,5 @@
 import { Layout, Navbar } from 'nextra-theme-docs';
-import { Head } from 'nextra/components';
+import { Head, Search } from 'nextra/components';
 import { getPageMap } from 'nextra/page-map';
 import 'nextra-theme-docs/style.css';
 import './globals.css';
@@ -99,6 +99,7 @@ export default async function RootLayout({ children, params }: Props) {
 	const { lang } = await params;
 	setRequestLocale(lang);
 	const pageMap = await getPageMap(lang);
+	const searchPlaceholder = lang === 'zh' ? '搜索文档...' : 'Search docs...';
 	return (
 		<html
 			// Required to be set
@@ -126,6 +127,7 @@ export default async function RootLayout({ children, params }: Props) {
 				<GoogleAnalytics gaId='G-MMTX35WR5M' />
 				<Layout
 					navbar={navbar}
+					search={<Search className='revornix-search' placeholder={searchPlaceholder} />}
 					pageMap={pageMap}
 					feedback={{ content: null }}
 					editLink={null}

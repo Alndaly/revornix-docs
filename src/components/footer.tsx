@@ -9,6 +9,7 @@ const CustomFooter = () => {
 	return (
 		<Footer className='grid grid-cols-1 md:grid-cols-2 gap-5'>
 			<div className='flex flex-col text-sm gap-5'>
+				<Link href='https://app.revornix.com'>{t('hero_primary_cta')}</Link>
 				<Link href='https://github.com/Qingyon-AI/Revornix' target={'_blank'}>
 					{t('github_url')}
 				</Link>

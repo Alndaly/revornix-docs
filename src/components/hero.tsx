@@ -4,7 +4,6 @@ import { MegaphoneIcon, Sparkles, ArrowRight } from 'lucide-react';
 
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import WeComCode from './wecom-code';
 
 const Hero = () => {
 	const t = useTranslations();
@@ -45,12 +44,17 @@ const Hero = () => {
 				<p className='text-lg leading-relaxed sm:text-xl dark:text-slate-100/80'>
 					{t('sub_slog')}
 				</p>
+				<p className='text-sm leading-relaxed text-slate-600 dark:text-slate-300 sm:text-base'>
+					{t('hero_outcome')}
+				</p>
 			</div>
 
 			<div className='flex flex-wrap items-center gap-4 mb-10'>
-				<Button className='rounded-full'>
-					<Link href='/blogs' className='flex items-center gap-2 text-sm'>
-						{t('blogs')}
+				<Button asChild className='rounded-full'>
+					<Link
+						href='https://app.revornix.com'
+						className='flex items-center gap-2 text-sm'>
+						{t('hero_primary_cta')}
 						<ArrowRight className='h-4 w-4' />
 					</Link>
 				</Button>
@@ -59,14 +63,17 @@ const Hero = () => {
 					variant='outline'
 					className='rounded-full border-slate-300 bg-white/60 text-base font-semibold text-slate-700 backdrop-blur-sm transition hover:border-slate-400 hover:bg-white dark:border-white/30 dark:bg-transparent dark:text-white dark:hover:bg-white/10'>
 					<Link href='/docs/start' className='text-sm'>
-						{t('documentation')}
+						{t('hero_secondary_cta')}
 					</Link>
 				</Button>
-				<WeComCode
-					buttonStyle='button'
-					className='rounded-full border-0 bg-white text-sm font-semibold text-slate-700 shadow-[0_10px_30px_-18px_rgba(14,116,220,0.6)] transition hover:translate-y-[1px] hover:bg-slate-50 dark:bg-white/15 dark:text-white dark:hover:bg-white/25'
-				/>
+				<Button asChild variant='ghost' className='rounded-full text-sm'>
+					<Link href='/blogs'>{t('hero_tertiary_cta')}</Link>
+				</Button>
 			</div>
+
+			<p className='mb-10 text-xs text-slate-500 dark:text-slate-400'>
+				{t('hero_entry_hint')}
+			</p>
 
 			<ul className='grid gap-4 grid-cols-1 md:grid-cols-3 mb-10'>
 				{highlights.map((item, index) => (
@@ -91,7 +98,7 @@ const Hero = () => {
 					<div className='relative aspect-[16/9] w-full'>
 						<img
 							src='https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115162941286.png'
-							alt='Revornix 产品界面预览'
+							alt={t('hero_preview_alt')}
 							className='absolute inset-0 h-full w-full object-cover'
 						/>
 					</div>

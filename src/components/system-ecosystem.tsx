@@ -63,7 +63,7 @@ const SystemEcosystem: React.FC = () => {
 			status: 'developing',
 			channel: 'Mobile Native',
 			accent: 'from-slate-500/30 to-slate-300/20',
-			eta: '2026 02',
+			eta: '2026 03',
 		},
 		{
 			name: t('system_eco_wechat_miniprogram'),

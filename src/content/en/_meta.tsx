@@ -3,13 +3,18 @@ import type { MetaRecord } from 'nextra';
 const meta: MetaRecord = {
 	index: {
 		type: 'page',
-		display: 'hidden',
+		title: 'Home',
 		theme: {
 			copyPage: false,
 			timestamp: false,
 			layout: 'full',
 			toc: false,
 		},
+	},
+	start: {
+		type: 'page',
+		title: 'Start Free',
+		href: 'https://app.revornix.com',
 	},
 	docs: {
 		type: 'page',
