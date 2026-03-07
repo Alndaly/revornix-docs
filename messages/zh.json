@@ -86,5 +86,10 @@
     "system_eco_ios_app": "iOS APP",
     "system_eco_ios_app_des": "随时随地掌控资讯流",
     "system_eco_wechat_miniprogram": "微信小程序",
-    "system_eco_wechat_miniprogram_des": "接入微信生态入口，快速分享传播"
+    "system_eco_wechat_miniprogram_des": "接入微信生态入口，快速分享传播",
+    "footer_contact_title": "联系方式",
+    "footer_contact_email": "邮箱：1142704468@qq.com",
+    "footer_contact_discord": "Discord 社区",
+    "footer_contact_issues": "GitHub Issues",
+    "footer_contact_more": "更多联系渠道"
 }

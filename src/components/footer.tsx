@@ -7,7 +7,7 @@ const CustomFooter = () => {
 	const t = useTranslations();
 
 	return (
-		<Footer className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+		<Footer className='grid grid-cols-1 md:grid-cols-3 gap-6'>
 			<div className='flex flex-col text-sm gap-5'>
 				<Link href='https://app.revornix.com'>{t('hero_primary_cta')}</Link>
 				<Link href='https://github.com/Qingyon-AI/Revornix' target={'_blank'}>
@@ -47,6 +47,19 @@ const CustomFooter = () => {
 					target={'_blank'}>
 					{t('system_eco_chrome_plugin')}
 				</Link>
+			</div>
+			<div className='flex flex-col text-sm gap-5'>
+				<p className='text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400'>
+					{t('footer_contact_title')}
+				</p>
+				<Link href='mailto:1142704468@qq.com'>{t('footer_contact_email')}</Link>
+				<Link href='https://discord.com/invite/3XZfz84aPN' target={'_blank'}>
+					{t('footer_contact_discord')}
+				</Link>
+				<Link href='https://github.com/Qingyon-AI/Revornix/issues' target={'_blank'}>
+					{t('footer_contact_issues')}
+				</Link>
+				<Link href='/docs/contact'>{t('footer_contact_more')}</Link>
 			</div>
 		</Footer>
 	);

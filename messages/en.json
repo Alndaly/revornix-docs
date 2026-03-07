@@ -86,5 +86,10 @@
     "system_eco_ios_app": "iOS App",
     "system_eco_ios_app_des": "Stay in control of your information flow anytime, anywhere",
     "system_eco_wechat_miniprogram": "WeChat Mini Program",
-    "system_eco_wechat_miniprogram_des": "Integrate with the WeChat ecosystem for fast sharing and distribution"
+    "system_eco_wechat_miniprogram_des": "Integrate with the WeChat ecosystem for fast sharing and distribution",
+    "footer_contact_title": "Contact",
+    "footer_contact_email": "Email: 1142704468@qq.com",
+    "footer_contact_discord": "Discord Community",
+    "footer_contact_issues": "GitHub Issues",
+    "footer_contact_more": "More Contact Options"
 }

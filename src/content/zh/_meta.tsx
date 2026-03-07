@@ -16,6 +16,16 @@ const meta: MetaRecord = {
 		title: '开始使用',
 		href: 'https://app.revornix.com',
 	},
+	pricing: {
+		type: 'page',
+		title: '定价',
+		theme: {
+			layout: 'full',
+			toc: false,
+			copyPage: false,
+			timestamp: false,
+		},
+	},
 	docs: {
 		type: 'page',
 		title: '文档',

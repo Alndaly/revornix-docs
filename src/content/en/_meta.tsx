@@ -16,6 +16,16 @@ const meta: MetaRecord = {
 		title: 'Start Free',
 		href: 'https://app.revornix.com',
 	},
+	pricing: {
+		type: 'page',
+		title: 'Pricing',
+		theme: {
+			layout: 'full',
+			toc: false,
+			copyPage: false,
+			timestamp: false,
+		},
+	},
 	docs: {
 		type: 'page',
 		title: 'Documentation',
