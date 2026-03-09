@@ -19,6 +19,26 @@ import { Callout } from 'nextra/components';
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115160103248.png)
 
+## Revornix 的 MCP 双向能力
+
+Revornix 目前支持 MCP 客户端 + 服务端双向能力。
+
+- 客户端侧：支持接入 Stream MCP 和 Std MCP 两类服务端，你可以在设置中的 MCP 管理里进行配置。
+- 服务端侧：能力内置在 API 中，相关路由归档在 `api/mcp_router/*`；当前官方服务分组可对应到 `common`、`document`、`graph`。
+- `common`：用于通用 MCP 能力扩展。
+- `document`：主要用于文档与知识库交互，让 Revornix AI 或外部 MCP Client 可以基于本地文档进行调用。
+- `graph`：主要面向图谱相关能力扩展，用于补充知识图谱场景下的 MCP 调用能力。
+
+### 官方托管服务端地址
+
+如果你直接使用 Revornix 官方提供的 MCP 服务端，目前可使用以下地址：
+
+- `https://api.revornix.cn/mcp-server/common/mcp`
+- `https://api.revornix.cn/mcp-server/document/mcp`
+- `https://api.revornix.cn/mcp-server/graph/mcp`
+
+提示：以上是官方托管环境的 MCP 地址；如果你讨论的是自部署代码结构或二次开发，建议仍以 `api/mcp_router/*` 以及 `common`、`document`、`graph` 这些分组来描述。
+
 ### 开发者提示
 
-如果你有意开发自己的`mcp server`端，建议将代码放在`api/mcp_router`项目组中。具体可参照文件夹中的`common`和`document`范例。
+如果你有意开发自己的 `mcp server` 端，建议将代码放在 `api/mcp_router` 项目组中，并优先参考现有的 `common`、`document`、`graph` 分组来扩展服务端能力。

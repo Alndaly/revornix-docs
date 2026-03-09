@@ -1,9 +1,18 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { MegaphoneIcon, Sparkles, ArrowRight } from 'lucide-react';
+import {
+	MegaphoneIcon,
+	Sparkles,
+	ArrowRight,
+	ServerCog,
+	QrCode,
+} from 'lucide-react';
 
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import WeComCode from './wecom-code';
+import weComCode from '@/static/contact_me_qr.png';
 
 const Hero = () => {
 	const t = useTranslations();
@@ -66,9 +75,14 @@ const Hero = () => {
 						{t('hero_secondary_cta')}
 					</Link>
 				</Button>
-				<Button asChild variant='ghost' className='rounded-full text-sm'>
+				<Button asChild variant={'secondary'} className='rounded-full text-sm'>
 					<Link href='/blogs'>{t('hero_tertiary_cta')}</Link>
 				</Button>
+				<WeComCode
+					buttonStyle='button'
+					label={t('hero_wecom_short_cta')}
+					className='rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:border-emerald-300/20 dark:bg-emerald-400/10 dark:text-emerald-200 dark:hover:bg-emerald-400/15'
+				/>
 			</div>
 
 			<p className='mb-10 text-xs text-slate-500 dark:text-slate-400'>

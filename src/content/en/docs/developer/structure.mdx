@@ -10,8 +10,7 @@ This document is organized based on the current repository code and `docker-comp
 - API backend (FastAPI): core business and data orchestration; entry at `api/main.py`, provides docs, columns, AI, graph, notifications, and more.
 - Celery worker: async and heavy tasks; entry at `celery-worker/common/celery/app.py`, handles embedding, summaries, graphs, podcasts, notifications.
 - Hot News service (Node): aggregation service; entry at `hot-news/src/index.ts`, provides ranking APIs.
-- Nginx (optional): reverse proxy and unified entry; config at `nginx/nginx.conf`.
-- MCP (built-in): MCP client/server capability inside the API, routes at `api/mcp_router/*`.
+- MCP (built-in): Revornix provides both MCP client and server capability. On the client side it supports Stream MCP / Std MCP; on the server side the capability is built into the API under `api/mcp_router/*`, currently grouped mainly into `common`, `document`, and `graph`.
 
 ---
 
@@ -43,8 +42,6 @@ This document is organized based on the current repository code and `docker-comp
 - `hot-news`: aggregation service.
 - `file-backend`: MinIO file system.
 - `postgres`, `redis`, `neo4j`, `milvus`, `etcd`, `minio`: infrastructure components.
-- `nginx`: unified entry and routing.
-- `rsshub` + `browserless`: RSSHub crawler and browser dependencies.
 
 ---
 

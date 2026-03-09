@@ -2,8 +2,10 @@
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115160103248.png)
 
-本项目内置集成了文档向量化和MCP客户端/服务端。
+本项目内置集成了文档向量化，以及 MCP 客户端 + 服务端双向能力。
 
-基于这一点，Revornix AI具备了主动思考并和你的文档交互的能力。同时也可以通过增加MCP Server接口的方式来和其他所有支持MCP的服务交互。
+客户端侧目前支持接入 Stream MCP 和 Std MCP 两类服务端；服务端侧能力内置在 API 中，相关路由归档在 `api/mcp_router/*`，当前以 `common`、`document`、`graph` 三类服务分组为主。
+
+基于这一点，Revornix AI 不仅具备了主动思考并和你的文档交互的能力，也可以让外部 MCP Client 基于 Revornix 的文档与知识库能力进行调用。
 
 当然，这一切的前提是你需要在设置页面内进行配置模型以及MCP Server。（考虑到这一步对于部分人来说可能有点繁琐，我将在后续某个版本中增加一键配置的功能）

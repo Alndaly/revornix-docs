@@ -1,7 +1,5 @@
 # Revornix 项目整体架构概览
 
-本文依据当前仓库代码与 `docker-compose.yaml`、各服务 `.env.example` 配置整理。
-
 ---
 
 ## 1. 系统组件与职责
@@ -10,8 +8,7 @@
 - API 主后端（FastAPI）：核心业务与数据编排，入口在 `api/main.py`，提供文档、专栏、AI、图谱、通知等接口。  
 - Celery Worker：异步与重计算任务处理，入口在 `celery-worker/common/celery/app.py`，负责 embedding、摘要、图谱、播客、通知等。  
 - Hot News 服务（Node）：热搜聚合服务，入口在 `hot-news/src/index.ts`，对外提供榜单 API。  
-- Nginx（可选）：反向代理与统一入口，配置在 `nginx/nginx.conf`。  
-- MCP（内置）：API 内含 MCP 客户端与服务端能力，路由在 `api/mcp_router/*`。  
+- MCP（内置）：Revornix 同时提供 MCP 客户端与服务端能力。客户端侧支持接入 Stream MCP / Std MCP；服务端侧能力内置于 API，路由位于 `api/mcp_router/*`，当前以 `common`、`document`、`graph` 三类分组为主。  
 
 ---
 
@@ -40,11 +37,9 @@
 - `web`：前端容器，依赖 `api` 与 `file-backend`。  
 - `api`：主后端容器，依赖 `postgres`、`redis`、`neo4j`、`milvus`。  
 - `celery-worker`：任务处理容器，依赖 `postgres`、`redis`、`neo4j`、`milvus`。  
-- `hot-news`：热搜聚合服务。  
+- `hot-news`：热搜聚合服务。
 - `file-backend`：MinIO 文件系统。  
 - `postgres`、`redis`、`neo4j`、`milvus`、`etcd`、`minio`：基础设施组件。  
-- `nginx`：统一入口与路由。  
-- `rsshub` + `browserless`：RSSHub 抓取与浏览器依赖。  
 
 ---
 

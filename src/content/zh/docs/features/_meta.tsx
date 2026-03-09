@@ -1,4 +1,3 @@
-import BetaBadge from '@/components/beta-badge';
 import type { MetaRecord } from 'nextra';
 
 const meta: MetaRecord = {
@@ -15,14 +14,7 @@ const meta: MetaRecord = {
 	'section-create': '专栏创建',
 	graphrag: '知识图谱',
 	'hot-search': '热搜面板',
-	mcp: {
-		title: (
-			<div className='flex items-center gap-2'>
-				内置MCP
-				<BetaBadge />
-			</div>
-		),
-	},
+	mcp: '内置MCP',
 	notification: '通知管理',
 	'custom-model': '自定义模型',
 	'revornix-ai': '智能助手',

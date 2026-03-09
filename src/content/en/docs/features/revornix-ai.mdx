@@ -2,8 +2,10 @@
 
 ![](https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115160103248.png)
 
-This project integrates document vectorization and an MCP client/server.
+This project integrates document vectorization together with built-in MCP client + server capability.
 
-Based on that, Revornix AI can think proactively and interact with your documents. It can also interact with any MCP-compatible service by adding MCP server interfaces.
+On the client side, Revornix currently supports both Stream MCP and Std MCP servers. On the server side, the capability is built into the API under `api/mcp_router/*`, currently grouped mainly into `common`, `document`, and `graph`.
+
+Because of that, Revornix AI can proactively interact with your documents, and external MCP clients can also call into Revornix for document and knowledge-base interaction.
 
 Of course, this requires configuring models and MCP servers in Settings. (This may be a bit tedious for some users, so I plan to add one-click configuration in a future release.)

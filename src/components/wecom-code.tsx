@@ -14,12 +14,15 @@ import { cn } from '@/lib/utils';
 
 const WeComCode = ({
 	buttonStyle = 'link',
+	label,
 	className,
 }: {
-	buttonStyle?: string;
+	buttonStyle?: 'link' | 'button';
+	label?: string;
 	className?: string;
 }) => {
 	const t = useTranslations();
+	const buttonLabel = label ?? t('wecom');
 	return (
 		<Dialog>
 			{buttonStyle === 'link' && (
@@ -30,14 +33,14 @@ const WeComCode = ({
 							'p-0 m-0 font-normal underline text-md hover:no-underline cursor-pointer decoration-from-font text-sm',
 							className
 						)}>
-						{t('wecom')}
+						{buttonLabel}
 					</Button>
 				</DialogTrigger>
 			)}
 			{buttonStyle === 'button' && (
 				<DialogTrigger asChild>
 					<Button variant={'secondary'} className={cn(className)}>
-						{t('wecom')}
+						{buttonLabel}
 					</Button>
 				</DialogTrigger>
 			)}
