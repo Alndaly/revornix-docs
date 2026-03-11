@@ -6,6 +6,7 @@ const meta: MetaRecord = {
 	developer: 'Developer',
 	flow: 'Workflow',
 	environment: 'Environment',
+	tos: 'Terms of Service',
 	privacy: 'Privacy',
 	question: 'Common Question',
 	contact: 'Contact',

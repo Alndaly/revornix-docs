@@ -6,6 +6,7 @@ const meta: MetaRecord = {
 	developer: '开发者',
 	flow: '运行流程',
 	environment: '环境变量',
+	tos: '服务条款',
 	privacy: '隐私协议',
 	question: '常见问题',
 	contact: '联系方式',
