@@ -1,182 +1,290 @@
-import { Callout } from 'nextra/components';
+# Revornix Environment Variables
 
-# Revornix Environment Variable Guide (Based on This Repo)
+Last verified against the codebase: 2026-03-12
 
-This document is organized based on the current repo's `.env.example`, `api/.env.example`, `celery-worker/.env.example`, `web/.env.example`, and `hot-news/src/config.ts`. Unless stated otherwise, example values come from these files.
+This document is organized around the actual read points in the current repository. It does not reconstruct behavior from the old full Docker deployment path.
 
-<Callout type='warning'>
-	Store all secret variables in a secure secret manager. Do not commit them to
-	version control.
-</Callout>
+Current active deployment boundaries:
 
-> Common placement: root `.env` for Docker Compose; `api/.env`, `celery-worker/.env`, `web/.env`, `hot-news/.env` for running services locally.
+- Application services are started manually: `api`, `celery-worker`, `web`, `hot-news`
+- Only the "local infrastructure dependencies" Docker path remains: `docker-compose-local.yaml` + `.env.local`
+- The old full application Docker / Compose startup path has been removed and is no longer the baseline for this document
 
----
+## 1. Current Active Configuration Entrypoints
 
-## 1. Core Security and Initialization
+| Scenario | Example file | Actual file | How it is loaded | Notes |
+| --- | --- | --- | --- | --- |
+| API service | `api/.env.example` | `api/.env` | Multiple `load_dotenv(override=True)` calls | Values in `.env` override external environment variables with the same name |
+| Celery Worker | `celery-worker/.env.example` | `celery-worker/.env` | Multiple `load_dotenv(override=True)` calls | Same behavior as API |
+| Web frontend | `web/.env.example` | `web/.env` | `next.config.ts` + Next runtime | Changes usually require a rebuild |
+| Hot News service | `hot-news/.env.example` | `hot-news/.env` | `dotenv.config()` | A sample file has now been added in this repo |
+| Local infrastructure Docker | `.env.local.example` | `.env.local` | `docker compose -f docker-compose-local.yaml --env-file .env.local up -d` | Only used for infrastructure dependencies such as Postgres / Redis / Neo4j / MinIO / Milvus |
 
-| Variable                         | Example                | Description                                                            | Primary scope                            |
-| -------------------------------- | ---------------------- | ---------------------------------------------------------------------- | ---------------------------------------- |
-| `OAUTH_SECRET_KEY`               | `openssl rand -hex 32` | Login session/JWT encryption key; must match in API and worker         | `api`, `celery-worker`, `docker-compose` |
-| `APIKEY_ENCRYPT_KEY`             | `base64-32bytes`       | Base64-encoded 32-byte master key to encrypt third-party API keys      | `api`, `celery-worker`                   |
-| `ENGINE_CONFIG_ENCRYPT_KEY`      | `base64-32bytes`       | Base64-encoded 32-byte master key to encrypt engine configuration      | `api`, `celery-worker`                   |
-| `FILE_SYSTEM_CONFIG_ENCRYPT_KEY` | `base64-32bytes`       | Base64-encoded 32-byte master key to encrypt file system configuration | `api`, `celery-worker`                   |
-| `ROOT_USER_NAME`                 | `admin`                | Root user name for initialization (required by init script)            | `api`                                    |
-| `ROOT_USER_PASSWORD`             | `change_me`            | Root user password for initialization                                  | `api`                                    |
-| `ENV` (optional)                 | `development`          | Database initialization safety mode                                    | `api`                                    |
-| `ALLOW_DB_RESET` (optional)      | `0` / `1`              | Allow running init scripts outside development                         | `api`                                    |
+Additional notes:
 
----
+- The old root-level `.env.example` is no longer part of the current setup.
+- `.env.local.example` now behaves more like an aggregated local bootstrap sample. The actual application services still use the `.env` files inside their own directories.
 
-## 2. Deployment and Access Control
+## 2. Parsing and Runtime Rules
 
-| Variable       | Example                            | Description                                             | Primary scope          |
-| -------------- | ---------------------------------- | ------------------------------------------------------- | ---------------------- |
-| `DEPLOY_HOSTS` | `app.revornix.com,app.revornix.cn` | Allowed host whitelist (comma-separated)                | `api`, `celery-worker` |
-| `OFFICIAL`     | `False`                            | Official deployment mode switch (`True`/`False` string) | `api`, `celery-worker` |
+### 2.1 API / Worker
 
----
+- Many `api` and `celery-worker` entrypoints call `load_dotenv(override=True)`.
+- That means if `.env` and the external shell environment define the same variable, the value from `.env` wins.
+- The following boolean checks now accept case-insensitive truthy values: `1`, `true`, `yes`, `on`, `y`
+- The main switches affected by this rule include:
+  - `API_SENTRY_ENABLE`
+  - `WORKER_SENTRY_ENABLE`
+  - `ALI_DASHSCOPE_EMBEDDING_ON`
+  - `OFFICIAL`
+  - `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH` (frontend helper)
+- `BILIBILI_QR_LOGIN_ON_STARTUP` and `YOUTUBE_COOKIE_ON_STARTUP` also accept case-insensitive boolean text.
 
-## 3. Data and Queue Services
+### 2.2 Web
 
-| Variable                  | Example                          | Description                             | Primary scope                            |
-| ------------------------- | -------------------------------- | --------------------------------------- | ---------------------------------------- |
-| `POSTGRES_USER`           | `revornix`                       | PostgreSQL username                     | `api`, `celery-worker`, `docker-compose` |
-| `POSTGRES_PASSWORD`       | `12345678`                       | PostgreSQL password                     | Same as above                            |
-| `POSTGRES_DB`             | `revornix`                       | Database name                           | Same as above                            |
-| `POSTGRES_DB_URL`         | `postgres`                       | Database host (Docker) or `localhost`   | `api`, `celery-worker`, `alembic`        |
-| `REDIS_URL`               | `redis`                          | Redis host                              | `api`, `celery-worker`, `docker-compose` |
-| `REDIS_PORT`              | `6379`                           | Redis port                              | Same as above                            |
-| `MILVUS_CLUSTER_ENDPOINT` | `http://milvus-standalone:19530` | Milvus endpoint                         | `api`, `celery-worker`                   |
-| `MILVUS_TOKEN`            | `root:Milvus`                    | Milvus credentials                      | Same as above                            |
-| `NEO4J_URI`               | `bolt://localhost:7687`          | Neo4j endpoint                          | `api`, `celery-worker`                   |
-| `NEO4J_USER`              | `neo4j`                          | Neo4j username                          | Same as above                            |
-| `NEO4J_PASS`              | `12345678`                       | Neo4j password                          | Same as above                            |
-| `HF_ENDPOINT`             | `https://hf-mirror.com`          | HuggingFace Hub mirror entry (optional) | `docker-compose`                         |
+- `web/next.config.ts` injects frontend-required environment variables into the build output.
+- `NEXT_PUBLIC_*` variables follow the standard public-env convention.
+- `UNION_PAY_API_PREFIX` is not named `NEXT_PUBLIC_*`, but it is still explicitly injected into the client bundle by `next.config.ts`.
+- Because of that, changes to frontend-related variables usually require running `pnpm build` again.
 
----
+### 2.3 Hot News
 
-## 4. File System and Object Storage
+- `hot-news` uses `dotenv.config()` and does not force `.env` values to override external variables the way API / Worker do.
+- Boolean parsing here is stricter: only the string `true` (case-insensitive) is treated as true. `1` and `yes` do not work.
 
-| Variable                        | Example                             | Description                                       | Primary scope                            |
-| ------------------------------- | ----------------------------------- | ------------------------------------------------- | ---------------------------------------- |
-| `FILE_SYSTEM_USER_NAME`         | `revornix`                          | Built-in/MinIO file system account                | `api`, `celery-worker`, `docker-compose` |
-| `FILE_SYSTEM_PASSWORD`          | `12345678`                          | Built-in/MinIO file system password               | Same as above                            |
-| `FILE_SYSTEM_SERVER_PUBLIC_URL` | `http://localhost/api/file-service` | Public entry for frontend file access (via Nginx) | `api`, `celery-worker`, `nginx`          |
+## 3. Hard Startup Dependencies
 
----
+"Hard dependency" here means that based on the current import chain and startup path, missing values will either cause an immediate startup error or make the service unusable right after startup.
 
-## 5. Milvus Dependencies (Etcd / MinIO)
+### 3.1 Required for API startup right now
 
-Only required when deploying Milvus via Docker Compose:
+- `OAUTH_SECRET_KEY`
+- `LANGFUSE_PUBLIC_KEY`
+- `LANGFUSE_SECRET_KEY`
+- `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB_URL` / `POSTGRES_DB`
+- `REDIS_URL` / `REDIS_PORT`
+- `MILVUS_CLUSTER_ENDPOINT` / `MILVUS_TOKEN`
+- `NEO4J_USER` / `NEO4J_PASS` / `NEO4J_URI`
+- `FILE_SYSTEM_SERVER_PUBLIC_URL` / `FILE_SYSTEM_USER_NAME` / `FILE_SYSTEM_PASSWORD`
+- `APIKEY_ENCRYPT_KEY`
+- `ENGINE_CONFIG_ENCRYPT_KEY`
+- `FILE_SYSTEM_CONFIG_ENCRYPT_KEY`
+- `NOTIFICATION_SOURCE_CONFIG_ENCRYPT_KEY`
+- `NOTIFICATION_TARGET_CONFIG_ENCRYPT_KEY`
+- `SMTP_HOST` / `SMTP_PORT` / `SMTP_USERNAME` / `SMTP_PASSWORD`
+- `TENCENT_SECRET_ID` / `TENCENT_SECRET_KEY` / `TENCENT_SMS_SDK_APP_ID` / `TENCENT_SMS_APP_KEY` / `TENCENT_SMS_SIGN`
 
-| Variable                         | Example            | Description                    | Primary scope    |
-| -------------------------------- | ------------------ | ------------------------------ | ---------------- |
-| `ETCD_ENDPOINTS`                 | `http://etcd:2379` | Etcd service endpoint          | `docker-compose` |
-| `ETCD_AUTO_COMPACTION_MODE`      | `revision`         | Etcd auto-compaction mode      | Same as above    |
-| `ETCD_AUTO_COMPACTION_RETENTION` | `1000`             | Etcd revision retention count  | Same as above    |
-| `ETCD_QUOTA_BACKEND_BYTES`       | `4294967296`       | Etcd storage quota             | Same as above    |
-| `ETCD_SNAPSHOT_COUNT`            | `50000`            | Etcd snapshot threshold        | Same as above    |
-| `MILVUS_MINIO_USER_NAME`         | `minioadmin`       | Milvus internal MinIO user     | Same as above    |
-| `MILVUS_MINIO_PASSWORD`          | `minioadmin`       | Milvus internal MinIO password | Same as above    |
+The reason is not that every feature is always called immediately. The current API route import chain already pulls in the related modules, for example:
 
----
+- `api/common/dependencies.py`
+- `api/common/encrypt.py`
+- `api/router/user.py`
+- `api/router/user_auth_phone.py`
+- `api/router/graph.py`
 
-## 6. Third-Party Login, SMS, and Email
+### 3.2 Required for Worker startup right now
 
-| Variable                 | Example                         | Description                 | Primary scope          |
-| ------------------------ | ------------------------------- | --------------------------- | ---------------------- |
-| `GOOGLE_CLIENT_ID`       | `...apps.googleusercontent.com` | Google OAuth client ID      | `api`                  |
-| `GOOGLE_CLIENT_SECRET`   | `...`                           | Google OAuth client secret  | `api`                  |
-| `GITHUB_CLIENT_ID`       | `...`                           | GitHub OAuth client ID      | `api`                  |
-| `GITHUB_CLIENT_SECRET`   | `...`                           | GitHub OAuth client secret  | `api`                  |
-| `WECHAT_WEB_APP_ID`      | `wx...`                         | WeChat web app ID           | `api`                  |
-| `WECHAT_WEB_APP_SECRET`  | `...`                           | WeChat web app secret       | `api`                  |
-| `WECHAT_MINI_APP_ID`     | `wx...`                         | WeChat mini app ID          | `api`                  |
-| `WECHAT_MINI_APP_SECRET` | `...`                           | WeChat mini app secret      | `api`                  |
-| `TENCENT_SECRET_ID`      | `...`                           | Tencent Cloud SMS SecretId  | `api`, `celery-worker` |
-| `TENCENT_SECRET_KEY`     | `...`                           | Tencent Cloud SMS SecretKey | Same as above          |
-| `TENCENT_SMS_SDK_APP_ID` | `...`                           | Tencent SMS SDK AppID       | Same as above          |
-| `TENCENT_SMS_APP_KEY`    | `...`                           | Tencent SMS AppKey          | Same as above          |
-| `TENCENT_SMS_SIGN`       | `SIGNATURE`                     | SMS signature               | Same as above          |
-| `SMTP_HOST`              | `smtp.example.com`              | SMTP server                 | `api`, `celery-worker` |
-| `SMTP_PORT`              | `465`                           | SMTP port                   | Same as above          |
-| `SMTP_USERNAME`          | `noreply@example.com`           | SMTP username               | Same as above          |
-| `SMTP_PASSWORD`          | `...`                           | SMTP password/app token     | Same as above          |
+- `OAUTH_SECRET_KEY`
+- `LANGFUSE_PUBLIC_KEY`
+- `LANGFUSE_SECRET_KEY`
+- `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB_URL` / `POSTGRES_DB`
+- `REDIS_URL` / `REDIS_PORT`
+- `MILVUS_CLUSTER_ENDPOINT` / `MILVUS_TOKEN`
+- `NEO4J_USER` / `NEO4J_PASS` / `NEO4J_URI`
+- `FILE_SYSTEM_SERVER_PUBLIC_URL` / `FILE_SYSTEM_USER_NAME` / `FILE_SYSTEM_PASSWORD`
+- `APIKEY_ENCRYPT_KEY`
+- `ENGINE_CONFIG_ENCRYPT_KEY`
+- `FILE_SYSTEM_CONFIG_ENCRYPT_KEY`
+- `NOTIFICATION_SOURCE_CONFIG_ENCRYPT_KEY`
+- `NOTIFICATION_TARGET_CONFIG_ENCRYPT_KEY`
 
----
+The current Worker startup chain goes through:
 
-## 7. Observability and Tracing
+- `celery-worker/common/celery/app.py`
+- `celery-worker/common/dependencies.py`
+- `celery-worker/common/encrypt.py`
+- `celery-worker/proxy/notification_proxy.py`
+- Multiple workflow / proxy / data modules
 
-| Variable               | Example                        | Description                        | Primary scope          |
-| ---------------------- | ------------------------------ | ---------------------------------- | ---------------------- |
-| `LANGFUSE_BASE_URL`    | `https://langfuse.example.com` | Langfuse base URL                  | `api`, `celery-worker` |
-| `LANGFUSE_PUBLIC_KEY`  | `...`                          | Langfuse public key                | Same as above          |
-| `LANGFUSE_SECRET_KEY`  | `...`                          | Langfuse secret key                | Same as above          |
-| `API_SENTRY_ENABLE`    | `True`                         | API Sentry toggle (`True`/`False`) | `api`                  |
-| `API_SENTRY_DSN`       | `https://...`                  | API Sentry DSN                     | `api`                  |
-| `WORKER_SENTRY_ENABLE` | `True`                         | Worker Sentry toggle               | `celery-worker`        |
-| `WORKER_SENTRY_DSN`    | `https://...`                  | Worker Sentry DSN                  | `celery-worker`        |
+Additional notes:
 
----
+- The Worker repo still contains utility modules for `SMTP_*` and `TENCENT_*`, but the normal startup path does not currently import them.
+- `ROOT_USER_NAME` / `ROOT_USER_PASSWORD` are not required for Worker startup right now. They are mainly used by API initialization scripts.
 
-## 8. Models and Capability Extensions
+### 3.3 Hard requirements only in initialization scripts
 
-| Variable                           | Example       | Description                                           | Primary scope          |
-| ---------------------------------- | ------------- | ----------------------------------------------------- | ---------------------- |
-| `ALI_DASHSCOPE_EMBEDDING_API_KEY`  | `...`         | Aliyun DashScope embedding API key                    | `api`, `celery-worker` |
-| `ALI_DASHSCOPE_EMBEDDING_ON`       | `False`       | Enable DashScope embedding (`True`/`False`)           | Same as above          |
-| `OFFICIAL_MODEL_PROVIDER_API_KEY`  | `...`         | API key for initializing the official model provider  | `api`, `celery-worker` |
-| `OFFICIAL_MODEL_PROVIDER_BASE_URL` | `https://...` | Base URL for initializing the official model provider | Same as above          |
-| `MINERU_MODEL_SOURCE` (optional)   | `modelscope`  | MinerU model download source                          | `api`, `celery-worker` |
+| Variable | When it is required | Main read point | Notes |
+| --- | --- | --- | --- |
+| `ROOT_USER_NAME` / `ROOT_USER_PASSWORD` | When running `python -m data.sql.create` | `api/data/sql/create.py` | Creates the root user |
+| `OFFICIAL_MODEL_PROVIDER_API_KEY` / `OFFICIAL_MODEL_PROVIDER_BASE_URL` | When `OFFICIAL` is enabled and the official seed path is executed | `api/data/sql/create.py` | Initializes the official model provider |
 
----
+## 4. Variable Details
 
-## 9. Frontend-Visible Variables (Build-Time Injection)
+### 4.1 Shared infrastructure and security variables
 
-These variables are injected into the browser or Next build output. Do not place sensitive information here.
+| Variable | Services | Required level | Default / example | Main read points | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| `OAUTH_SECRET_KEY` | api, worker | Required at startup | None | `api/config/oauth2.py`, `api/common/jwt_utils.py`, `celery-worker/config/oauth2.py` | JWT signing key; API and Worker must use the same value |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB_URL` / `POSTGRES_DB` | api, worker | Required at startup | Example: `revornix` / `12345678` / `localhost` / `revornix` | `api/data/sql/base.py`, `celery-worker/data/sql/base.py`, `api/alembic/env.py` | PostgreSQL connection |
+| `REDIS_URL` / `REDIS_PORT` | api, worker | Required at startup | Example: `localhost` / `6379` | `api/common/redis.py`, `api/common/celery/app.py`, `celery-worker/common/celery/app.py` | API cache and Celery broker/backend |
+| `MILVUS_CLUSTER_ENDPOINT` / `MILVUS_TOKEN` | api, worker | Required at startup | Example: `http://localhost:19530` / `root:Milvus` | `api/data/milvus/base.py`, `celery-worker/data/milvus/base.py` | Vector database |
+| `NEO4J_USER` / `NEO4J_PASS` / `NEO4J_URI` | api, worker | Required at startup | Example: `neo4j` / `12345678` / `bolt://localhost:7687` | `api/data/neo4j/base.py`, `celery-worker/data/neo4j/base.py` | Graph database |
+| `FILE_SYSTEM_SERVER_PUBLIC_URL` / `FILE_SYSTEM_USER_NAME` / `FILE_SYSTEM_PASSWORD` | api, worker | Required at startup | Example: local MinIO | `api/file/built_in_remote_file_service.py`, `celery-worker/file/built_in_remote_file_service.py` | Built-in file system (MinIO / S3-compatible) |
+| `APIKEY_ENCRYPT_KEY` | api, worker | Required at startup | None | `api/common/encrypt.py`, `celery-worker/common/encrypt.py` | Master key for API key encryption |
+| `ENGINE_CONFIG_ENCRYPT_KEY` | api, worker | Required at startup | None | Same as above | Master key for engine configuration encryption |
+| `FILE_SYSTEM_CONFIG_ENCRYPT_KEY` | api, worker | Required at startup | None | Same as above | Master key for file system configuration encryption |
+| `NOTIFICATION_SOURCE_CONFIG_ENCRYPT_KEY` | api, worker | Required at startup | None | Same as above | Master key for notification source configuration encryption |
+| `NOTIFICATION_TARGET_CONFIG_ENCRYPT_KEY` | api, worker | Required at startup | None | Same as above | Master key for notification target configuration encryption |
+| `LANGFUSE_PUBLIC_KEY` / `LANGFUSE_SECRET_KEY` | api, worker | Required at startup | None | `api/common/dependencies.py`, `celery-worker/common/dependencies.py` | The current code validates them strictly during import |
+| `LANGFUSE_BASE_URL` | api, worker | Optional | None | `api/config/langfuse.py`, `celery-worker/config/langfuse.py` | Currently only read into config; there is no direct call site in this repo yet |
+| `OFFICIAL` | api, worker | Optional | Example: `False` | `api/common/dependencies.py`, `celery-worker/common/dependencies.py` | Official deployment switch; uses case-insensitive boolean parsing |
+| `DEPLOY_HOSTS` | api (worker currently keeps config only) | Optional | Config default is `localhost`; the sample shows official domains | `api/config/base.py`, `api/common/dependencies.py`, `celery-worker/config/base.py` | Official-host detection on the API side; Worker does not currently consume it further |
+| `UNION_PAY_URL_PREFIX` | api, worker | Required for payment-related features | None | `api/common/dependencies.py`, `celery-worker/common/dependencies.py` | Backend address for membership / payment system |
+| `WEB_BASE_URL` | api, worker | Recommended | None | `api/notification/tool/*.py`, `celery-worker/notification/tool/*.py` | Expands relative links into full notification links |
 
-| Variable                                  | Example                               | Description                                    | Primary scope |
-| ----------------------------------------- | ------------------------------------- | ---------------------------------------------- | ------------- |
-| `NEXT_PUBLIC_API_PREFIX`                  | `http://localhost:8001`               | Base URL for the core backend                  | `web`         |
-| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX`  | `ws://localhost:8001/notification/ws` | WebSocket notification URL                     | `web`         |
-| `NEXT_PUBLIC_HOT_NEWS_API_PREFIX`         | `http://localhost:6688`               | Hot News service URL                           | `web`         |
-| `NEXT_PUBLIC_WECHAT_APP_ID`               | `wx...`                               | Used to generate WeChat QR login               | `web`         |
-| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH`      | `true`/`false`                        | Toggle third-party login entry                 | `web`         |
-| `NEXT_PUBLIC_HOST`                        | `http://localhost:3000`               | Public site URL (for share links)              | `web`         |
-| `NEXT_PUBLIC_DEPLOY_HOSTS`                | `app.revornix.com,app.revornix.cn`    | Allowed domain list                            | `web`         |
-| `NEXT_PUBLIC_GA_ID`                       | `G-XXXXXXX`                           | Google Analytics ID                            | `web`         |
-| `UNION_PAY_API_PREFIX` (optional)         | `https://pay.example.com`             | Payment API prefix (Next build-time injection) | `web`         |
-| `NEXT_PUBLIC_PAYPAL_CLIENT_ID` (optional) | `...`                                 | PayPal client ID                               | `web`         |
+### 4.2 Authentication, third-party login, and notifications
 
----
+| Variable | Services | Required level | Default / example | Main read points | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | api | Required when Google login is enabled | None | `api/router/user_auth_google.py` | Backend config for Google OAuth |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | api | Required when GitHub login is enabled | None | `api/router/user_auth_github.py` | Backend config for GitHub OAuth |
+| `WECHAT_WEB_APP_ID` / `WECHAT_WEB_APP_SECRET` | api | Required for WeChat web login | None | `api/router/user_auth_wechat.py` | WeChat web login / binding |
+| `WECHAT_MINI_APP_ID` / `WECHAT_MINI_APP_SECRET` | api | Required for WeChat Mini Program login | None | `api/router/user_auth_wechat.py` | Mini Program login |
+| `WECHAT_OFFICIAL_APP_ID` / `WECHAT_OFFICIAL_APP_SECRET` / `WECHAT_OFFICIAL_TOKEN` / `WECHAT_OFFICIAL_ENCODING_AES_KEY` | api | Required for WeChat Official Account message integration | None | `api/router/wechat_official.py` | Secure mode and message handling for WeChat Official Account |
+| `WECHAT_HTTP_TIMEOUT_SECONDS` | api | Optional | `20` | `api/common/tp_auth/wechat_utils.py` | Timeout in seconds for WeChat HTTP requests |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USERNAME` / `SMTP_PASSWORD` | api | Currently required for API startup | None | `api/common/system_email/email.py`, `api/router/user.py`, `api/router/notification_target_manage.py` | Email verification codes and notification email |
+| `TENCENT_SECRET_ID` / `TENCENT_SECRET_KEY` / `TENCENT_SMS_SDK_APP_ID` / `TENCENT_SMS_APP_KEY` / `TENCENT_SMS_SIGN` | api | Currently required for API startup | None | `api/common/sms/tencent_sms.py`, `api/router/user_auth_phone.py` | Phone verification codes |
+| `IOS_DEEPLINK_SCHEME` | api, worker | Optional | `revornix` | `api/notification/tool/apple.py`, `celery-worker/notification/tool/apple.py` | Deep link scheme for iOS push notifications |
 
-## 10. Payments (Optional)
+### 4.3 Bilibili / YouTube credentials and startup authentication
 
-| Variable               | Example                            | Description                         | Primary scope          |
-| ---------------------- | ---------------------------------- | ----------------------------------- | ---------------------- |
-| `UNION_PAY_URL_PREFIX` | `https://pay.example.com`          | Base URL for backend payment calls  | `api`, `celery-worker` |
-| `PAYPAL_API_URL`       | `https://api-m.sandbox.paypal.com` | PayPal API URL (sandbox by default) | `web`                  |
-| `PAYPAL_CLIENT_SECRET` | `...`                              | PayPal client secret                | `web`                  |
+| Variable | Services | Required level | Default / example | Main read points | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| `REVORNIX_CREDENTIAL_DIR` | api, worker | Optional | `~/.local/state/revornix` | `api/engine/video_plugins/bilibili_auth.py`, `api/engine/video_plugins/youtube_auth.py` | Root directory for stored credentials |
+| `BILIBILI_CREDENTIAL_ENCRYPT_KEY` | api, worker | Required when using Bilibili credential cache | None | `*_bilibili_auth.py` | Encrypts Bilibili credential files |
+| `BILIBILI_CREDENTIAL_FILE` | api, worker | Optional | `${REVORNIX_CREDENTIAL_DIR}/bilibili_auth/credential.json` | Same as above | Custom credential file path |
+| `BILIBILI_QR_LOGIN_ON_STARTUP` | api, worker | Optional | `False` | Same as above | Attempt QR login on startup |
+| `BILIBILI_QR_LOGIN_TIMEOUT_SECONDS` | api, worker | Optional | `300` | Same as above | Total QR login timeout |
+| `BILIBILI_QR_LOGIN_POLL_TIMEOUT_SECONDS` | api, worker | Optional | `8` | Same as above | Single polling timeout |
+| `YOUTUBE_CREDENTIAL_ENCRYPT_KEY` | api, worker | Recommended to set separately when using YouTube cookie cache | None | `*_youtube_auth.py` | Encrypts YouTube cookies; falls back to `BILIBILI_CREDENTIAL_ENCRYPT_KEY` if unset |
+| `YOUTUBE_CREDENTIAL_FILE` | api, worker | Optional | `${REVORNIX_CREDENTIAL_DIR}/youtube_auth/cookie.json` | Same as above | Custom cookie cache path |
+| `YOUTUBE_YTDLP_COOKIE_FILE` | api, worker | Optional | None | Same as above | Path to an external cookie file for first import |
+| `YOUTUBE_COOKIE_ON_STARTUP` | api, worker | Optional | `False` | Same as above | Import or load YouTube cookies on startup |
 
----
+### 4.4 Observability, vector settings, and Worker-only switches
 
-## 11. Daily Hot Aggregation Service (hot-news)
+| Variable | Services | Required level | Default / example | Main read points | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| `API_SENTRY_ENABLE` / `API_SENTRY_DSN` | api | Optional | Disabled by default | `api/main.py` | API Sentry initialization |
+| `WORKER_SENTRY_ENABLE` / `WORKER_SENTRY_DSN` | worker | Optional | Disabled by default | `celery-worker/common/celery/app.py` | Worker Sentry initialization with `CeleryIntegration` |
+| `WORKFLOW_TIMING_VERBOSE` | worker | Optional | `0` | `celery-worker/workflow/timing.py` | Emit detailed workflow timing logs |
+| `ALI_DASHSCOPE_EMBEDDING_ON` | api, worker | Optional | `False` | `api/engine/embedding/factory.py`, `celery-worker/engine/embedding/factory.py` | Switch to Alibaba DashScope embedding |
+| `ALI_DASHSCOPE_EMBEDDING_API_KEY` | api, worker | Required when the previous switch is true | None | `api/engine/embedding/qwen_cloud.py`, same file name in worker | DashScope embedding API key |
+| `WS_OFFLINE_CACHE_TTL_SECONDS` | api | Optional | `86400` | `api/common/websocket.py` | TTL for cached offline WebSocket messages |
+| `WS_OFFLINE_CACHE_MAX_MESSAGES` | api | Optional | `200` | `api/common/websocket.py` | Max number of retained offline WebSocket messages |
 
-| Variable          | Default     | Description                           | Primary scope |
-| ----------------- | ----------- | ------------------------------------- | ------------- |
-| `PORT`            | `6688`      | Service port                          | `hot-news`    |
-| `DISALLOW_ROBOT`  | `true`      | Block crawlers                        | `hot-news`    |
-| `CACHE_TTL`       | `3600`      | Ranking cache TTL (seconds)           | `hot-news`    |
-| `REQUEST_TIMEOUT` | `6000`      | Upstream request timeout (ms)         | `hot-news`    |
-| `ALLOWED_DOMAIN`  | `*`         | Allowed domain wildcard               | `hot-news`    |
-| `ALLOWED_HOST`    | `imsyy.top` | Allowed top-level host                | `hot-news`    |
-| `USE_LOG_FILE`    | `true`      | Write log file                        | `hot-news`    |
-| `RSS_MODE`        | `false`     | Output RSS by default                 | `hot-news`    |
-| `REDIS_HOST`      | `127.0.0.1` | Redis host used by Hot News           | `hot-news`    |
-| `REDIS_PORT`      | `6379`      | Hot News Redis port                   | `hot-news`    |
-| `REDIS_PASSWORD`  | `""`        | Hot News Redis password (if required) | `hot-news`    |
+### 4.5 Official deployment and seed-only variables
 
----
+| Variable | Services | Required level | Default / example | Main read points | Purpose |
+| --- | --- | --- | --- | --- | --- |
+| `ROOT_USER_NAME` / `ROOT_USER_PASSWORD` | api | Required by initialization scripts | None | `api/data/sql/create.py` | Creates the root user and default resources |
+| `OFFICIAL_MODEL_PROVIDER_API_KEY` / `OFFICIAL_MODEL_PROVIDER_BASE_URL` | api | Required when `OFFICIAL=true` and seeding official models | None | `api/data/sql/create.py` | Initializes the official model provider |
 
-Wishing you a smooth deployment. Feel free to share feedback anytime.
+Additional note:
+
+- These four variables also appear in `celery-worker/.env.example`, but the current normal Worker startup path does not use them.
+
+### 4.6 Web frontend variables
+
+| Variable | Required level | Default / example | Main read points | Purpose |
+| --- | --- | --- | --- | --- |
+| `NEXT_PUBLIC_API_PREFIX` | Recommended | `http://localhost:8001` | `web/next.config.ts`, `web/src/config/api.ts` | API base URL |
+| `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` | Recommended | `ws://localhost:8001/notification/ws` | Same as above | Notification WebSocket URL |
+| `NEXT_PUBLIC_HOT_NEWS_API_PREFIX` | Recommended | `http://localhost:6688` | Same as above | Hot News service URL |
+| `NEXT_PUBLIC_WECHAT_APP_ID` | Required when third-party login UI is enabled | Empty | `web/next.config.ts`, login / binding components | App ID used by the frontend WeChat login button |
+| `NEXT_PUBLIC_ALLOW_THIRD_PARTY_AUTH` | Optional | `false` | `web/src/lib/env.ts`, `email-login-form.tsx`, `phone-login-form.tsx`, `account/page.tsx` | Controls whether third-party login / binding UI is shown |
+| `NEXT_PUBLIC_HOST` | Recommended | `http://localhost:3000` | `web/next.config.ts`, `section-publish.tsx` | Share links and frontend self-references |
+| `NEXT_PUBLIC_DEPLOY_HOSTS` | Optional | Sample official domain list | `web/src/lib/utils.ts`, `account/page.tsx` | Determines whether official subscription features are shown |
+| `UNION_PAY_API_PREFIX` | Required for payment / subscription features | Empty | `web/next.config.ts`, `web/src/api/user.ts`, `web/src/api/product.ts`, `web/src/api/order.ts` | API prefix used by the frontend to access the payment system |
+| `NEXT_PUBLIC_GA_ID` | Optional | Empty | `web/src/app/layout.tsx` | Google Analytics |
+
+## 5. Hot News Service Variables
+
+`hot-news` currently parses all of these in `hot-news/src/config.ts`.
+
+| Variable | Default | Main purpose |
+| --- | --- | --- |
+| `NODE_ENV` | Startup scripts usually set it to `development` | In `src/index.ts`, the service only auto-starts in `development` or `docker` |
+| `PORT` | `6688` | Service port |
+| `DISALLOW_ROBOT` | `true` | Whether `robots.txt` blocks crawling |
+| `CACHE_TTL` | `3600` | TTL for NodeCache / Redis cache |
+| `REQUEST_TIMEOUT` | `6000` | Timeout for fetching external data |
+| `ALLOWED_DOMAIN` | `*` | CORS fallback domain |
+| `ALLOWED_HOST` | `imsyy.top` | Allowed suffix for CORS host whitelist |
+| `USE_LOG_FILE` | `true` | Whether to write log files |
+| `RSS_MODE` | `false` | Whether to force RSS mode |
+| `REDIS_HOST` | `127.0.0.1` | Redis host used by Hot News itself |
+| `REDIS_PORT` | `6379` | Redis port used by Hot News itself |
+| `REDIS_PASSWORD` | Empty | Redis password used by Hot News itself |
+
+Notes:
+
+- `hot-news` uses `REDIS_HOST` / `REDIS_PORT`, which is a different naming scheme from the main project's `REDIS_URL` / `REDIS_PORT` used by API / Worker.
+- Hot News boolean parsing accepts only `true`, not `1` or `yes`.
+
+## 6. `.env.local` and `docker-compose-local.yaml`
+
+This path is only responsible for local infrastructure dependencies. It does not start the full application stack.
+
+### 6.1 Variables actually consumed by `docker-compose-local.yaml`
+
+| Variable | Purpose |
+| --- | --- |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` | Postgres container initialization |
+| `FILE_SYSTEM_USER_NAME` / `FILE_SYSTEM_PASSWORD` | Account credentials for the MinIO file service |
+| `NEO4J_USER` / `NEO4J_PASS` | Default Neo4j authentication |
+| `ETCD_AUTO_COMPACTION_MODE` / `ETCD_AUTO_COMPACTION_RETENTION` / `ETCD_QUOTA_BACKEND_BYTES` / `ETCD_SNAPSHOT_COUNT` | Etcd settings required by Milvus |
+| `MILVUS_MINIO_USER_NAME` / `MILVUS_MINIO_PASSWORD` | Dedicated MinIO credentials for Milvus |
+
+### 6.2 Variables that also exist in `.env.local.example` but are not read directly by compose-local
+
+These are mostly there so you can copy from one aggregated local sample into `api/.env`, `celery-worker/.env`, and `web/.env` when configuring your machine:
+
+- `POSTGRES_DB_URL`
+- `MILVUS_CLUSTER_ENDPOINT`
+- `MILVUS_TOKEN`
+- `FILE_SYSTEM_SERVER_PUBLIC_URL`
+- `NEO4J_URI`
+- `REDIS_URL`
+- All `NEXT_PUBLIC_*`
+- Most API / Worker runtime variables
+
+### 6.3 Helper entries currently present in `.env.local.example`
+
+| Variable | Current status |
+| --- | --- |
+| `HF_ENDPOINT` | The current project code and compose-local do not read it directly. It behaves more like a mirror helper for third-party model or download tooling. |
+
+## 7. Recommended Local Configuration Order
+
+1. Start local infrastructure first with `.env.local` + `docker-compose-local.yaml`, or reuse the Postgres / Redis / Neo4j / MinIO / Milvus services already running on your machine.
+2. Then configure each service separately:
+   - `api/.env`
+   - `celery-worker/.env`
+   - `web/.env`
+   - `hot-news/.env`
+3. In a manual deployment, at minimum keep these cross-service variables consistent:
+   - `OAUTH_SECRET_KEY`
+   - `POSTGRES_*`
+   - `REDIS_*`
+   - `MILVUS_*`
+   - `NEO4J_*`
+   - `FILE_SYSTEM_*`
+   - All encryption master keys
+
+If you only want the smallest workable local path first, prioritize:
+
+- API: database / Redis / Milvus / Neo4j / file system / encryption master keys / SMTP / Tencent SMS / OAuth / Langfuse
+- Worker: database / Redis / Milvus / Neo4j / file system / encryption master keys / OAuth / Langfuse
+- Web: `NEXT_PUBLIC_API_PREFIX` / `NEXT_PUBLIC_NOTIFICATION_WS_API_PREFIX` / `NEXT_PUBLIC_HOT_NEWS_API_PREFIX`
+- Hot News: the defaults are usually enough to start directly
