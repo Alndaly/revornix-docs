@@ -16,14 +16,14 @@ const ReactFlow = dynamic(
 	() => import('@xyflow/react').then((mod) => mod.ReactFlow),
 	{
 		ssr: false,
-	}
+	},
 );
 
 const HeroFlow = ({ className }: { className?: string }) => {
 	const { theme } = useTheme();
 	const initialNodes = [
 		{
-			id:  'way-1',
+			id: 'way-1',
 			sourcePosition: 'right',
 			type: 'input',
 			data: { label: 'chrome extension' },
@@ -32,24 +32,24 @@ const HeroFlow = ({ className }: { className?: string }) => {
 		{
 			id: 'way-2',
 			sourcePosition: 'right',
-            type: 'input',
+			type: 'input',
 			data: { label: 'npm package' },
 			position: { x: 0, y: 80 },
 		},
 		{
 			id: 'way-3',
 			sourcePosition: 'right',
-            type: 'input',
+			type: 'input',
 			data: { label: 'pypi package' },
 			position: { x: 0, y: 160 },
 		},
-        {
-            id: 'way-4',
-            sourcePosition: 'right',
-            type: 'input',
+		{
+			id: 'way-4',
+			sourcePosition: 'right',
+			type: 'input',
 			data: { label: 'web app' },
 			position: { x: 0, y: 240 },
-        },
+		},
 		{
 			id: 'horizontal-4',
 			sourcePosition: 'right',
@@ -144,7 +144,7 @@ const HeroFlow = ({ className }: { className?: string }) => {
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 	const onConnect = useCallback(
 		(params) => setEdges((els) => addEdge(params, els)),
-		[]
+		[],
 	);
 
 	return (
@@ -157,10 +157,7 @@ const HeroFlow = ({ className }: { className?: string }) => {
 				onConnect={onConnect}
 				fitView
 				attributionPosition='bottom-left'
-				className={cn(
-					'min-h-[80vh] border border-border rounded',
-					className
-				)}
+				className={cn('min-h-[80vh] border border-border rounded', className)}
 				zoomOnScroll={false}
 				preventScrolling={false}
 				// @ts-ignore

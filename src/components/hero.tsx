@@ -99,20 +99,17 @@ const Hero = () => {
 				))}
 			</ul>
 
-			<div className='relative flex items-center justify-center'>
-				<div className='relative w-full overflow-hidden rounded-lg border border-slate-200 bg-white/90 backdrop-blur-md dark:border-white/10 dark:bg-slate-900/60'>
-					<div className='relative aspect-[16/9] w-full'>
-						<img
-							src='https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260115162941286.png'
-							alt={t('hero_preview_alt')}
-							className='absolute inset-0 h-full w-full object-cover'
-						/>
-					</div>
-					<div className='border-t border-slate-200/80 bg-gradient-to-t from-white via-white/70 to-transparent p-6 text-sm text-slate-600 dark:border-white/10 dark:bg-gradient-to-t dark:from-slate-900/90 dark:via-slate-900/40 dark:text-slate-100/70'>
-						<p>{t('dashboard_description')}</p>
-					</div>
-				</div>
-			</div>
+			<img
+				src='https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260312200944018.png'
+				alt={t('hero_preview_alt')}
+				className='inset-0 h-full w-full object-cover rounded-xl dark:hidden shadow'
+			/>
+
+			<img
+				src='https://qingyon-revornix-public.oss-cn-beijing.aliyuncs.com/images/20260312200910826.png'
+				alt={t('hero_preview_alt')}
+				className='inset-0 h-full w-full object-cover rounded-xl hidden dark:block shadow'
+			/>
 		</section>
 	);
 };
