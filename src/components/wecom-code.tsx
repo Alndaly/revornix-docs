@@ -8,7 +8,8 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import Image from 'next/image';
-import weComCode from '@/static/contact_me_qr.png';
+import wechatGroupCode from '@/static/wechat_group.jpg';
+import authorWechatCode from '@/static/author_wechat.jpg';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
@@ -44,17 +45,24 @@ const WeComCode = ({
 					</Button>
 				</DialogTrigger>
 			)}
-			<DialogContent className='sm:max-w-[425px]'>
+			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{t('wecom')}</DialogTitle>
 					<DialogDescription>{t('wecom_tips')}</DialogDescription>
 				</DialogHeader>
-				<div className='flex justify-center items-center'>
+				<div className='flex justify-center items-center sm:flex-nowrap flex-wrap'>
 					<Image
-						src={weComCode}
+						src={wechatGroupCode}
 						className='rounded'
-						width={200}
-						height={200}
+						width={250}
+						height={250}
+						alt='wecom_code'
+					/>
+					<Image
+						src={authorWechatCode}
+						className='rounded'
+						width={250}
+						height={250}
 						alt='wecom_code'
 					/>
 				</div>

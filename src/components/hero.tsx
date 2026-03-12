@@ -1,18 +1,10 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import {
-	MegaphoneIcon,
-	Sparkles,
-	ArrowRight,
-	ServerCog,
-	QrCode,
-} from 'lucide-react';
+import { MegaphoneIcon, Sparkles, ArrowRight } from 'lucide-react';
 
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import WeComCode from './wecom-code';
-import weComCode from '@/static/contact_me_qr.png';
 
 const Hero = () => {
 	const t = useTranslations();
