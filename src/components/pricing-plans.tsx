@@ -76,8 +76,8 @@ const contentMap: Record<
 			{
 				name: 'Pro 计划',
 				prices: {
-					CNY: 'CNY 88',
-					USD: 'USD 25',
+					CNY: 'CNY 99',
+					USD: 'USD 32',
 				},
 				unit: '/月',
 				currencyLabel: '货币类型',
@@ -104,8 +104,8 @@ const contentMap: Record<
 			{
 				name: 'Max 计划',
 				prices: {
-					CNY: 'CNY 288',
-					USD: 'USD 56',
+					CNY: 'CNY 299',
+					USD: 'USD 88',
 				},
 				unit: '/月',
 				currencyLabel: '货币类型',
@@ -176,8 +176,8 @@ const contentMap: Record<
 			{
 				name: 'Pro Plan',
 				prices: {
-					CNY: 'CNY 88',
-					USD: 'USD 25',
+					CNY: 'CNY 99',
+					USD: 'USD 32',
 				},
 				unit: '/Month',
 				currencyLabel: 'Currency',
@@ -204,8 +204,8 @@ const contentMap: Record<
 			{
 				name: 'Max Plan',
 				prices: {
-					CNY: 'CNY 288',
-					USD: 'USD 56',
+					CNY: 'CNY 299',
+					USD: 'USD 88',
 				},
 				unit: '/Month',
 				currencyLabel: 'Currency',

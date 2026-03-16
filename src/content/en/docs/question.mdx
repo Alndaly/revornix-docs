@@ -1,9 +1,5 @@
 # Frequently Asked Questions
 
-### Why is an Nginx service needed when using Docker?
-
-Initially, I didn’t include an Nginx service. However, when accessing the API deployed via Docker directly from the browser, it often fails — mainly because the host doesn’t actually exist on your machine. Even if it does, due to Docker’s nature, the internal IP of the service may change after a restart. So after careful consideration, I added an Nginx service as a proxy to ensure stable access.
-
 ### Why do the web service environment variables need special configuration?
 
 Because of certain Next.js limitations, the web service can’t access environment variables passed via env_file during the Docker Compose build process.
