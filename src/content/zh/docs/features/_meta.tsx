@@ -5,6 +5,8 @@ const meta: MetaRecord = {
 	account: '账户体系',
 	'custom-file-system': '自定义文件系统',
 	'document-collect': '文档收集',
+	'python-sdk': 'Python SDK 与 CLI',
+	'openclaw-skill': 'OpenClaw Skill',
 	'document-manage': '文档管理',
 	podcast: '播客机制',
 	engine: '解析引擎',

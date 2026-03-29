@@ -22,6 +22,10 @@ const Hero = () => {
 			title: t('main_feature_3'),
 			description: t('main_feature_3_description'),
 		},
+		{
+			title: t('main_feature_4'),
+			description: t('main_feature_4_description'),
+		},
 	];
 
 	return (
@@ -81,7 +85,7 @@ const Hero = () => {
 				{t('hero_entry_hint')}
 			</p>
 
-			<ul className='grid gap-4 grid-cols-1 md:grid-cols-3 mb-10'>
+			<ul className='grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-10'>
 				{highlights.map((item, index) => (
 					<li
 						key={index}

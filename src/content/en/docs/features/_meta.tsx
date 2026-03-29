@@ -5,6 +5,8 @@ const meta: MetaRecord = {
 	account: 'Account System',
 	'custom-file-system': 'Custom File System',
 	'document-collect': 'Document Collection',
+	'python-sdk': 'Python SDK and CLI',
+	'openclaw-skill': 'OpenClaw Skill',
 	'document-manage': 'Document Management',
 	podcast: 'Podcast Generation',
 	engine: 'Parsing Engine',

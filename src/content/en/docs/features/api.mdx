@@ -12,6 +12,10 @@ This document describes all public API endpoints. All requests start with `/tp`.
 
 API keys can be added via **Avatar (bottom-left) -> Account -> APIKey Management** in Revornix.
 
+<Callout>
+	If you do not want to hand-write HTTP requests, start with [Python SDK and CLI](./python-sdk) or [OpenClaw Skill](./openclaw-skill).
+</Callout>
+
 ---
 
 ### `/tp/file/upload`
@@ -42,7 +46,7 @@ data = {
     "content_type": "text/markdown"
 }
 response = client.post(
-    url="http://localhost:8001/tp/section/create",
+    url="http://localhost:8001/tp/file/upload",
     headers=headers,
     files=files,
     data=data
@@ -68,7 +72,7 @@ Create a section
 | auto_podcast                  | bool   | No       | Auto-generate audio podcast                             |
 | auto_illustration             | bool   | No       | Auto-generate illustrations                             |
 | process_task_trigger_type     | int    | Yes      | Trigger reason (0: time trigger / 1: update event)      |
-| process_task_trigger_scheduler | bool   | No       | Schedule for time trigger (cron expression)            |
+| process_task_trigger_scheduler | string | No       | Schedule for time trigger (cron expression)            |
 
 #### Example
 
@@ -86,7 +90,7 @@ response = client.post(
         "description": "test description",
         "cover": "test/test.png",
         "labels": [1, 2],
-        "auto_publish": true,
+        "auto_publish": True,
         "process_task_trigger_type": 1
     }
 )
@@ -170,7 +174,7 @@ Create a document
 
 | Parameter    | Type    | Required | Description |
 | ------------ | ------- | -------- | ----------- |
-| category     | int     | Yes      | Document type, 0: file document, 1: link document, 2: quick note document |
+| category     | int     | Yes      | Document type, 0: file document, 1: link document, 2: quick note document, 3: audio document |
 | sections     | int[]   | Yes      | Sections to push to |
 | labels       | int[]   | Yes      | Label list |
 | title        | string  | No       | Title |
@@ -199,7 +203,7 @@ response = client.post(
     headers=headers,
     json={
         "category": 1,
-        "url": "https://baidu.com"
+        "url": "https://baidu.com",
         "sections": [],
         "auto_summary": True,
         "labels": [],

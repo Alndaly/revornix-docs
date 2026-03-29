@@ -147,6 +147,7 @@ const Features = () => {
 			description: t('feature_8_tips'),
 			Icon: iconPalette[7].icon,
 			accent: iconPalette[7].accent,
+			url: '/docs/features/openclaw-skill',
 		},
 	];
 

@@ -12,6 +12,10 @@ import { Callout } from 'nextra/components';
 
 APIKEY 可以通过点击 **Revornix 系统内左下角头像**->**账户**->**APIKey 管理** 增加。
 
+<Callout>
+	如果你不想手写 HTTP 请求，优先参考 [Python SDK 与 CLI](./python-sdk) 或 [OpenClaw Skill](./openclaw-skill)。
+</Callout>
+
 ---
 
 ### `/tp/file/upload`
@@ -42,7 +46,7 @@ data = {
     "content_type": "text/markdown"
 }
 response = client.post(
-    url="http://localhost:8001/tp/section/create",
+    url="http://localhost:8001/tp/file/upload",
     headers=headers,
     files=files,
     data=data
@@ -68,7 +72,7 @@ response = client.post(
 | auto_podcast                   | bool   | 否   | 是否自动生成音频播客                        |
 | auto_illustration              | bool   | 否   | 是否自动生成插图                            |
 | process_task_trigger_type      | int    | 是   | 进程触发原因（0: 时间触发/1: 更新事件触发） |
-| process_task_trigger_scheduler | bool   | 否   | 时间触发原因下的具体触发时间（cron 表达式） |
+| process_task_trigger_scheduler | string | 否   | 时间触发原因下的具体触发时间（cron 表达式） |
 
 #### 示例代码
 
@@ -86,7 +90,7 @@ response = client.post(
         "description": "test description",
         "cover": "test/test.png",
         "labels": [1, 2],
-        "auto_publish": true,
+        "auto_publish": True,
         "process_task_trigger_type": 1
     }
 )
@@ -170,7 +174,7 @@ response = client.post(
 
 | 参数名       | 类型    | 必填  | 描述                                                                                                                                    |
 | ------------ | ------- | ----- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| category     | int     | 是    | 文档类型，0：文件文档，1：链接文档，2：速记文档                                                                                         |
+| category     | int     | 是    | 文档类型，0：文件文档，1：链接文档，2：速记文档，3：音频文档                                                                           |
 | sections     | int[]   | 是    | 推送专栏组                                                                                                                              |
 | labels       | int[]   | 是    | 标签组                                                                                                                                  |
 | title        | string  | 否    | 标题                                                                                                                                    |
@@ -199,7 +203,7 @@ response = client.post(
     headers=headers,
     json={
         "category": 1,
-        "url": "https://baidu.com"
+        "url": "https://baidu.com",
         "sections": [],
         "auto_summary": True,
         "labels": [],
